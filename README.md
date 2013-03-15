@@ -31,7 +31,7 @@ The Dark Knight Rises ... and his sidekick.
 #######################################################################
 #######################################################################
 
-[b]Descripción del Lenguaje[/b]
+Descripción del Lenguaje
 ------------------------
 Lenguaje: C
 Idioma: Palabras reservadas en Inglés
