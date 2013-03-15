@@ -33,7 +33,7 @@ The Dark Knight Rises ... and his sidekick.
 
 Descripción del Lenguaje
 ------------------------
-Lenguaje: C
+Lenguaje: C\n
 Idioma: Palabras reservadas en Inglés
 Estructura de Datos: Arrays Multidimensionales
 Subprogramas: Procedimientos
