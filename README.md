@@ -2,7 +2,7 @@ dana-prolen
 ===========
 
 <i>The Dark Knight Rises ... and his sidekick.</i><br/>
-
+```
 
        _==/          i     i          \==_
      /XX/            |\___/|            \XX\
@@ -17,7 +17,9 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     \XX\       \X/    \XXX/    \X/       /XX/
        "\       "      \X/      "      /"
 
-'\n\'<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_==/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#92;==_<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/XX/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#92;___/|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#92;XX&nbsp;&nbsp;&nbsp;/XXXX&#92;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|XXXXX|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/XXXX&nbsp;&nbsp;|XXXXXX&#92;_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_XXXXXXX_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_/XXXXXX|<br/>&nbsp;XXXXXXXXXXXxxxxxxxXXXXXXXXXXXxxxxxxxXXXXXXXXXXX<br/>|XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|<br/>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br/>|XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|<br/>&nbsp;XXXXXX/^^^^"&#92;XXXXXXXXXXXXXXXXXXXXX/^^^^^&#92;XXXXXX<br/>&nbsp;&nbsp;|XXX|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#92;XXX/^^&#92;XXXXX/^^&#92;XXX/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|XXX|<br/>&nbsp;&nbsp;&nbsp;&nbsp;&#92;XX&#92;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#92;X/&nbsp;&nbsp;&nbsp;&nbsp;&#92;XXX/&nbsp;&nbsp;&nbsp;&nbsp;&#92;X/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/XX/<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&#92;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#92;X/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/"<br/>\'\n'
+```
+
+![](http://3.bp.blogspot.com/-b2eA7m3NcPo/TfJqPaxQ_gI/AAAAAAAAAPg/3Gr-I8NPJv0/s1600/robin_batman1966.jpg)
 
 
 Descripción del Lenguaje<br/>
