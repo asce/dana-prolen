@@ -30,3 +30,11 @@ The Dark Knight Rises ... and his sidekick.
 #######################################################################
 #######################################################################
 #######################################################################
+
+[b]Descripción del Lenguaje[/b]
+------------------------
+Lenguaje: C
+Idioma: Palabras reservadas en Inglés
+Estructura de Datos: Arrays Multidimensionales
+Subprogramas: Procedimientos
+Estructuras de control: Case o Switch
