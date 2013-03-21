@@ -1,6 +1,6 @@
 pr2:
 	lex -X -8 lexico.lex
 	gcc -c lex.yy.c -o lexico.o
-	gcc -o lexico lexico.o -ll
+	gcc -o lexico lexico.o -lfl
 clean:
-	rm *.o lexico lex.yy.c *~
+	rm *.o lex.yy.c *~
