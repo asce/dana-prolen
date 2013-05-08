@@ -29,3 +29,6 @@
 #define LLAVEIZ 288
 #define LLAVEDER 289
 #define BREAK 290
+#define SUMA_RESTA 291
+#define CONSTANTE_E 292
+

@@ -3,4 +3,4 @@ pr2:
 	gcc -c lex.yy.c -o lexico.o
 	gcc -o lexico lexico.o -ll
 clean:
-	rm *.o lex.yy.c *~
+	rm *.o lexico lex.yy.c *~

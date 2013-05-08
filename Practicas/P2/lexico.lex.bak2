@@ -1,7 +1,7 @@
 %{
 #include "y.tab.h"
 #include <stdio.h>
-
+#define ERROR_LEXICO -1
 
 %}
 
@@ -13,8 +13,6 @@ digito [0-9]
 guionbajo [_]
 delimitador [ \t\n]
 espacioblanco	{delimitador}+
-suma_resta [+-]
-
 %%
 
 "main"			{printf("MAIN\t");ECHO;return MAIN;}
@@ -43,12 +41,12 @@ suma_resta [+-]
 "default"		{printf("DEFAULT\t");ECHO;return DEFAULT;}
 ":"			{printf("DOSP\t");ECHO;return DOSP;}
 "break"			{printf("BREAK\t");ECHO;return BREAK;}
+{digito}+ 		{printf("CENTERA\t");ECHO;return CONSTANTE;}
+{digito}+"."{digito}+	{printf("CREAL\t");ECHO;return CONSTANTE;}
 {digito}+"E+"{digito}+	{printf("CREAL\t");ECHO;return CONSTANTE;}
 {digito}+"E-"{digito}+	{printf("CREAL\t");ECHO;return CONSTANTE;}
 {digito}+"."{digito}+"E+"{digito}+	{printf("CREAL\t");ECHO;return CONSTANTE;}
 {digito}+"."{digito}+"E-"{digito}+	{printf("CREAL\t");ECHO;return CONSTANTE;}
-{digito}+ 		{printf("CONSTANTE_E\t");ECHO;return CONSTANTE_E;}
-{digito}+"."{digito}+	{printf("CREAL\t");ECHO;return CONSTANTE;}
 "!" 					{printf("OPUNARIO\t");ECHO;return OPU;}
 "**"					{printf("OPBINARIO_1\t");ECHO;return OPB;}
 "*"					{printf("OPBINARIO_2\t");ECHO;return OPB;}
@@ -63,11 +61,12 @@ suma_resta [+-]
 ">"					{printf("OPBINARIO_10\t");ECHO;return OPB;}
 ")"					{printf("PARDERECHO\t");ECHO;return PARDER;}
 "("					{printf("PARIZQUIERDO\t");ECHO;return PARIZ;}
-{suma_resta}				{printf("SUMA_RESTA\t");ECHO;return SUMA_RESTA;}
-{espacioblanco}				{;}
+"+"					{printf("OPBINARIO_13\t");ECHO;return OPB;}
+"-"					{printf("OPBINARIO_14\t");ECHO;return OPB;}
+{espacioblanco}				{					;}
 "\"[^\"\n]*\""				{printf("CADENA\t");ECHO;return CADENA;}
 {letra}({letra}|{digito}|{guionbajo})*	{printf("IDENTIFICADOR\t");ECHO;return IDENTIFICA;}
-.					{printf("(linea %d) ERROR_LEXICO: token %s\n",yylineno,yytext);}
+.					{printf("(linea %d) ERROR_LEXICO: token %s",yylineno,yytext);return ERROR_LEXICO;}
 %%
 
 int main(int argc, char** argv)
@@ -79,7 +78,7 @@ int main(int argc, char** argv)
 		printf("\t%d\n",val);
 		val= yylex() ;
 	}
-	return 0;
+	exit (1);
 	
 }
 
