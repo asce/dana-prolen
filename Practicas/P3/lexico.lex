@@ -13,6 +13,7 @@ digito [0-9]
 guionbajo [_]
 delimitador [ \t\n]
 espacioblanco	{delimitador}+
+suma_resta [+-]
 %%
 
 "main"			{return MAIN;}
@@ -40,7 +41,7 @@ espacioblanco	{delimitador}+
 "default"		{return DEFAULT;}
 ":"			{return DOSP;}
 "break"			{return BREAK;}
-{digito}+ 		{return CONSTANTE;}
+{digito}+ 		{return CONSTANTE_E;}
 {digito}+"."{digito}+	{return CONSTANTE;}
 {digito}+"E+"{digito}+	{return CONSTANTE;}
 {digito}+"E-"{digito}+	{return CONSTANTE;}
@@ -59,14 +60,12 @@ espacioblanco	{delimitador}+
 ">"					{return OPB;}
 ">="					{return OPB;}
 "=="					{return OPB;}
-"~"					{printf("GUSANILLO\t");ECHO;printf("\n");}
 ")"					{return PARDER;}
 "("					{return PARIZ;}
-"+"					{return OPB;}//B13
-"-"					{return OPB;}//B14
+{suma_resta}			      {return SUMA_RESTA;}
 {espacioblanco}				{					;}
 \"[^\"\n]*\"				{return CADENA;}
-"'"[^"'"]"'"				{printf("CCHAR\t");ECHO;printf("\n");}
+"'"[^"'"]"'"				{return CONSTANTE;}
 {letra}({letra}|{digito}|{guionbajo})*	{return IDENTIFICADOR;}
 .					{printf("(linea %d) ERROR_LEXICO: token %s\n",yylineno,yytext);}
 %%
