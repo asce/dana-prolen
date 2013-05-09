@@ -38,35 +38,35 @@ espacioblanco	{delimitador}+
 "switch"		{return SWITCH;}
 "case"			{return CASE;}
 "default"		{return DEFAULT;}
-":"			{printf("DOSP\t");ECHO;printf("\n");}
-"break"			{printf("\t");ECHO;printf("\n");}
-{digito}+ 		{printf("CENTERA\t");ECHO;printf("\n");}
-{digito}+"."{digito}+	{printf("CREAL\t");ECHO;printf("\n");}
-{digito}+"E+"{digito}+	{printf("CREAL\t");ECHO;printf("\n");}
-{digito}+"E-"{digito}+	{printf("CREAL\t");ECHO;printf("\n");}
-{digito}+"."{digito}+"E+"{digito}+	{printf("CREAL\t");ECHO;printf("\n");}
-{digito}+"."{digito}+"E-"{digito}+	{printf("CREAL\t");ECHO;printf("\n");}
-"!" 					{printf("OPUNARIO\t");ECHO;printf("\n");}
-"**"					{printf("OPBINARIO_1\t");ECHO;printf("\n");}
-"*"					{printf("OPBINARIO_2\t");ECHO;printf("\n");}
-"/"					{printf("OPBINARIO_3\t");ECHO;printf("\n");}
-"&&"					{printf("OPBINARIO_4\t");ECHO;printf("\n");}
-"||"					{printf("OPBINARIO_5\t");ECHO;printf("\n");}
-"¬|"					{printf("OPBINARIO_6\t");ECHO;printf("\n");}
-"!="					{printf("OPBINARIO_7\t");ECHO;printf("\n");}
-"<"					{printf("OPBINARIO_8\t");ECHO;printf("\n");}
-"<="					{printf("OPBINARIO_9\t");ECHO;printf("\n");}
-">"					{printf("OPBINARIO_10\t");ECHO;printf("\n");}
-">="					{printf("OPBINARIO_11\t");ECHO;printf("\n");}
-"=="					{printf("OPBINARIO_12\t");ECHO;printf("\n");}
+":"			{return DOSP;}
+"break"			{return BREAK;}
+{digito}+ 		{return CONSTANTE;}
+{digito}+"."{digito}+	{return CONSTANTE;}
+{digito}+"E+"{digito}+	{return CONSTANTE;}
+{digito}+"E-"{digito}+	{return CONSTANTE;}
+{digito}+"."{digito}+"E+"{digito}+	{return CONSTANTE;}
+{digito}+"."{digito}+"E-"{digito}+	{return CONSTANTE;}
+"!" 					{return OPU;}
+"**"					{return OPB;}
+"*"					{return OPB;}
+"/"					{return OPB;}
+"&&"					{return OPB;}
+"||"					{return OPB;}
+"¬|"					{return OPB;}
+"!="					{return OPB;}
+"<"					{return OPB;}
+"<="					{return OPB;}
+">"					{return OPB;}
+">="					{return OPB;}
+"=="					{return OPB;}
 "~"					{printf("GUSANILLO\t");ECHO;printf("\n");}
-")"					{printf("PARDERECHO\t");ECHO;printf("\n");}
-"("					{printf("PARIZQUIERDO\t");ECHO;printf("\n");}
-"+"					{printf("OPBINARIO_13\t");ECHO;printf("\n");}
-"-"					{printf("OPBINARIO_14\t");ECHO;printf("\n");}
+")"					{return PARDER;}
+"("					{return PARIZ;}
+"+"					{return OPB;}//B13
+"-"					{return OPB;}//B14
 {espacioblanco}				{					;}
-\"[^\"\n]*\"				{printf("CADENA\t");ECHO;printf("\n");}
+\"[^\"\n]*\"				{return CADENA;}
 "'"[^"'"]"'"				{printf("CCHAR\t");ECHO;printf("\n");}
-{letra}({letra}|{digito}|{guionbajo})*	{printf("IDENTIFICADOR\t");ECHO;printf("\n");}
+{letra}({letra}|{digito}|{guionbajo})*	{return IDENTIFICADOR;}
 .					{printf("(linea %d) ERROR_LEXICO: token %s\n",yylineno,yytext);}
 %%
