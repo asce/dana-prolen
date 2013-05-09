@@ -21,6 +21,8 @@ suma_resta [+-]
 "}"			{return FINBLO;}
 "begin_declare"		{return INICIOV;}
 "end_declare"		{return FINV;}
+"true"		       {return CONSTANTE;}
+"false"		       {return CONSTANTE;}
 ";"			{return PYC;}
 ","			{return COMA;}
 "int"			{return TIPOSIMPLE;}
@@ -41,7 +43,7 @@ suma_resta [+-]
 "default"		{return DEFAULT;}
 ":"			{return DOSP;}
 "break"			{return BREAK;}
-{digito}+ 		{return CONSTANTE;}
+{digito}+ 		{return CONSTANTE_E;}
 {digito}+"."{digito}+	{return CONSTANTE;}
 {digito}+"E+"{digito}+	{return CONSTANTE;}
 {digito}+"E-"{digito}+	{return CONSTANTE;}
@@ -65,7 +67,7 @@ suma_resta [+-]
 {suma_resta}			      {return SUMA_RESTA;}
 {espacioblanco}				{					;}
 \"[^\"\n]*\"				{return CADENA;}
-"'"[^"'"]"'"				{return CONSTANTE;}
+"'"[^"'"]"'"				{return CARACTER;}
 {letra}({letra}|{digito}|{guionbajo})*	{return IDENTIFICADOR;}
 .					{printf("(linea %d) ERROR_LEXICO: token %s\n",yylineno,yytext);}
 %%
