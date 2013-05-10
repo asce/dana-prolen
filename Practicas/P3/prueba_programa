@@ -1,0 +1,46 @@
+main 
+{
+
+begin_···declare
+int a1, a2, a2 ;
+char c1[2,2], c2[3,3], c3[4,4];
+bool cierto, falso;
+double re···al1, real2, real3, real4,real5, real6;
+end_declare
+
+
+c1[0,0]='a';
+real1=05.05 + 1;
+real2=123.12 - 2;
+real3=123E-221;
+real4=123E+123;
+real5=123.021E-12;
+real6=123.021E+12;
+
+cierto = true;
+falso = false;
+
+if (cierto)
+	a1 = 34;
+else
+	a2 = 56;
+
+procedimiento(a1);
+
+
+}
+
+void procedimiento(int a1){
+begin_declare
+int valor;
+end_declare
+
+     switch(a1){
+     	case 34: 
+	     valor = 34;
+	break;
+	default:
+	      valor = 56;
+     }
+
+}
