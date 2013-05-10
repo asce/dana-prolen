@@ -16,6 +16,7 @@ void yyerror(char *msg) ;
 %token WHILE READ WRITE SWITCH CASE DEFAULT DOSP BREAK CONSTANTE PARDER PARIZ CADENA
 %token IDENTIFICADOR CONSTANTE_E CARACTER
 
+
 %right ASIG
 %right OPU
 %left OPBLOG
@@ -49,23 +50,23 @@ marca_fin_declar_variables: FINV;
 variables_locales: variables_locales cuerpo_declar_variables
 			| cuerpo_declar_variables;
 
-cuerpo_declar_variables: tipo_de_dato lista_variables;
+cuerpo_declar_variables: TIPOSIMPLE lista_variables PYC;
 
-lista_variables: IDENTIFICADOR | lista_variables COMA IDENTIFICADOR | error;
+lista_variables: IDENTIFICADOR
+		| lista_variables COMA IDENTIFICADOR
+		| IDENTIFICADOR CORIZ dimension_array CORDER
+		| lista_variables COMA IDENTIFICADOR CORIZ dimension_array CORDER;
 
-tipo_de_dato: TIPOSIMPLE | tipo_estructurado;
-
-tipo_estructurado: tipo_array;
-
-tipo_array: TIPOSIMPLE IDENTIFICADOR CORIZ dimension_array CORDER PYC;
 
 dimension_array: CONSTANTE_E | CONSTANTE_E COMA CONSTANTE_E;
 
 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros PARDER;
 
-declar_parametros: tipo_de_dato IDENTIFICADOR mas_parametros | ;
+declar_parametros: TIPOSIMPLE IDENTIFICADOR 
+		| declar_parametros COMA TIPOSIMPLE IDENTIFICADOR;
 
-mas_parametros: COMA tipo_de_dato IDENTIFICADOR mas_parametros | ;
+
+
 
 sentencias: sentencias sentencia
 			|sentencia;
@@ -93,8 +94,7 @@ expresion: PARIZ expresion PARDER
 		| procedimiento
 		| agregados;
 
-iden_array: IDENTIFICADOR
-		| IDENTIFICADOR CORIZ expresion CORDER
+iden_array: IDENTIFICADOR CORIZ expresion CORDER
 		| IDENTIFICADOR CORIZ expresion COMA expresion CORDER;
 
 procedimiento: IDENTIFICADOR PARIZ lista_expresiones PARDER;

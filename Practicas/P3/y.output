@@ -1,7 +1,6 @@
-State 22 conflicts: 1 shift/reduce
-State 44 conflicts: 1 shift/reduce
-State 80 conflicts: 1 shift/reduce
-State 92 conflicts: 1 shift/reduce
+State 39 conflicts: 1 shift/reduce
+State 77 conflicts: 1 shift/reduce
+State 89 conflicts: 1 shift/reduce
 
 
 Grammar
@@ -33,139 +32,130 @@ Grammar
    13 variables_locales: variables_locales cuerpo_declar_variables
    14                  | cuerpo_declar_variables
 
-   15 cuerpo_declar_variables: tipo_de_dato lista_variables PYC
+   15 cuerpo_declar_variables: TIPOSIMPLE lista_variables PYC
 
    16 lista_variables: IDENTIFICADOR
    17                | lista_variables COMA IDENTIFICADOR
-   18                | lista_variables COMA IDENTIFICADOR tipo_array
-   19                | IDENTIFICADOR tipo_array
-   20                | error
+   18                | IDENTIFICADOR CORIZ dimension_array CORDER
+   19                | lista_variables COMA IDENTIFICADOR CORIZ dimension_array CORDER
 
-   21 tipo_de_dato: TIPOSIMPLE
+   20 dimension_array: CONSTANTE_E
+   21                | CONSTANTE_E COMA CONSTANTE_E
 
-   22 tipo_array: CORIZ dimension_array CORDER
+   22 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros PARDER
 
-   23 dimension_array: CONSTANTE_E
-   24                | CONSTANTE_E COMA CONSTANTE_E
+   23 declar_parametros: TIPOSIMPLE IDENTIFICADOR
+   24                  | declar_parametros COMA TIPOSIMPLE IDENTIFICADOR
 
-   25 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros PARDER
+   25 sentencias: sentencias sentencia
+   26           | sentencia
 
-   26 declar_parametros: tipo_de_dato IDENTIFICADOR mas_parametros
-   27                  | /* empty */
+   27 sentencia: bloque
+   28          | sentencia_asignacion
+   29          | sentencia_if
+   30          | sentencia_while
+   31          | sentencia_entrada
+   32          | sentencia_salida
+   33          | procedimiento
+   34          | sentencia_case
 
-   28 mas_parametros: COMA tipo_de_dato IDENTIFICADOR mas_parametros
-   29               | /* empty */
+   35 sentencia_asignacion: iden_array ASIG expresion PYC
 
-   30 sentencias: sentencias sentencia
-   31           | sentencia
+   36 expresion: PARIZ expresion PARDER
+   37          | OPU expresion
+   38          | expresion OPBIG expresion
+   39          | expresion OPBLOG expresion
+   40          | expresion OPB expresion
+   41          | expresion SUMA_RESTA expresion
+   42          | iden_array
+   43          | CONSTANTE
+   44          | CONSTANTE_E
+   45          | procedimiento
+   46          | agregados
 
-   32 sentencia: bloque
-   33          | sentencia_asignacion
-   34          | sentencia_if
-   35          | sentencia_while
-   36          | sentencia_entrada
-   37          | sentencia_salida
-   38          | procedimiento
-   39          | sentencia_case
+   47 iden_array: IDENTIFICADOR CORIZ expresion CORDER
+   48           | IDENTIFICADOR CORIZ expresion COMA expresion CORDER
 
-   40 sentencia_asignacion: iden_array ASIG expresion PYC
+   49 procedimiento: IDENTIFICADOR PARIZ lista_expresiones PARDER
 
-   41 expresion: PARIZ expresion PARDER
-   42          | OPU expresion
-   43          | expresion OPBIG expresion
-   44          | expresion OPBLOG expresion
-   45          | expresion OPB expresion
-   46          | expresion SUMA_RESTA expresion
-   47          | iden_array
-   48          | CONSTANTE
-   49          | CONSTANTE_E
-   50          | procedimiento
-   51          | agregados
+   50 agregados: INICIO lista_expresiones FINBLO
 
-   52 iden_array: IDENTIFICADOR
-   53           | IDENTIFICADOR CORIZ expresion CORDER
-   54           | IDENTIFICADOR CORIZ expresion COMA expresion CORDER
+   51 lista_expresiones: expresion
+   52                  | lista_expresiones COMA expresion
 
-   55 procedimiento: IDENTIFICADOR PARIZ lista_expresiones PARDER
+   53 sentencia_if: alternativa_doble
+   54             | alternativa_simple
 
-   56 agregados: INICIO lista_expresiones FINBLO
+   55 alternativa_simple: IF expresion sentencia
 
-   57 lista_expresiones: expresion
-   58                  | lista_expresiones COMA expresion
+   56 alternativa_doble: IF expresion sentencia ELSE sentencia
 
-   59 sentencia_if: alternativa_doble
-   60             | alternativa_simple
+   57 sentencia_while: WHILE PARIZ expresion PARDER sentencia
 
-   61 alternativa_simple: IF expresion sentencia
+   58 sentencia_entrada: nomb_entrada lista_variables
 
-   62 alternativa_doble: IF expresion sentencia ELSE sentencia
+   59 nomb_entrada: READ
 
-   63 sentencia_while: WHILE PARIZ expresion PARDER sentencia
+   60 sentencia_salida: nomb_salida PARIZ lista_expresiones_o_cadena PARDER
 
-   64 sentencia_entrada: nomb_entrada lista_variables
+   61 nomb_salida: WRITE
 
-   65 nomb_entrada: READ
+   62 expresion_o_cadena: expresion
+   63                   | CADENA
 
-   66 sentencia_salida: nomb_salida PARIZ lista_expresiones_o_cadena PARDER
+   64 lista_expresiones_o_cadena: expresion_o_cadena
+   65                           | lista_expresiones_o_cadena COMA expresion_o_cadena
 
-   67 nomb_salida: WRITE
+   66 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO caso caso_por_defecto FINBLO
 
-   68 expresion_o_cadena: expresion
-   69                   | CADENA
+   67 caso: CASE opcion DOSP sentencia BREAK PYC caso
+   68     | /* empty */
 
-   70 lista_expresiones_o_cadena: expresion_o_cadena
-   71                           | lista_expresiones_o_cadena COMA expresion_o_cadena
+   69 opcion: CONSTANTE_E
+   70       | CARACTER
 
-   72 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO caso caso_por_defecto FINBLO
-
-   73 caso: CASE opcion DOSP sentencia BREAK PYC caso
-   74     | /* empty */
-
-   75 opcion: CONSTANTE_E
-   76       | CARACTER
-
-   77 caso_por_defecto: DEFAULT DOSP sentencia PYC
-   78                 | /* empty */
+   71 caso_por_defecto: DEFAULT DOSP sentencia PYC
+   72                 | /* empty */
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
-error (256) 20
+error (256)
 MAIN (258) 2
-INICIO (259) 56 72
-FINBLO (260) 56 72
+INICIO (259) 50 66
+FINBLO (260) 50 66
 INICIOV (261) 11
 FINV (262) 12
-PYC (263) 15 40 73 77
-COMA (264) 17 18 24 28 54 58 71
-TIPOSIMPLE (265) 21
-PROCED (266) 25
-CORIZ (267) 4 22 53 54
-CORDER (268) 5 22 53 54
-IF (269) 61 62
-ELSE (270) 62
-WHILE (271) 63
-READ (272) 65
-WRITE (273) 67
-SWITCH (274) 72
-CASE (275) 73
-DEFAULT (276) 77
-DOSP (277) 73 77
-BREAK (278) 73
-CONSTANTE (279) 48
-PARDER (280) 25 41 55 63 66 72
-PARIZ (281) 25 41 55 63 66 72
-CADENA (282) 69
-IDENTIFICADOR (283) 16 17 18 19 25 26 28 52 53 54 55 72
-CONSTANTE_E (284) 23 24 49 75
-CARACTER (285) 76
-ASIG (286) 40
-OPU (287) 42
-OPBLOG (288) 44
-OPBIG (289) 43
-OPB (290) 45
-SUMA_RESTA (291) 46
+PYC (263) 15 35 67 71
+COMA (264) 17 19 21 24 48 52 65
+TIPOSIMPLE (265) 15 23 24
+PROCED (266) 22
+CORDER (267) 5 18 19 47 48
+IF (268) 55 56
+ELSE (269) 56
+WHILE (270) 57
+READ (271) 59
+WRITE (272) 61
+SWITCH (273) 66
+CASE (274) 67
+DEFAULT (275) 71
+DOSP (276) 67 71
+BREAK (277) 67
+CONSTANTE (278) 43
+PARDER (279) 22 36 49 57 60 66
+PARIZ (280) 22 36 49 57 60 66
+CADENA (281) 63
+IDENTIFICADOR (282) 16 17 18 19 22 23 24 47 48 49 66
+CONSTANTE_E (283) 20 21 44 69
+CARACTER (284) 70
+CORIZ (285) 4 18 19 47 48
+ASIG (286) 35
+OPU (287) 37
+OPBLOG (288) 39
+OPBIG (289) 38
+OPB (290) 40
+SUMA_RESTA (291) 41
 
 
 Nonterminals, with rules where they appear
@@ -177,7 +167,7 @@ programa (38)
 cabecera_programa (39)
     on left: 2, on right: 1
 bloque (40)
-    on left: 3, on right: 1 8 32
+    on left: 3, on right: 1 8 27
 inicio_de_bloque (41)
     on left: 4, on right: 3
 fin_de_bloque (42)
@@ -197,64 +187,58 @@ variables_locales (48)
 cuerpo_declar_variables (49)
     on left: 15, on right: 13 14
 lista_variables (50)
-    on left: 16 17 18 19 20, on right: 15 17 18 64
-tipo_de_dato (51)
-    on left: 21, on right: 15 26 28
-tipo_array (52)
-    on left: 22, on right: 18 19
-dimension_array (53)
-    on left: 23 24, on right: 22
-cabecera_subprograma (54)
-    on left: 25, on right: 8
-declar_parametros (55)
-    on left: 26 27, on right: 25
-mas_parametros (56)
-    on left: 28 29, on right: 26 28
-sentencias (57)
-    on left: 30 31, on right: 3 30
-sentencia (58)
-    on left: 32 33 34 35 36 37 38 39, on right: 30 31 61 62 63 73 77
-sentencia_asignacion (59)
-    on left: 40, on right: 33
-expresion (60)
-    on left: 41 42 43 44 45 46 47 48 49 50 51, on right: 40 41 42 43
-    44 45 46 53 54 57 58 61 62 63 68
-iden_array (61)
-    on left: 52 53 54, on right: 40 47
-procedimiento (62)
-    on left: 55, on right: 38 50
-agregados (63)
-    on left: 56, on right: 51
-lista_expresiones (64)
-    on left: 57 58, on right: 55 56 58
-sentencia_if (65)
-    on left: 59 60, on right: 34
-alternativa_simple (66)
+    on left: 16 17 18 19, on right: 15 17 19 58
+dimension_array (51)
+    on left: 20 21, on right: 18 19
+cabecera_subprograma (52)
+    on left: 22, on right: 8
+declar_parametros (53)
+    on left: 23 24, on right: 22 24
+sentencias (54)
+    on left: 25 26, on right: 3 25
+sentencia (55)
+    on left: 27 28 29 30 31 32 33 34, on right: 25 26 55 56 57 67 71
+sentencia_asignacion (56)
+    on left: 35, on right: 28
+expresion (57)
+    on left: 36 37 38 39 40 41 42 43 44 45 46, on right: 35 36 37 38
+    39 40 41 47 48 51 52 55 56 57 62
+iden_array (58)
+    on left: 47 48, on right: 35 42
+procedimiento (59)
+    on left: 49, on right: 33 45
+agregados (60)
+    on left: 50, on right: 46
+lista_expresiones (61)
+    on left: 51 52, on right: 49 50 52
+sentencia_if (62)
+    on left: 53 54, on right: 29
+alternativa_simple (63)
+    on left: 55, on right: 54
+alternativa_doble (64)
+    on left: 56, on right: 53
+sentencia_while (65)
+    on left: 57, on right: 30
+sentencia_entrada (66)
+    on left: 58, on right: 31
+nomb_entrada (67)
+    on left: 59, on right: 58
+sentencia_salida (68)
+    on left: 60, on right: 32
+nomb_salida (69)
     on left: 61, on right: 60
-alternativa_doble (67)
-    on left: 62, on right: 59
-sentencia_while (68)
-    on left: 63, on right: 35
-sentencia_entrada (69)
-    on left: 64, on right: 36
-nomb_entrada (70)
-    on left: 65, on right: 64
-sentencia_salida (71)
-    on left: 66, on right: 37
-nomb_salida (72)
-    on left: 67, on right: 66
-expresion_o_cadena (73)
-    on left: 68 69, on right: 70 71
-lista_expresiones_o_cadena (74)
-    on left: 70 71, on right: 66 71
-sentencia_case (75)
-    on left: 72, on right: 39
-caso (76)
-    on left: 73 74, on right: 72 73
-opcion (77)
-    on left: 75 76, on right: 73
-caso_por_defecto (78)
-    on left: 77 78, on right: 72
+expresion_o_cadena (70)
+    on left: 62 63, on right: 64 65
+lista_expresiones_o_cadena (71)
+    on left: 64 65, on right: 60 65
+sentencia_case (72)
+    on left: 66, on right: 34
+caso (73)
+    on left: 67 68, on right: 66 67
+opcion (74)
+    on left: 69 70, on right: 67
+caso_por_defecto (75)
+    on left: 71 72, on right: 66
 
 
 state 0
@@ -348,7 +332,6 @@ state 10
 
     variables_locales        go to state 13
     cuerpo_declar_variables  go to state 14
-    tipo_de_dato             go to state 15
 
 
 state 11
@@ -356,40 +339,42 @@ state 11
     3 bloque: inicio_de_bloque declar_de_variables_locales declar_de_subprogs . sentencias fin_de_bloque
     6 declar_de_subprogs: declar_de_subprogs . declar_subprog
 
-    PROCED         shift, and go to state 16
+    PROCED         shift, and go to state 15
+    IF             shift, and go to state 16
+    WHILE          shift, and go to state 17
+    READ           shift, and go to state 18
+    WRITE          shift, and go to state 19
+    SWITCH         shift, and go to state 20
+    IDENTIFICADOR  shift, and go to state 21
     CORIZ          shift, and go to state 5
-    IF             shift, and go to state 17
-    WHILE          shift, and go to state 18
-    READ           shift, and go to state 19
-    WRITE          shift, and go to state 20
-    SWITCH         shift, and go to state 21
-    IDENTIFICADOR  shift, and go to state 22
 
-    bloque                go to state 23
+    bloque                go to state 22
     inicio_de_bloque      go to state 7
-    declar_subprog        go to state 24
-    cabecera_subprograma  go to state 25
-    sentencias            go to state 26
-    sentencia             go to state 27
-    sentencia_asignacion  go to state 28
-    iden_array            go to state 29
-    procedimiento         go to state 30
-    sentencia_if          go to state 31
-    alternativa_simple    go to state 32
-    alternativa_doble     go to state 33
-    sentencia_while       go to state 34
-    sentencia_entrada     go to state 35
-    nomb_entrada          go to state 36
-    sentencia_salida      go to state 37
-    nomb_salida           go to state 38
-    sentencia_case        go to state 39
+    declar_subprog        go to state 23
+    cabecera_subprograma  go to state 24
+    sentencias            go to state 25
+    sentencia             go to state 26
+    sentencia_asignacion  go to state 27
+    iden_array            go to state 28
+    procedimiento         go to state 29
+    sentencia_if          go to state 30
+    alternativa_simple    go to state 31
+    alternativa_doble     go to state 32
+    sentencia_while       go to state 33
+    sentencia_entrada     go to state 34
+    nomb_entrada          go to state 35
+    sentencia_salida      go to state 36
+    nomb_salida           go to state 37
+    sentencia_case        go to state 38
 
 
 state 12
 
-   21 tipo_de_dato: TIPOSIMPLE .
+   15 cuerpo_declar_variables: TIPOSIMPLE . lista_variables PYC
 
-    $default  reduce using rule 21 (tipo_de_dato)
+    IDENTIFICADOR  shift, and go to state 39
+
+    lista_variables  go to state 40
 
 
 state 13
@@ -397,12 +382,11 @@ state 13
     9 declar_de_variables_locales: marca_ini_declar_variables variables_locales . marca_fin_declar_variables
    13 variables_locales: variables_locales . cuerpo_declar_variables
 
-    FINV        shift, and go to state 40
+    FINV        shift, and go to state 41
     TIPOSIMPLE  shift, and go to state 12
 
-    marca_fin_declar_variables  go to state 41
-    cuerpo_declar_variables     go to state 42
-    tipo_de_dato                go to state 15
+    marca_fin_declar_variables  go to state 42
+    cuerpo_declar_variables     go to state 43
 
 
 state 14
@@ -414,1406 +398,1364 @@ state 14
 
 state 15
 
-   15 cuerpo_declar_variables: tipo_de_dato . lista_variables PYC
+   22 cabecera_subprograma: PROCED . IDENTIFICADOR PARIZ declar_parametros PARDER
 
-    error          shift, and go to state 43
     IDENTIFICADOR  shift, and go to state 44
-
-    lista_variables  go to state 45
 
 
 state 16
 
-   25 cabecera_subprograma: PROCED . IDENTIFICADOR PARIZ declar_parametros PARDER
+   55 alternativa_simple: IF . expresion sentencia
+   56 alternativa_doble: IF . expresion sentencia ELSE sentencia
 
-    IDENTIFICADOR  shift, and go to state 46
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
+
+    expresion      go to state 50
+    iden_array     go to state 51
+    procedimiento  go to state 52
+    agregados      go to state 53
 
 
 state 17
 
-   61 alternativa_simple: IF . expresion sentencia
-   62 alternativa_doble: IF . expresion sentencia ELSE sentencia
+   57 sentencia_while: WHILE . PARIZ expresion PARDER sentencia
 
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
-
-    expresion      go to state 52
-    iden_array     go to state 53
-    procedimiento  go to state 54
-    agregados      go to state 55
+    PARIZ  shift, and go to state 54
 
 
 state 18
 
-   63 sentencia_while: WHILE . PARIZ expresion PARDER sentencia
+   59 nomb_entrada: READ .
 
-    PARIZ  shift, and go to state 56
+    $default  reduce using rule 59 (nomb_entrada)
 
 
 state 19
 
-   65 nomb_entrada: READ .
+   61 nomb_salida: WRITE .
 
-    $default  reduce using rule 65 (nomb_entrada)
+    $default  reduce using rule 61 (nomb_salida)
 
 
 state 20
 
-   67 nomb_salida: WRITE .
+   66 sentencia_case: SWITCH . PARIZ IDENTIFICADOR PARDER INICIO caso caso_por_defecto FINBLO
 
-    $default  reduce using rule 67 (nomb_salida)
+    PARIZ  shift, and go to state 55
 
 
 state 21
 
-   72 sentencia_case: SWITCH . PARIZ IDENTIFICADOR PARDER INICIO caso caso_por_defecto FINBLO
+   47 iden_array: IDENTIFICADOR . CORIZ expresion CORDER
+   48           | IDENTIFICADOR . CORIZ expresion COMA expresion CORDER
+   49 procedimiento: IDENTIFICADOR . PARIZ lista_expresiones PARDER
 
-    PARIZ  shift, and go to state 57
+    PARIZ  shift, and go to state 56
+    CORIZ  shift, and go to state 57
 
 
 state 22
 
-   52 iden_array: IDENTIFICADOR .
-   53           | IDENTIFICADOR . CORIZ expresion CORDER
-   54           | IDENTIFICADOR . CORIZ expresion COMA expresion CORDER
-   55 procedimiento: IDENTIFICADOR . PARIZ lista_expresiones PARDER
+   27 sentencia: bloque .
 
-    CORIZ  shift, and go to state 58
-    PARIZ  shift, and go to state 59
-
-    CORIZ     [reduce using rule 52 (iden_array)]
-    $default  reduce using rule 52 (iden_array)
+    $default  reduce using rule 27 (sentencia)
 
 
 state 23
-
-   32 sentencia: bloque .
-
-    $default  reduce using rule 32 (sentencia)
-
-
-state 24
 
     6 declar_de_subprogs: declar_de_subprogs declar_subprog .
 
     $default  reduce using rule 6 (declar_de_subprogs)
 
 
-state 25
+state 24
 
     8 declar_subprog: cabecera_subprograma . bloque
 
     CORIZ  shift, and go to state 5
 
-    bloque            go to state 60
+    bloque            go to state 58
     inicio_de_bloque  go to state 7
+
+
+state 25
+
+    3 bloque: inicio_de_bloque declar_de_variables_locales declar_de_subprogs sentencias . fin_de_bloque
+   25 sentencias: sentencias . sentencia
+
+    CORDER         shift, and go to state 59
+    IF             shift, and go to state 16
+    WHILE          shift, and go to state 17
+    READ           shift, and go to state 18
+    WRITE          shift, and go to state 19
+    SWITCH         shift, and go to state 20
+    IDENTIFICADOR  shift, and go to state 21
+    CORIZ          shift, and go to state 5
+
+    bloque                go to state 22
+    inicio_de_bloque      go to state 7
+    fin_de_bloque         go to state 60
+    sentencia             go to state 61
+    sentencia_asignacion  go to state 27
+    iden_array            go to state 28
+    procedimiento         go to state 29
+    sentencia_if          go to state 30
+    alternativa_simple    go to state 31
+    alternativa_doble     go to state 32
+    sentencia_while       go to state 33
+    sentencia_entrada     go to state 34
+    nomb_entrada          go to state 35
+    sentencia_salida      go to state 36
+    nomb_salida           go to state 37
+    sentencia_case        go to state 38
 
 
 state 26
 
-    3 bloque: inicio_de_bloque declar_de_variables_locales declar_de_subprogs sentencias . fin_de_bloque
-   30 sentencias: sentencias . sentencia
+   26 sentencias: sentencia .
 
-    CORIZ          shift, and go to state 5
-    CORDER         shift, and go to state 61
-    IF             shift, and go to state 17
-    WHILE          shift, and go to state 18
-    READ           shift, and go to state 19
-    WRITE          shift, and go to state 20
-    SWITCH         shift, and go to state 21
-    IDENTIFICADOR  shift, and go to state 22
-
-    bloque                go to state 23
-    inicio_de_bloque      go to state 7
-    fin_de_bloque         go to state 62
-    sentencia             go to state 63
-    sentencia_asignacion  go to state 28
-    iden_array            go to state 29
-    procedimiento         go to state 30
-    sentencia_if          go to state 31
-    alternativa_simple    go to state 32
-    alternativa_doble     go to state 33
-    sentencia_while       go to state 34
-    sentencia_entrada     go to state 35
-    nomb_entrada          go to state 36
-    sentencia_salida      go to state 37
-    nomb_salida           go to state 38
-    sentencia_case        go to state 39
+    $default  reduce using rule 26 (sentencias)
 
 
 state 27
 
-   31 sentencias: sentencia .
+   28 sentencia: sentencia_asignacion .
 
-    $default  reduce using rule 31 (sentencias)
+    $default  reduce using rule 28 (sentencia)
 
 
 state 28
 
-   33 sentencia: sentencia_asignacion .
+   35 sentencia_asignacion: iden_array . ASIG expresion PYC
 
-    $default  reduce using rule 33 (sentencia)
+    ASIG  shift, and go to state 62
 
 
 state 29
 
-   40 sentencia_asignacion: iden_array . ASIG expresion PYC
+   33 sentencia: procedimiento .
 
-    ASIG  shift, and go to state 64
+    $default  reduce using rule 33 (sentencia)
 
 
 state 30
 
-   38 sentencia: procedimiento .
+   29 sentencia: sentencia_if .
 
-    $default  reduce using rule 38 (sentencia)
+    $default  reduce using rule 29 (sentencia)
 
 
 state 31
 
-   34 sentencia: sentencia_if .
+   54 sentencia_if: alternativa_simple .
 
-    $default  reduce using rule 34 (sentencia)
+    $default  reduce using rule 54 (sentencia_if)
 
 
 state 32
 
-   60 sentencia_if: alternativa_simple .
+   53 sentencia_if: alternativa_doble .
 
-    $default  reduce using rule 60 (sentencia_if)
+    $default  reduce using rule 53 (sentencia_if)
 
 
 state 33
 
-   59 sentencia_if: alternativa_doble .
+   30 sentencia: sentencia_while .
 
-    $default  reduce using rule 59 (sentencia_if)
+    $default  reduce using rule 30 (sentencia)
 
 
 state 34
 
-   35 sentencia: sentencia_while .
+   31 sentencia: sentencia_entrada .
 
-    $default  reduce using rule 35 (sentencia)
+    $default  reduce using rule 31 (sentencia)
 
 
 state 35
 
-   36 sentencia: sentencia_entrada .
+   58 sentencia_entrada: nomb_entrada . lista_variables
 
-    $default  reduce using rule 36 (sentencia)
+    IDENTIFICADOR  shift, and go to state 39
+
+    lista_variables  go to state 63
 
 
 state 36
 
-   64 sentencia_entrada: nomb_entrada . lista_variables
+   32 sentencia: sentencia_salida .
 
-    error          shift, and go to state 43
-    IDENTIFICADOR  shift, and go to state 44
-
-    lista_variables  go to state 65
+    $default  reduce using rule 32 (sentencia)
 
 
 state 37
 
-   37 sentencia: sentencia_salida .
+   60 sentencia_salida: nomb_salida . PARIZ lista_expresiones_o_cadena PARDER
 
-    $default  reduce using rule 37 (sentencia)
+    PARIZ  shift, and go to state 64
 
 
 state 38
 
-   66 sentencia_salida: nomb_salida . PARIZ lista_expresiones_o_cadena PARDER
+   34 sentencia: sentencia_case .
 
-    PARIZ  shift, and go to state 66
+    $default  reduce using rule 34 (sentencia)
 
 
 state 39
 
-   39 sentencia: sentencia_case .
+   16 lista_variables: IDENTIFICADOR .
+   18                | IDENTIFICADOR . CORIZ dimension_array CORDER
 
-    $default  reduce using rule 39 (sentencia)
+    CORIZ  shift, and go to state 65
+
+    CORIZ     [reduce using rule 16 (lista_variables)]
+    $default  reduce using rule 16 (lista_variables)
 
 
 state 40
+
+   15 cuerpo_declar_variables: TIPOSIMPLE lista_variables . PYC
+   17 lista_variables: lista_variables . COMA IDENTIFICADOR
+   19                | lista_variables . COMA IDENTIFICADOR CORIZ dimension_array CORDER
+
+    PYC   shift, and go to state 66
+    COMA  shift, and go to state 67
+
+
+state 41
 
    12 marca_fin_declar_variables: FINV .
 
     $default  reduce using rule 12 (marca_fin_declar_variables)
 
 
-state 41
+state 42
 
     9 declar_de_variables_locales: marca_ini_declar_variables variables_locales marca_fin_declar_variables .
 
     $default  reduce using rule 9 (declar_de_variables_locales)
 
 
-state 42
+state 43
 
    13 variables_locales: variables_locales cuerpo_declar_variables .
 
     $default  reduce using rule 13 (variables_locales)
 
 
-state 43
-
-   20 lista_variables: error .
-
-    $default  reduce using rule 20 (lista_variables)
-
-
 state 44
 
-   16 lista_variables: IDENTIFICADOR .
-   19                | IDENTIFICADOR . tipo_array
+   22 cabecera_subprograma: PROCED IDENTIFICADOR . PARIZ declar_parametros PARDER
 
-    CORIZ  shift, and go to state 67
-
-    CORIZ     [reduce using rule 16 (lista_variables)]
-    $default  reduce using rule 16 (lista_variables)
-
-    tipo_array  go to state 68
+    PARIZ  shift, and go to state 68
 
 
 state 45
 
-   15 cuerpo_declar_variables: tipo_de_dato lista_variables . PYC
-   17 lista_variables: lista_variables . COMA IDENTIFICADOR
-   18                | lista_variables . COMA IDENTIFICADOR tipo_array
+   50 agregados: INICIO . lista_expresiones FINBLO
 
-    PYC   shift, and go to state 69
-    COMA  shift, and go to state 70
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
+
+    expresion          go to state 69
+    iden_array         go to state 51
+    procedimiento      go to state 52
+    agregados          go to state 53
+    lista_expresiones  go to state 70
 
 
 state 46
 
-   25 cabecera_subprograma: PROCED IDENTIFICADOR . PARIZ declar_parametros PARDER
+   43 expresion: CONSTANTE .
 
-    PARIZ  shift, and go to state 71
+    $default  reduce using rule 43 (expresion)
 
 
 state 47
 
-   56 agregados: INICIO . lista_expresiones FINBLO
+   36 expresion: PARIZ . expresion PARDER
 
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
 
-    expresion          go to state 72
-    iden_array         go to state 53
-    procedimiento      go to state 54
-    agregados          go to state 55
-    lista_expresiones  go to state 73
+    expresion      go to state 71
+    iden_array     go to state 51
+    procedimiento  go to state 52
+    agregados      go to state 53
 
 
 state 48
 
-   48 expresion: CONSTANTE .
+   44 expresion: CONSTANTE_E .
 
-    $default  reduce using rule 48 (expresion)
+    $default  reduce using rule 44 (expresion)
 
 
 state 49
 
-   41 expresion: PARIZ . expresion PARDER
+   37 expresion: OPU . expresion
 
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
 
-    expresion      go to state 74
-    iden_array     go to state 53
-    procedimiento  go to state 54
-    agregados      go to state 55
+    expresion      go to state 72
+    iden_array     go to state 51
+    procedimiento  go to state 52
+    agregados      go to state 53
 
 
 state 50
 
-   49 expresion: CONSTANTE_E .
+   38 expresion: expresion . OPBIG expresion
+   39          | expresion . OPBLOG expresion
+   40          | expresion . OPB expresion
+   41          | expresion . SUMA_RESTA expresion
+   55 alternativa_simple: IF expresion . sentencia
+   56 alternativa_doble: IF expresion . sentencia ELSE sentencia
 
-    $default  reduce using rule 49 (expresion)
+    IF             shift, and go to state 16
+    WHILE          shift, and go to state 17
+    READ           shift, and go to state 18
+    WRITE          shift, and go to state 19
+    SWITCH         shift, and go to state 20
+    IDENTIFICADOR  shift, and go to state 21
+    CORIZ          shift, and go to state 5
+    OPBLOG         shift, and go to state 73
+    OPBIG          shift, and go to state 74
+    OPB            shift, and go to state 75
+    SUMA_RESTA     shift, and go to state 76
+
+    bloque                go to state 22
+    inicio_de_bloque      go to state 7
+    sentencia             go to state 77
+    sentencia_asignacion  go to state 27
+    iden_array            go to state 28
+    procedimiento         go to state 29
+    sentencia_if          go to state 30
+    alternativa_simple    go to state 31
+    alternativa_doble     go to state 32
+    sentencia_while       go to state 33
+    sentencia_entrada     go to state 34
+    nomb_entrada          go to state 35
+    sentencia_salida      go to state 36
+    nomb_salida           go to state 37
+    sentencia_case        go to state 38
 
 
 state 51
 
-   42 expresion: OPU . expresion
+   42 expresion: iden_array .
 
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
-
-    expresion      go to state 75
-    iden_array     go to state 53
-    procedimiento  go to state 54
-    agregados      go to state 55
+    $default  reduce using rule 42 (expresion)
 
 
 state 52
 
-   43 expresion: expresion . OPBIG expresion
-   44          | expresion . OPBLOG expresion
-   45          | expresion . OPB expresion
-   46          | expresion . SUMA_RESTA expresion
-   61 alternativa_simple: IF expresion . sentencia
-   62 alternativa_doble: IF expresion . sentencia ELSE sentencia
+   45 expresion: procedimiento .
 
-    CORIZ          shift, and go to state 5
-    IF             shift, and go to state 17
-    WHILE          shift, and go to state 18
-    READ           shift, and go to state 19
-    WRITE          shift, and go to state 20
-    SWITCH         shift, and go to state 21
-    IDENTIFICADOR  shift, and go to state 22
-    OPBLOG         shift, and go to state 76
-    OPBIG          shift, and go to state 77
-    OPB            shift, and go to state 78
-    SUMA_RESTA     shift, and go to state 79
-
-    bloque                go to state 23
-    inicio_de_bloque      go to state 7
-    sentencia             go to state 80
-    sentencia_asignacion  go to state 28
-    iden_array            go to state 29
-    procedimiento         go to state 30
-    sentencia_if          go to state 31
-    alternativa_simple    go to state 32
-    alternativa_doble     go to state 33
-    sentencia_while       go to state 34
-    sentencia_entrada     go to state 35
-    nomb_entrada          go to state 36
-    sentencia_salida      go to state 37
-    nomb_salida           go to state 38
-    sentencia_case        go to state 39
+    $default  reduce using rule 45 (expresion)
 
 
 state 53
 
-   47 expresion: iden_array .
+   46 expresion: agregados .
 
-    $default  reduce using rule 47 (expresion)
+    $default  reduce using rule 46 (expresion)
 
 
 state 54
 
-   50 expresion: procedimiento .
+   57 sentencia_while: WHILE PARIZ . expresion PARDER sentencia
 
-    $default  reduce using rule 50 (expresion)
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
+
+    expresion      go to state 78
+    iden_array     go to state 51
+    procedimiento  go to state 52
+    agregados      go to state 53
 
 
 state 55
 
-   51 expresion: agregados .
+   66 sentencia_case: SWITCH PARIZ . IDENTIFICADOR PARDER INICIO caso caso_por_defecto FINBLO
 
-    $default  reduce using rule 51 (expresion)
+    IDENTIFICADOR  shift, and go to state 79
 
 
 state 56
 
-   63 sentencia_while: WHILE PARIZ . expresion PARDER sentencia
+   49 procedimiento: IDENTIFICADOR PARIZ . lista_expresiones PARDER
 
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
 
-    expresion      go to state 81
-    iden_array     go to state 53
-    procedimiento  go to state 54
-    agregados      go to state 55
+    expresion          go to state 69
+    iden_array         go to state 51
+    procedimiento      go to state 52
+    agregados          go to state 53
+    lista_expresiones  go to state 80
 
 
 state 57
 
-   72 sentencia_case: SWITCH PARIZ . IDENTIFICADOR PARDER INICIO caso caso_por_defecto FINBLO
+   47 iden_array: IDENTIFICADOR CORIZ . expresion CORDER
+   48           | IDENTIFICADOR CORIZ . expresion COMA expresion CORDER
 
-    IDENTIFICADOR  shift, and go to state 82
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
+
+    expresion      go to state 81
+    iden_array     go to state 51
+    procedimiento  go to state 52
+    agregados      go to state 53
 
 
 state 58
-
-   53 iden_array: IDENTIFICADOR CORIZ . expresion CORDER
-   54           | IDENTIFICADOR CORIZ . expresion COMA expresion CORDER
-
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
-
-    expresion      go to state 83
-    iden_array     go to state 53
-    procedimiento  go to state 54
-    agregados      go to state 55
-
-
-state 59
-
-   55 procedimiento: IDENTIFICADOR PARIZ . lista_expresiones PARDER
-
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
-
-    expresion          go to state 72
-    iden_array         go to state 53
-    procedimiento      go to state 54
-    agregados          go to state 55
-    lista_expresiones  go to state 84
-
-
-state 60
 
     8 declar_subprog: cabecera_subprograma bloque .
 
     $default  reduce using rule 8 (declar_subprog)
 
 
-state 61
+state 59
 
     5 fin_de_bloque: CORDER .
 
     $default  reduce using rule 5 (fin_de_bloque)
 
 
-state 62
+state 60
 
     3 bloque: inicio_de_bloque declar_de_variables_locales declar_de_subprogs sentencias fin_de_bloque .
 
     $default  reduce using rule 3 (bloque)
 
 
+state 61
+
+   25 sentencias: sentencias sentencia .
+
+    $default  reduce using rule 25 (sentencias)
+
+
+state 62
+
+   35 sentencia_asignacion: iden_array ASIG . expresion PYC
+
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
+
+    expresion      go to state 82
+    iden_array     go to state 51
+    procedimiento  go to state 52
+    agregados      go to state 53
+
+
 state 63
 
-   30 sentencias: sentencias sentencia .
+   17 lista_variables: lista_variables . COMA IDENTIFICADOR
+   19                | lista_variables . COMA IDENTIFICADOR CORIZ dimension_array CORDER
+   58 sentencia_entrada: nomb_entrada lista_variables .
 
-    $default  reduce using rule 30 (sentencias)
+    COMA  shift, and go to state 67
+
+    $default  reduce using rule 58 (sentencia_entrada)
 
 
 state 64
 
-   40 sentencia_asignacion: iden_array ASIG . expresion PYC
+   60 sentencia_salida: nomb_salida PARIZ . lista_expresiones_o_cadena PARDER
 
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    CADENA         shift, and go to state 83
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
 
-    expresion      go to state 85
-    iden_array     go to state 53
-    procedimiento  go to state 54
-    agregados      go to state 55
+    expresion                   go to state 84
+    iden_array                  go to state 51
+    procedimiento               go to state 52
+    agregados                   go to state 53
+    expresion_o_cadena          go to state 85
+    lista_expresiones_o_cadena  go to state 86
 
 
 state 65
 
-   17 lista_variables: lista_variables . COMA IDENTIFICADOR
-   18                | lista_variables . COMA IDENTIFICADOR tipo_array
-   64 sentencia_entrada: nomb_entrada lista_variables .
+   18 lista_variables: IDENTIFICADOR CORIZ . dimension_array CORDER
 
-    COMA  shift, and go to state 70
+    CONSTANTE_E  shift, and go to state 87
 
-    $default  reduce using rule 64 (sentencia_entrada)
+    dimension_array  go to state 88
 
 
 state 66
 
-   66 sentencia_salida: nomb_salida PARIZ . lista_expresiones_o_cadena PARDER
-
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    CADENA         shift, and go to state 86
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
-
-    expresion                   go to state 87
-    iden_array                  go to state 53
-    procedimiento               go to state 54
-    agregados                   go to state 55
-    expresion_o_cadena          go to state 88
-    lista_expresiones_o_cadena  go to state 89
-
-
-state 67
-
-   22 tipo_array: CORIZ . dimension_array CORDER
-
-    CONSTANTE_E  shift, and go to state 90
-
-    dimension_array  go to state 91
-
-
-state 68
-
-   19 lista_variables: IDENTIFICADOR tipo_array .
-
-    $default  reduce using rule 19 (lista_variables)
-
-
-state 69
-
-   15 cuerpo_declar_variables: tipo_de_dato lista_variables PYC .
+   15 cuerpo_declar_variables: TIPOSIMPLE lista_variables PYC .
 
     $default  reduce using rule 15 (cuerpo_declar_variables)
 
 
-state 70
+state 67
 
    17 lista_variables: lista_variables COMA . IDENTIFICADOR
-   18                | lista_variables COMA . IDENTIFICADOR tipo_array
+   19                | lista_variables COMA . IDENTIFICADOR CORIZ dimension_array CORDER
 
-    IDENTIFICADOR  shift, and go to state 92
+    IDENTIFICADOR  shift, and go to state 89
+
+
+state 68
+
+   22 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ . declar_parametros PARDER
+
+    TIPOSIMPLE  shift, and go to state 90
+
+    declar_parametros  go to state 91
+
+
+state 69
+
+   38 expresion: expresion . OPBIG expresion
+   39          | expresion . OPBLOG expresion
+   40          | expresion . OPB expresion
+   41          | expresion . SUMA_RESTA expresion
+   51 lista_expresiones: expresion .
+
+    OPBLOG      shift, and go to state 73
+    OPBIG       shift, and go to state 74
+    OPB         shift, and go to state 75
+    SUMA_RESTA  shift, and go to state 76
+
+    $default  reduce using rule 51 (lista_expresiones)
+
+
+state 70
+
+   50 agregados: INICIO lista_expresiones . FINBLO
+   52 lista_expresiones: lista_expresiones . COMA expresion
+
+    FINBLO  shift, and go to state 92
+    COMA    shift, and go to state 93
 
 
 state 71
 
-   25 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ . declar_parametros PARDER
+   36 expresion: PARIZ expresion . PARDER
+   38          | expresion . OPBIG expresion
+   39          | expresion . OPBLOG expresion
+   40          | expresion . OPB expresion
+   41          | expresion . SUMA_RESTA expresion
 
-    TIPOSIMPLE  shift, and go to state 12
-
-    $default  reduce using rule 27 (declar_parametros)
-
-    tipo_de_dato       go to state 93
-    declar_parametros  go to state 94
+    PARDER      shift, and go to state 94
+    OPBLOG      shift, and go to state 73
+    OPBIG       shift, and go to state 74
+    OPB         shift, and go to state 75
+    SUMA_RESTA  shift, and go to state 76
 
 
 state 72
 
-   43 expresion: expresion . OPBIG expresion
-   44          | expresion . OPBLOG expresion
-   45          | expresion . OPB expresion
-   46          | expresion . SUMA_RESTA expresion
-   57 lista_expresiones: expresion .
+   37 expresion: OPU expresion .
+   38          | expresion . OPBIG expresion
+   39          | expresion . OPBLOG expresion
+   40          | expresion . OPB expresion
+   41          | expresion . SUMA_RESTA expresion
 
-    OPBLOG      shift, and go to state 76
-    OPBIG       shift, and go to state 77
-    OPB         shift, and go to state 78
-    SUMA_RESTA  shift, and go to state 79
+    OPBLOG      shift, and go to state 73
+    OPBIG       shift, and go to state 74
+    OPB         shift, and go to state 75
+    SUMA_RESTA  shift, and go to state 76
 
-    $default  reduce using rule 57 (lista_expresiones)
+    $default  reduce using rule 37 (expresion)
 
 
 state 73
 
-   56 agregados: INICIO lista_expresiones . FINBLO
-   58 lista_expresiones: lista_expresiones . COMA expresion
+   39 expresion: expresion OPBLOG . expresion
 
-    FINBLO  shift, and go to state 95
-    COMA    shift, and go to state 96
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
+
+    expresion      go to state 95
+    iden_array     go to state 51
+    procedimiento  go to state 52
+    agregados      go to state 53
 
 
 state 74
 
-   41 expresion: PARIZ expresion . PARDER
-   43          | expresion . OPBIG expresion
-   44          | expresion . OPBLOG expresion
-   45          | expresion . OPB expresion
-   46          | expresion . SUMA_RESTA expresion
+   38 expresion: expresion OPBIG . expresion
 
-    PARDER      shift, and go to state 97
-    OPBLOG      shift, and go to state 76
-    OPBIG       shift, and go to state 77
-    OPB         shift, and go to state 78
-    SUMA_RESTA  shift, and go to state 79
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
+
+    expresion      go to state 96
+    iden_array     go to state 51
+    procedimiento  go to state 52
+    agregados      go to state 53
 
 
 state 75
 
-   42 expresion: OPU expresion .
-   43          | expresion . OPBIG expresion
-   44          | expresion . OPBLOG expresion
-   45          | expresion . OPB expresion
-   46          | expresion . SUMA_RESTA expresion
+   40 expresion: expresion OPB . expresion
 
-    OPBLOG      shift, and go to state 76
-    OPBIG       shift, and go to state 77
-    OPB         shift, and go to state 78
-    SUMA_RESTA  shift, and go to state 79
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
 
-    $default  reduce using rule 42 (expresion)
+    expresion      go to state 97
+    iden_array     go to state 51
+    procedimiento  go to state 52
+    agregados      go to state 53
 
 
 state 76
 
-   44 expresion: expresion OPBLOG . expresion
+   41 expresion: expresion SUMA_RESTA . expresion
 
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
 
     expresion      go to state 98
-    iden_array     go to state 53
-    procedimiento  go to state 54
-    agregados      go to state 55
+    iden_array     go to state 51
+    procedimiento  go to state 52
+    agregados      go to state 53
 
 
 state 77
 
-   43 expresion: expresion OPBIG . expresion
+   55 alternativa_simple: IF expresion sentencia .
+   56 alternativa_doble: IF expresion sentencia . ELSE sentencia
 
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
+    ELSE  shift, and go to state 99
 
-    expresion      go to state 99
-    iden_array     go to state 53
-    procedimiento  go to state 54
-    agregados      go to state 55
+    ELSE      [reduce using rule 55 (alternativa_simple)]
+    $default  reduce using rule 55 (alternativa_simple)
 
 
 state 78
 
-   45 expresion: expresion OPB . expresion
+   38 expresion: expresion . OPBIG expresion
+   39          | expresion . OPBLOG expresion
+   40          | expresion . OPB expresion
+   41          | expresion . SUMA_RESTA expresion
+   57 sentencia_while: WHILE PARIZ expresion . PARDER sentencia
 
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
-
-    expresion      go to state 100
-    iden_array     go to state 53
-    procedimiento  go to state 54
-    agregados      go to state 55
+    PARDER      shift, and go to state 100
+    OPBLOG      shift, and go to state 73
+    OPBIG       shift, and go to state 74
+    OPB         shift, and go to state 75
+    SUMA_RESTA  shift, and go to state 76
 
 
 state 79
 
-   46 expresion: expresion SUMA_RESTA . expresion
+   66 sentencia_case: SWITCH PARIZ IDENTIFICADOR . PARDER INICIO caso caso_por_defecto FINBLO
 
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
-
-    expresion      go to state 101
-    iden_array     go to state 53
-    procedimiento  go to state 54
-    agregados      go to state 55
+    PARDER  shift, and go to state 101
 
 
 state 80
 
-   61 alternativa_simple: IF expresion sentencia .
-   62 alternativa_doble: IF expresion sentencia . ELSE sentencia
+   49 procedimiento: IDENTIFICADOR PARIZ lista_expresiones . PARDER
+   52 lista_expresiones: lista_expresiones . COMA expresion
 
-    ELSE  shift, and go to state 102
-
-    ELSE      [reduce using rule 61 (alternativa_simple)]
-    $default  reduce using rule 61 (alternativa_simple)
+    COMA    shift, and go to state 93
+    PARDER  shift, and go to state 102
 
 
 state 81
 
-   43 expresion: expresion . OPBIG expresion
-   44          | expresion . OPBLOG expresion
-   45          | expresion . OPB expresion
-   46          | expresion . SUMA_RESTA expresion
-   63 sentencia_while: WHILE PARIZ expresion . PARDER sentencia
+   38 expresion: expresion . OPBIG expresion
+   39          | expresion . OPBLOG expresion
+   40          | expresion . OPB expresion
+   41          | expresion . SUMA_RESTA expresion
+   47 iden_array: IDENTIFICADOR CORIZ expresion . CORDER
+   48           | IDENTIFICADOR CORIZ expresion . COMA expresion CORDER
 
-    PARDER      shift, and go to state 103
-    OPBLOG      shift, and go to state 76
-    OPBIG       shift, and go to state 77
-    OPB         shift, and go to state 78
-    SUMA_RESTA  shift, and go to state 79
+    COMA        shift, and go to state 103
+    CORDER      shift, and go to state 104
+    OPBLOG      shift, and go to state 73
+    OPBIG       shift, and go to state 74
+    OPB         shift, and go to state 75
+    SUMA_RESTA  shift, and go to state 76
 
 
 state 82
 
-   72 sentencia_case: SWITCH PARIZ IDENTIFICADOR . PARDER INICIO caso caso_por_defecto FINBLO
+   35 sentencia_asignacion: iden_array ASIG expresion . PYC
+   38 expresion: expresion . OPBIG expresion
+   39          | expresion . OPBLOG expresion
+   40          | expresion . OPB expresion
+   41          | expresion . SUMA_RESTA expresion
 
-    PARDER  shift, and go to state 104
+    PYC         shift, and go to state 105
+    OPBLOG      shift, and go to state 73
+    OPBIG       shift, and go to state 74
+    OPB         shift, and go to state 75
+    SUMA_RESTA  shift, and go to state 76
 
 
 state 83
 
-   43 expresion: expresion . OPBIG expresion
-   44          | expresion . OPBLOG expresion
-   45          | expresion . OPB expresion
-   46          | expresion . SUMA_RESTA expresion
-   53 iden_array: IDENTIFICADOR CORIZ expresion . CORDER
-   54           | IDENTIFICADOR CORIZ expresion . COMA expresion CORDER
+   63 expresion_o_cadena: CADENA .
 
-    COMA        shift, and go to state 105
-    CORDER      shift, and go to state 106
-    OPBLOG      shift, and go to state 76
-    OPBIG       shift, and go to state 77
-    OPB         shift, and go to state 78
-    SUMA_RESTA  shift, and go to state 79
+    $default  reduce using rule 63 (expresion_o_cadena)
 
 
 state 84
 
-   55 procedimiento: IDENTIFICADOR PARIZ lista_expresiones . PARDER
-   58 lista_expresiones: lista_expresiones . COMA expresion
+   38 expresion: expresion . OPBIG expresion
+   39          | expresion . OPBLOG expresion
+   40          | expresion . OPB expresion
+   41          | expresion . SUMA_RESTA expresion
+   62 expresion_o_cadena: expresion .
 
-    COMA    shift, and go to state 96
-    PARDER  shift, and go to state 107
+    OPBLOG      shift, and go to state 73
+    OPBIG       shift, and go to state 74
+    OPB         shift, and go to state 75
+    SUMA_RESTA  shift, and go to state 76
+
+    $default  reduce using rule 62 (expresion_o_cadena)
 
 
 state 85
 
-   40 sentencia_asignacion: iden_array ASIG expresion . PYC
-   43 expresion: expresion . OPBIG expresion
-   44          | expresion . OPBLOG expresion
-   45          | expresion . OPB expresion
-   46          | expresion . SUMA_RESTA expresion
+   64 lista_expresiones_o_cadena: expresion_o_cadena .
 
-    PYC         shift, and go to state 108
-    OPBLOG      shift, and go to state 76
-    OPBIG       shift, and go to state 77
-    OPB         shift, and go to state 78
-    SUMA_RESTA  shift, and go to state 79
+    $default  reduce using rule 64 (lista_expresiones_o_cadena)
 
 
 state 86
 
-   69 expresion_o_cadena: CADENA .
+   60 sentencia_salida: nomb_salida PARIZ lista_expresiones_o_cadena . PARDER
+   65 lista_expresiones_o_cadena: lista_expresiones_o_cadena . COMA expresion_o_cadena
 
-    $default  reduce using rule 69 (expresion_o_cadena)
+    COMA    shift, and go to state 106
+    PARDER  shift, and go to state 107
 
 
 state 87
 
-   43 expresion: expresion . OPBIG expresion
-   44          | expresion . OPBLOG expresion
-   45          | expresion . OPB expresion
-   46          | expresion . SUMA_RESTA expresion
-   68 expresion_o_cadena: expresion .
+   20 dimension_array: CONSTANTE_E .
+   21                | CONSTANTE_E . COMA CONSTANTE_E
 
-    OPBLOG      shift, and go to state 76
-    OPBIG       shift, and go to state 77
-    OPB         shift, and go to state 78
-    SUMA_RESTA  shift, and go to state 79
+    COMA  shift, and go to state 108
 
-    $default  reduce using rule 68 (expresion_o_cadena)
+    $default  reduce using rule 20 (dimension_array)
 
 
 state 88
 
-   70 lista_expresiones_o_cadena: expresion_o_cadena .
+   18 lista_variables: IDENTIFICADOR CORIZ dimension_array . CORDER
 
-    $default  reduce using rule 70 (lista_expresiones_o_cadena)
+    CORDER  shift, and go to state 109
 
 
 state 89
 
-   66 sentencia_salida: nomb_salida PARIZ lista_expresiones_o_cadena . PARDER
-   71 lista_expresiones_o_cadena: lista_expresiones_o_cadena . COMA expresion_o_cadena
-
-    COMA    shift, and go to state 109
-    PARDER  shift, and go to state 110
-
-
-state 90
-
-   23 dimension_array: CONSTANTE_E .
-   24                | CONSTANTE_E . COMA CONSTANTE_E
-
-    COMA  shift, and go to state 111
-
-    $default  reduce using rule 23 (dimension_array)
-
-
-state 91
-
-   22 tipo_array: CORIZ dimension_array . CORDER
-
-    CORDER  shift, and go to state 112
-
-
-state 92
-
    17 lista_variables: lista_variables COMA IDENTIFICADOR .
-   18                | lista_variables COMA IDENTIFICADOR . tipo_array
+   19                | lista_variables COMA IDENTIFICADOR . CORIZ dimension_array CORDER
 
-    CORIZ  shift, and go to state 67
+    CORIZ  shift, and go to state 110
 
     CORIZ     [reduce using rule 17 (lista_variables)]
     $default  reduce using rule 17 (lista_variables)
 
-    tipo_array  go to state 113
+
+state 90
+
+   23 declar_parametros: TIPOSIMPLE . IDENTIFICADOR
+
+    IDENTIFICADOR  shift, and go to state 111
+
+
+state 91
+
+   22 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros . PARDER
+   24 declar_parametros: declar_parametros . COMA TIPOSIMPLE IDENTIFICADOR
+
+    COMA    shift, and go to state 112
+    PARDER  shift, and go to state 113
+
+
+state 92
+
+   50 agregados: INICIO lista_expresiones FINBLO .
+
+    $default  reduce using rule 50 (agregados)
 
 
 state 93
 
-   26 declar_parametros: tipo_de_dato . IDENTIFICADOR mas_parametros
+   52 lista_expresiones: lista_expresiones COMA . expresion
 
-    IDENTIFICADOR  shift, and go to state 114
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
+
+    expresion      go to state 114
+    iden_array     go to state 51
+    procedimiento  go to state 52
+    agregados      go to state 53
 
 
 state 94
 
-   25 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros . PARDER
+   36 expresion: PARIZ expresion PARDER .
 
-    PARDER  shift, and go to state 115
+    $default  reduce using rule 36 (expresion)
 
 
 state 95
 
-   56 agregados: INICIO lista_expresiones FINBLO .
+   38 expresion: expresion . OPBIG expresion
+   39          | expresion . OPBLOG expresion
+   39          | expresion OPBLOG expresion .
+   40          | expresion . OPB expresion
+   41          | expresion . SUMA_RESTA expresion
 
-    $default  reduce using rule 56 (agregados)
+    OPBIG       shift, and go to state 74
+    OPB         shift, and go to state 75
+    SUMA_RESTA  shift, and go to state 76
+
+    $default  reduce using rule 39 (expresion)
 
 
 state 96
 
-   58 lista_expresiones: lista_expresiones COMA . expresion
+   38 expresion: expresion . OPBIG expresion
+   38          | expresion OPBIG expresion .
+   39          | expresion . OPBLOG expresion
+   40          | expresion . OPB expresion
+   41          | expresion . SUMA_RESTA expresion
 
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
+    OPB         shift, and go to state 75
+    SUMA_RESTA  shift, and go to state 76
 
-    expresion      go to state 116
-    iden_array     go to state 53
-    procedimiento  go to state 54
-    agregados      go to state 55
+    $default  reduce using rule 38 (expresion)
 
 
 state 97
 
-   41 expresion: PARIZ expresion PARDER .
+   38 expresion: expresion . OPBIG expresion
+   39          | expresion . OPBLOG expresion
+   40          | expresion . OPB expresion
+   40          | expresion OPB expresion .
+   41          | expresion . SUMA_RESTA expresion
 
-    $default  reduce using rule 41 (expresion)
+    SUMA_RESTA  shift, and go to state 76
+
+    $default  reduce using rule 40 (expresion)
 
 
 state 98
 
-   43 expresion: expresion . OPBIG expresion
-   44          | expresion . OPBLOG expresion
-   44          | expresion OPBLOG expresion .
-   45          | expresion . OPB expresion
-   46          | expresion . SUMA_RESTA expresion
+   38 expresion: expresion . OPBIG expresion
+   39          | expresion . OPBLOG expresion
+   40          | expresion . OPB expresion
+   41          | expresion . SUMA_RESTA expresion
+   41          | expresion SUMA_RESTA expresion .
 
-    OPBIG       shift, and go to state 77
-    OPB         shift, and go to state 78
-    SUMA_RESTA  shift, and go to state 79
-
-    $default  reduce using rule 44 (expresion)
+    $default  reduce using rule 41 (expresion)
 
 
 state 99
 
-   43 expresion: expresion . OPBIG expresion
-   43          | expresion OPBIG expresion .
-   44          | expresion . OPBLOG expresion
-   45          | expresion . OPB expresion
-   46          | expresion . SUMA_RESTA expresion
+   56 alternativa_doble: IF expresion sentencia ELSE . sentencia
 
-    OPB         shift, and go to state 78
-    SUMA_RESTA  shift, and go to state 79
+    IF             shift, and go to state 16
+    WHILE          shift, and go to state 17
+    READ           shift, and go to state 18
+    WRITE          shift, and go to state 19
+    SWITCH         shift, and go to state 20
+    IDENTIFICADOR  shift, and go to state 21
+    CORIZ          shift, and go to state 5
 
-    $default  reduce using rule 43 (expresion)
+    bloque                go to state 22
+    inicio_de_bloque      go to state 7
+    sentencia             go to state 115
+    sentencia_asignacion  go to state 27
+    iden_array            go to state 28
+    procedimiento         go to state 29
+    sentencia_if          go to state 30
+    alternativa_simple    go to state 31
+    alternativa_doble     go to state 32
+    sentencia_while       go to state 33
+    sentencia_entrada     go to state 34
+    nomb_entrada          go to state 35
+    sentencia_salida      go to state 36
+    nomb_salida           go to state 37
+    sentencia_case        go to state 38
 
 
 state 100
 
-   43 expresion: expresion . OPBIG expresion
-   44          | expresion . OPBLOG expresion
-   45          | expresion . OPB expresion
-   45          | expresion OPB expresion .
-   46          | expresion . SUMA_RESTA expresion
+   57 sentencia_while: WHILE PARIZ expresion PARDER . sentencia
 
-    SUMA_RESTA  shift, and go to state 79
+    IF             shift, and go to state 16
+    WHILE          shift, and go to state 17
+    READ           shift, and go to state 18
+    WRITE          shift, and go to state 19
+    SWITCH         shift, and go to state 20
+    IDENTIFICADOR  shift, and go to state 21
+    CORIZ          shift, and go to state 5
 
-    $default  reduce using rule 45 (expresion)
+    bloque                go to state 22
+    inicio_de_bloque      go to state 7
+    sentencia             go to state 116
+    sentencia_asignacion  go to state 27
+    iden_array            go to state 28
+    procedimiento         go to state 29
+    sentencia_if          go to state 30
+    alternativa_simple    go to state 31
+    alternativa_doble     go to state 32
+    sentencia_while       go to state 33
+    sentencia_entrada     go to state 34
+    nomb_entrada          go to state 35
+    sentencia_salida      go to state 36
+    nomb_salida           go to state 37
+    sentencia_case        go to state 38
 
 
 state 101
 
-   43 expresion: expresion . OPBIG expresion
-   44          | expresion . OPBLOG expresion
-   45          | expresion . OPB expresion
-   46          | expresion . SUMA_RESTA expresion
-   46          | expresion SUMA_RESTA expresion .
+   66 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER . INICIO caso caso_por_defecto FINBLO
 
-    $default  reduce using rule 46 (expresion)
+    INICIO  shift, and go to state 117
 
 
 state 102
 
-   62 alternativa_doble: IF expresion sentencia ELSE . sentencia
+   49 procedimiento: IDENTIFICADOR PARIZ lista_expresiones PARDER .
 
-    CORIZ          shift, and go to state 5
-    IF             shift, and go to state 17
-    WHILE          shift, and go to state 18
-    READ           shift, and go to state 19
-    WRITE          shift, and go to state 20
-    SWITCH         shift, and go to state 21
-    IDENTIFICADOR  shift, and go to state 22
-
-    bloque                go to state 23
-    inicio_de_bloque      go to state 7
-    sentencia             go to state 117
-    sentencia_asignacion  go to state 28
-    iden_array            go to state 29
-    procedimiento         go to state 30
-    sentencia_if          go to state 31
-    alternativa_simple    go to state 32
-    alternativa_doble     go to state 33
-    sentencia_while       go to state 34
-    sentencia_entrada     go to state 35
-    nomb_entrada          go to state 36
-    sentencia_salida      go to state 37
-    nomb_salida           go to state 38
-    sentencia_case        go to state 39
+    $default  reduce using rule 49 (procedimiento)
 
 
 state 103
 
-   63 sentencia_while: WHILE PARIZ expresion PARDER . sentencia
+   48 iden_array: IDENTIFICADOR CORIZ expresion COMA . expresion CORDER
 
-    CORIZ          shift, and go to state 5
-    IF             shift, and go to state 17
-    WHILE          shift, and go to state 18
-    READ           shift, and go to state 19
-    WRITE          shift, and go to state 20
-    SWITCH         shift, and go to state 21
-    IDENTIFICADOR  shift, and go to state 22
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
 
-    bloque                go to state 23
-    inicio_de_bloque      go to state 7
-    sentencia             go to state 118
-    sentencia_asignacion  go to state 28
-    iden_array            go to state 29
-    procedimiento         go to state 30
-    sentencia_if          go to state 31
-    alternativa_simple    go to state 32
-    alternativa_doble     go to state 33
-    sentencia_while       go to state 34
-    sentencia_entrada     go to state 35
-    nomb_entrada          go to state 36
-    sentencia_salida      go to state 37
-    nomb_salida           go to state 38
-    sentencia_case        go to state 39
+    expresion      go to state 118
+    iden_array     go to state 51
+    procedimiento  go to state 52
+    agregados      go to state 53
 
 
 state 104
 
-   72 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER . INICIO caso caso_por_defecto FINBLO
+   47 iden_array: IDENTIFICADOR CORIZ expresion CORDER .
 
-    INICIO  shift, and go to state 119
+    $default  reduce using rule 47 (iden_array)
 
 
 state 105
 
-   54 iden_array: IDENTIFICADOR CORIZ expresion COMA . expresion CORDER
+   35 sentencia_asignacion: iden_array ASIG expresion PYC .
 
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
-
-    expresion      go to state 120
-    iden_array     go to state 53
-    procedimiento  go to state 54
-    agregados      go to state 55
+    $default  reduce using rule 35 (sentencia_asignacion)
 
 
 state 106
 
-   53 iden_array: IDENTIFICADOR CORIZ expresion CORDER .
+   65 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA . expresion_o_cadena
 
-    $default  reduce using rule 53 (iden_array)
+    INICIO         shift, and go to state 45
+    CONSTANTE      shift, and go to state 46
+    PARIZ          shift, and go to state 47
+    CADENA         shift, and go to state 83
+    IDENTIFICADOR  shift, and go to state 21
+    CONSTANTE_E    shift, and go to state 48
+    OPU            shift, and go to state 49
+
+    expresion           go to state 84
+    iden_array          go to state 51
+    procedimiento       go to state 52
+    agregados           go to state 53
+    expresion_o_cadena  go to state 119
 
 
 state 107
 
-   55 procedimiento: IDENTIFICADOR PARIZ lista_expresiones PARDER .
+   60 sentencia_salida: nomb_salida PARIZ lista_expresiones_o_cadena PARDER .
 
-    $default  reduce using rule 55 (procedimiento)
+    $default  reduce using rule 60 (sentencia_salida)
 
 
 state 108
 
-   40 sentencia_asignacion: iden_array ASIG expresion PYC .
+   21 dimension_array: CONSTANTE_E COMA . CONSTANTE_E
 
-    $default  reduce using rule 40 (sentencia_asignacion)
+    CONSTANTE_E  shift, and go to state 120
 
 
 state 109
 
-   71 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA . expresion_o_cadena
-
-    INICIO         shift, and go to state 47
-    CONSTANTE      shift, and go to state 48
-    PARIZ          shift, and go to state 49
-    CADENA         shift, and go to state 86
-    IDENTIFICADOR  shift, and go to state 22
-    CONSTANTE_E    shift, and go to state 50
-    OPU            shift, and go to state 51
-
-    expresion           go to state 87
-    iden_array          go to state 53
-    procedimiento       go to state 54
-    agregados           go to state 55
-    expresion_o_cadena  go to state 121
-
-
-state 110
-
-   66 sentencia_salida: nomb_salida PARIZ lista_expresiones_o_cadena PARDER .
-
-    $default  reduce using rule 66 (sentencia_salida)
-
-
-state 111
-
-   24 dimension_array: CONSTANTE_E COMA . CONSTANTE_E
-
-    CONSTANTE_E  shift, and go to state 122
-
-
-state 112
-
-   22 tipo_array: CORIZ dimension_array CORDER .
-
-    $default  reduce using rule 22 (tipo_array)
-
-
-state 113
-
-   18 lista_variables: lista_variables COMA IDENTIFICADOR tipo_array .
+   18 lista_variables: IDENTIFICADOR CORIZ dimension_array CORDER .
 
     $default  reduce using rule 18 (lista_variables)
 
 
+state 110
+
+   19 lista_variables: lista_variables COMA IDENTIFICADOR CORIZ . dimension_array CORDER
+
+    CONSTANTE_E  shift, and go to state 87
+
+    dimension_array  go to state 121
+
+
+state 111
+
+   23 declar_parametros: TIPOSIMPLE IDENTIFICADOR .
+
+    $default  reduce using rule 23 (declar_parametros)
+
+
+state 112
+
+   24 declar_parametros: declar_parametros COMA . TIPOSIMPLE IDENTIFICADOR
+
+    TIPOSIMPLE  shift, and go to state 122
+
+
+state 113
+
+   22 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros PARDER .
+
+    $default  reduce using rule 22 (cabecera_subprograma)
+
+
 state 114
 
-   26 declar_parametros: tipo_de_dato IDENTIFICADOR . mas_parametros
+   38 expresion: expresion . OPBIG expresion
+   39          | expresion . OPBLOG expresion
+   40          | expresion . OPB expresion
+   41          | expresion . SUMA_RESTA expresion
+   52 lista_expresiones: lista_expresiones COMA expresion .
 
-    COMA  shift, and go to state 123
+    OPBLOG      shift, and go to state 73
+    OPBIG       shift, and go to state 74
+    OPB         shift, and go to state 75
+    SUMA_RESTA  shift, and go to state 76
 
-    $default  reduce using rule 29 (mas_parametros)
-
-    mas_parametros  go to state 124
+    $default  reduce using rule 52 (lista_expresiones)
 
 
 state 115
 
-   25 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros PARDER .
+   56 alternativa_doble: IF expresion sentencia ELSE sentencia .
 
-    $default  reduce using rule 25 (cabecera_subprograma)
+    $default  reduce using rule 56 (alternativa_doble)
 
 
 state 116
 
-   43 expresion: expresion . OPBIG expresion
-   44          | expresion . OPBLOG expresion
-   45          | expresion . OPB expresion
-   46          | expresion . SUMA_RESTA expresion
-   58 lista_expresiones: lista_expresiones COMA expresion .
+   57 sentencia_while: WHILE PARIZ expresion PARDER sentencia .
 
-    OPBLOG      shift, and go to state 76
-    OPBIG       shift, and go to state 77
-    OPB         shift, and go to state 78
-    SUMA_RESTA  shift, and go to state 79
-
-    $default  reduce using rule 58 (lista_expresiones)
+    $default  reduce using rule 57 (sentencia_while)
 
 
 state 117
 
-   62 alternativa_doble: IF expresion sentencia ELSE sentencia .
+   66 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO . caso caso_por_defecto FINBLO
 
-    $default  reduce using rule 62 (alternativa_doble)
+    CASE  shift, and go to state 123
+
+    $default  reduce using rule 68 (caso)
+
+    caso  go to state 124
 
 
 state 118
 
-   63 sentencia_while: WHILE PARIZ expresion PARDER sentencia .
+   38 expresion: expresion . OPBIG expresion
+   39          | expresion . OPBLOG expresion
+   40          | expresion . OPB expresion
+   41          | expresion . SUMA_RESTA expresion
+   48 iden_array: IDENTIFICADOR CORIZ expresion COMA expresion . CORDER
 
-    $default  reduce using rule 63 (sentencia_while)
+    CORDER      shift, and go to state 125
+    OPBLOG      shift, and go to state 73
+    OPBIG       shift, and go to state 74
+    OPB         shift, and go to state 75
+    SUMA_RESTA  shift, and go to state 76
 
 
 state 119
 
-   72 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO . caso caso_por_defecto FINBLO
+   65 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA expresion_o_cadena .
 
-    CASE  shift, and go to state 125
-
-    $default  reduce using rule 74 (caso)
-
-    caso  go to state 126
+    $default  reduce using rule 65 (lista_expresiones_o_cadena)
 
 
 state 120
 
-   43 expresion: expresion . OPBIG expresion
-   44          | expresion . OPBLOG expresion
-   45          | expresion . OPB expresion
-   46          | expresion . SUMA_RESTA expresion
-   54 iden_array: IDENTIFICADOR CORIZ expresion COMA expresion . CORDER
+   21 dimension_array: CONSTANTE_E COMA CONSTANTE_E .
 
-    CORDER      shift, and go to state 127
-    OPBLOG      shift, and go to state 76
-    OPBIG       shift, and go to state 77
-    OPB         shift, and go to state 78
-    SUMA_RESTA  shift, and go to state 79
+    $default  reduce using rule 21 (dimension_array)
 
 
 state 121
 
-   71 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA expresion_o_cadena .
+   19 lista_variables: lista_variables COMA IDENTIFICADOR CORIZ dimension_array . CORDER
 
-    $default  reduce using rule 71 (lista_expresiones_o_cadena)
+    CORDER  shift, and go to state 126
 
 
 state 122
 
-   24 dimension_array: CONSTANTE_E COMA CONSTANTE_E .
+   24 declar_parametros: declar_parametros COMA TIPOSIMPLE . IDENTIFICADOR
 
-    $default  reduce using rule 24 (dimension_array)
+    IDENTIFICADOR  shift, and go to state 127
 
 
 state 123
 
-   28 mas_parametros: COMA . tipo_de_dato IDENTIFICADOR mas_parametros
+   67 caso: CASE . opcion DOSP sentencia BREAK PYC caso
 
-    TIPOSIMPLE  shift, and go to state 12
+    CONSTANTE_E  shift, and go to state 128
+    CARACTER     shift, and go to state 129
 
-    tipo_de_dato  go to state 128
+    opcion  go to state 130
 
 
 state 124
 
-   26 declar_parametros: tipo_de_dato IDENTIFICADOR mas_parametros .
+   66 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO caso . caso_por_defecto FINBLO
 
-    $default  reduce using rule 26 (declar_parametros)
+    DEFAULT  shift, and go to state 131
+
+    $default  reduce using rule 72 (caso_por_defecto)
+
+    caso_por_defecto  go to state 132
 
 
 state 125
 
-   73 caso: CASE . opcion DOSP sentencia BREAK PYC caso
+   48 iden_array: IDENTIFICADOR CORIZ expresion COMA expresion CORDER .
 
-    CONSTANTE_E  shift, and go to state 129
-    CARACTER     shift, and go to state 130
-
-    opcion  go to state 131
+    $default  reduce using rule 48 (iden_array)
 
 
 state 126
 
-   72 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO caso . caso_por_defecto FINBLO
+   19 lista_variables: lista_variables COMA IDENTIFICADOR CORIZ dimension_array CORDER .
 
-    DEFAULT  shift, and go to state 132
-
-    $default  reduce using rule 78 (caso_por_defecto)
-
-    caso_por_defecto  go to state 133
+    $default  reduce using rule 19 (lista_variables)
 
 
 state 127
 
-   54 iden_array: IDENTIFICADOR CORIZ expresion COMA expresion CORDER .
+   24 declar_parametros: declar_parametros COMA TIPOSIMPLE IDENTIFICADOR .
 
-    $default  reduce using rule 54 (iden_array)
+    $default  reduce using rule 24 (declar_parametros)
 
 
 state 128
 
-   28 mas_parametros: COMA tipo_de_dato . IDENTIFICADOR mas_parametros
+   69 opcion: CONSTANTE_E .
 
-    IDENTIFICADOR  shift, and go to state 134
+    $default  reduce using rule 69 (opcion)
 
 
 state 129
 
-   75 opcion: CONSTANTE_E .
+   70 opcion: CARACTER .
 
-    $default  reduce using rule 75 (opcion)
+    $default  reduce using rule 70 (opcion)
 
 
 state 130
 
-   76 opcion: CARACTER .
+   67 caso: CASE opcion . DOSP sentencia BREAK PYC caso
 
-    $default  reduce using rule 76 (opcion)
+    DOSP  shift, and go to state 133
 
 
 state 131
 
-   73 caso: CASE opcion . DOSP sentencia BREAK PYC caso
+   71 caso_por_defecto: DEFAULT . DOSP sentencia PYC
 
-    DOSP  shift, and go to state 135
+    DOSP  shift, and go to state 134
 
 
 state 132
 
-   77 caso_por_defecto: DEFAULT . DOSP sentencia PYC
+   66 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO caso caso_por_defecto . FINBLO
 
-    DOSP  shift, and go to state 136
+    FINBLO  shift, and go to state 135
 
 
 state 133
 
-   72 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO caso caso_por_defecto . FINBLO
+   67 caso: CASE opcion DOSP . sentencia BREAK PYC caso
 
-    FINBLO  shift, and go to state 137
+    IF             shift, and go to state 16
+    WHILE          shift, and go to state 17
+    READ           shift, and go to state 18
+    WRITE          shift, and go to state 19
+    SWITCH         shift, and go to state 20
+    IDENTIFICADOR  shift, and go to state 21
+    CORIZ          shift, and go to state 5
+
+    bloque                go to state 22
+    inicio_de_bloque      go to state 7
+    sentencia             go to state 136
+    sentencia_asignacion  go to state 27
+    iden_array            go to state 28
+    procedimiento         go to state 29
+    sentencia_if          go to state 30
+    alternativa_simple    go to state 31
+    alternativa_doble     go to state 32
+    sentencia_while       go to state 33
+    sentencia_entrada     go to state 34
+    nomb_entrada          go to state 35
+    sentencia_salida      go to state 36
+    nomb_salida           go to state 37
+    sentencia_case        go to state 38
 
 
 state 134
 
-   28 mas_parametros: COMA tipo_de_dato IDENTIFICADOR . mas_parametros
+   71 caso_por_defecto: DEFAULT DOSP . sentencia PYC
 
-    COMA  shift, and go to state 123
+    IF             shift, and go to state 16
+    WHILE          shift, and go to state 17
+    READ           shift, and go to state 18
+    WRITE          shift, and go to state 19
+    SWITCH         shift, and go to state 20
+    IDENTIFICADOR  shift, and go to state 21
+    CORIZ          shift, and go to state 5
 
-    $default  reduce using rule 29 (mas_parametros)
-
-    mas_parametros  go to state 138
+    bloque                go to state 22
+    inicio_de_bloque      go to state 7
+    sentencia             go to state 137
+    sentencia_asignacion  go to state 27
+    iden_array            go to state 28
+    procedimiento         go to state 29
+    sentencia_if          go to state 30
+    alternativa_simple    go to state 31
+    alternativa_doble     go to state 32
+    sentencia_while       go to state 33
+    sentencia_entrada     go to state 34
+    nomb_entrada          go to state 35
+    sentencia_salida      go to state 36
+    nomb_salida           go to state 37
+    sentencia_case        go to state 38
 
 
 state 135
 
-   73 caso: CASE opcion DOSP . sentencia BREAK PYC caso
+   66 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO caso caso_por_defecto FINBLO .
 
-    CORIZ          shift, and go to state 5
-    IF             shift, and go to state 17
-    WHILE          shift, and go to state 18
-    READ           shift, and go to state 19
-    WRITE          shift, and go to state 20
-    SWITCH         shift, and go to state 21
-    IDENTIFICADOR  shift, and go to state 22
-
-    bloque                go to state 23
-    inicio_de_bloque      go to state 7
-    sentencia             go to state 139
-    sentencia_asignacion  go to state 28
-    iden_array            go to state 29
-    procedimiento         go to state 30
-    sentencia_if          go to state 31
-    alternativa_simple    go to state 32
-    alternativa_doble     go to state 33
-    sentencia_while       go to state 34
-    sentencia_entrada     go to state 35
-    nomb_entrada          go to state 36
-    sentencia_salida      go to state 37
-    nomb_salida           go to state 38
-    sentencia_case        go to state 39
+    $default  reduce using rule 66 (sentencia_case)
 
 
 state 136
 
-   77 caso_por_defecto: DEFAULT DOSP . sentencia PYC
+   67 caso: CASE opcion DOSP sentencia . BREAK PYC caso
 
-    CORIZ          shift, and go to state 5
-    IF             shift, and go to state 17
-    WHILE          shift, and go to state 18
-    READ           shift, and go to state 19
-    WRITE          shift, and go to state 20
-    SWITCH         shift, and go to state 21
-    IDENTIFICADOR  shift, and go to state 22
-
-    bloque                go to state 23
-    inicio_de_bloque      go to state 7
-    sentencia             go to state 140
-    sentencia_asignacion  go to state 28
-    iden_array            go to state 29
-    procedimiento         go to state 30
-    sentencia_if          go to state 31
-    alternativa_simple    go to state 32
-    alternativa_doble     go to state 33
-    sentencia_while       go to state 34
-    sentencia_entrada     go to state 35
-    nomb_entrada          go to state 36
-    sentencia_salida      go to state 37
-    nomb_salida           go to state 38
-    sentencia_case        go to state 39
+    BREAK  shift, and go to state 138
 
 
 state 137
 
-   72 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO caso caso_por_defecto FINBLO .
+   71 caso_por_defecto: DEFAULT DOSP sentencia . PYC
 
-    $default  reduce using rule 72 (sentencia_case)
+    PYC  shift, and go to state 139
 
 
 state 138
 
-   28 mas_parametros: COMA tipo_de_dato IDENTIFICADOR mas_parametros .
+   67 caso: CASE opcion DOSP sentencia BREAK . PYC caso
 
-    $default  reduce using rule 28 (mas_parametros)
+    PYC  shift, and go to state 140
 
 
 state 139
 
-   73 caso: CASE opcion DOSP sentencia . BREAK PYC caso
+   71 caso_por_defecto: DEFAULT DOSP sentencia PYC .
 
-    BREAK  shift, and go to state 141
+    $default  reduce using rule 71 (caso_por_defecto)
 
 
 state 140
 
-   77 caso_por_defecto: DEFAULT DOSP sentencia . PYC
+   67 caso: CASE opcion DOSP sentencia BREAK PYC . caso
 
-    PYC  shift, and go to state 142
+    CASE  shift, and go to state 123
+
+    $default  reduce using rule 68 (caso)
+
+    caso  go to state 141
 
 
 state 141
 
-   73 caso: CASE opcion DOSP sentencia BREAK . PYC caso
+   67 caso: CASE opcion DOSP sentencia BREAK PYC caso .
 
-    PYC  shift, and go to state 143
-
-
-state 142
-
-   77 caso_por_defecto: DEFAULT DOSP sentencia PYC .
-
-    $default  reduce using rule 77 (caso_por_defecto)
-
-
-state 143
-
-   73 caso: CASE opcion DOSP sentencia BREAK PYC . caso
-
-    CASE  shift, and go to state 125
-
-    $default  reduce using rule 74 (caso)
-
-    caso  go to state 144
-
-
-state 144
-
-   73 caso: CASE opcion DOSP sentencia BREAK PYC caso .
-
-    $default  reduce using rule 73 (caso)
+    $default  reduce using rule 67 (caso)
