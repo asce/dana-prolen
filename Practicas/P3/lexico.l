@@ -1,7 +1,6 @@
 %{
 #include "y.tab.h"
 #include <stdio.h>
-#define ERROR_LEXICO -1
 
 %}
 
@@ -43,12 +42,12 @@ suma_resta [+-]
 "default"		{return DEFAULT;}
 ":"			{return DOSP;}
 "break"			{return BREAK;}
-{digito}+ 		{return CONSTANTE_E;}
-{digito}+"."{digito}+	{return CONSTANTE;}
 {digito}+"E+"{digito}+	{return CONSTANTE;}
 {digito}+"E-"{digito}+	{return CONSTANTE;}
 {digito}+"."{digito}+"E+"{digito}+	{return CONSTANTE;}
 {digito}+"."{digito}+"E-"{digito}+	{return CONSTANTE;}
+{digito}+ 		{return CONSTANTE_E;}
+{digito}+"."{digito}+	{return CONSTANTE;}
 "!" 					{return OPU;}
 "**"					{return OPB;}
 "*"					{return OPB;}

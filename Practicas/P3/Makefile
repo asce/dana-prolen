@@ -1,7 +1,23 @@
-pr3:
-	lex -X -8 lexico.lex
-	yacc -dtv sintactico.y
-	gcc -o lexico lexico.o -ll
-clean:
-	rm *.o lex.yy.c *~
+.SUFFIXES:
 
+sintactico: main.o y.tab.o
+	gcc -o sintactico main.o y.tab.o
+
+y.tab.o: y.tab.c
+	gcc -c y.tab.c
+
+main.o: main.c
+	gcc -c main.c
+
+y.tab.c: sintactico.y lex.yy.c
+	bison -o y.tab.c sintactico.y
+
+lex.yy.c: lexico.l
+	flex lexico.l
+
+clean:
+	rm -f sintactico main.o y.tab.o y.tab.c lex.yy.c
+
+all:
+	make clean
+	make sintactico

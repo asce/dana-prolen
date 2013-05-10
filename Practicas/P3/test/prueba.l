@@ -16,8 +16,7 @@ Juan|Pepe|Maria { return NOMBRE_PROPIO;}
 perro|gato|luna { return NOMBRE;}
 \n              {linea_actual++;}
 [ \t]+          {}
-.               { snprintf(buffer, MAXLONBUFFER, "el caracter o caracteres %s no 
-                  forma un token conocido",yytext);
+.               { snprintf(buffer, MAXLONBUFFER, "el caracter o caracteres %s no forma un token conocido",yytext);
                   yyerror(buffer);
                 }
 

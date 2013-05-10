@@ -33,9 +33,9 @@ cabecera_programa: MAIN;
 
 bloque : inicio_de_bloque declar_de_variables_locales declar_de_subprogs sentencias fin_de_bloque;
 
-inicio_de_bloque:CORIZ;
+inicio_de_bloque:INICIO;
 
-fin_de_bloque:CORDER;
+fin_de_bloque:FINBLO;
 
 declar_de_subprogs: declar_de_subprogs declar_subprog | ;
 
@@ -157,7 +157,3 @@ void yyerror( char *msg )
 
 }
 
-int main(int argc, char **argv)
-{
-	yyparse();
-}

@@ -47,7 +47,7 @@ suma_resta [+-]
 {digito}+"E-"{digito}+	{printf("CREAL\t");ECHO;return CONSTANTE;}
 {digito}+"."{digito}+"E+"{digito}+	{printf("CREAL\t");ECHO;return CONSTANTE;}
 {digito}+"."{digito}+"E-"{digito}+	{printf("CREAL\t");ECHO;return CONSTANTE;}
-{digito}+ 		{printf("CONSTANTE_E\t");ECHO;return CONSTANTE_E;}
+{digito}+ 		{printf("CONSTANTE_E\t");ECHO;return CONSTANTE;}
 {digito}+"."{digito}+	{printf("CREAL\t");ECHO;return CONSTANTE;}
 "!" 					{printf("OPUNARIO\t");ECHO;return OPU;}
 "**"					{printf("OPBINARIO_1\t");ECHO;return OPB;}

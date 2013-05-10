@@ -1,29 +1,29 @@
-main(){
+main{
 
-	var
+	begin_declare
 		int ve;
-		float vf;
+		double vf;
 		char vc;
 		bool vl;
 		int iv[2],im[2,2];
-		float fv[2],fm[2,2];
+		double fv[2],fm[2,2];
 		char cv[2],cm[2,2];
 		bool bv[2],bm[2,2];
-	endvar
+	end_declare
 
-  	int funcionA(int a1, float a2, char a3){
-      	var
+  	int funcionA(int a1, double a2, char a3){
+      	begin_declare
 			int x1, x2;
-      	endvar
+      	end_declare
       
       	int funcionB(char b1, bool b2){
-          	var
-	    		float xf,x2;
-          	endvar
+          	begin_declare
+	    		double xf,x2;
+          	end_declare
 	  		int funcionC(bool c1, int c2){
-	      		var
-					float x1;
-              	endvar
+	      		begin_declare
+					double x1;
+              	end_declare
 	      		x1 = 1.3;
               	if(c2 > 10)
 					c2=c2 - 1;
@@ -38,11 +38,11 @@ main(){
 	    		x2 = x2 * xf;
 	    
       	}
-      	float funcionD(float d1){
-			var
+      	double funcionD(double d1){
+			begin_declare
 	  			char dato;
 	  			int valor;
-			endvar
+			end_declare
 	  		int funcionE(char e1){
 	  		//read "Introduzca caracter: ", e1;/*REVISAR*/
 
@@ -59,9 +59,9 @@ main(){
 			}
 			read "Introduzca valor entero", valor;
 			if(d1 > 0.0){
-	  			var
+	  			begin_declare
 	    			int dato;
-	  			endvar
+	  			end_declare
 	    		dato = 2;
 	  			dato = valor * 20 / dato;
 			}else{

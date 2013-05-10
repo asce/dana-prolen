@@ -800,17 +800,16 @@ YY_RULE_SETUP
 case 8:
 YY_RULE_SETUP
 #line 19 "prueba.l"
-{ snprintf(buffer, MAXLONBUFFER, "el caracter o caracteres %s no 
-                  forma un token conocido",yytext);
+{ snprintf(buffer, MAXLONBUFFER, "el caracter o caracteres %s no forma un token conocido",yytext);
                   yyerror(buffer);
                 }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 24 "prueba.l"
+#line 23 "prueba.l"
 ECHO;
 	YY_BREAK
-#line 814 "lex.yy.c"
+#line 813 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1808,4 +1807,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 24 "prueba.l"
+#line 23 "prueba.l"

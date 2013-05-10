@@ -1016,7 +1016,7 @@ YY_RULE_SETUP
 case 31:
 YY_RULE_SETUP
 #line 50 "lexico.lex"
-{printf("CONSTANTE_E\t");ECHO;return CONSTANTE_E;}
+{printf("CONSTANTE_E\t");ECHO;return CONSTANTE;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
