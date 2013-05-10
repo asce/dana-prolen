@@ -150,8 +150,7 @@ caso_por_defecto: DEFAULT DOSP sentencia PYC
 
 
 %%
-
-
+void yyerror( char *msg )
 {
 	printf("\nLinea %d: ERROR-> %s y se ha encontrado: %s\n", yylineno, msg, yytext);
 	
