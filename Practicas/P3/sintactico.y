@@ -50,20 +50,27 @@ marca_fin_declar_variables: FINV;
 variables_locales: variables_locales cuerpo_declar_variables
 			| cuerpo_declar_variables;
 
-cuerpo_declar_variables: TIPOSIMPLE lista_variables PYC;
+cuerpo_declar_variables: TIPOSIMPLE lista_variables PYC | TIPOSIMPLE lista_array PYC;
 
 lista_variables: IDENTIFICADOR
-		| lista_variables COMA IDENTIFICADOR
-		| IDENTIFICADOR CORIZ dimension_array CORDER
-		| lista_variables COMA IDENTIFICADOR CORIZ dimension_array CORDER;
+		| lista_variables COMA IDENTIFICADOR;
+
+lista_array: IDENTIFICADOR CORIZ dimension_array CORDER
+		| lista_array COMA IDENTIFICADOR CORIZ dimension_array CORDER;
 
 
 dimension_array: CONSTANTE_E | CONSTANTE_E COMA CONSTANTE_E;
 
 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros PARDER;
 
-declar_parametros: TIPOSIMPLE IDENTIFICADOR 
-		| declar_parametros COMA TIPOSIMPLE IDENTIFICADOR;
+declar_parametros: param_simple | param_array 
+		| declar_parametros COMA param_simple
+		| declar_parametros COMA param_array;
+
+param_simple: TIPOSIMPLE IDENTIFICADOR;
+
+param_array: TIPOSIMPLE IDENTIFICADOR CORIZ CORDER
+		| TIPOSIMPLE IDENTIFICADOR CORIZ CORDER CORIZ CONSTANTE_E CORDER;
 
 
 
@@ -80,7 +87,8 @@ sentencia: bloque
 		| procedimiento
 		| sentencia_case;
 
-sentencia_asignacion: iden_array ASIG expresion PYC;
+sentencia_asignacion: iden_array ASIG expresion PYC
+			| IDENTIFICADOR ASIG expresion PYC;
 
 expresion: PARIZ expresion PARDER
 		| OPU expresion

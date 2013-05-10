@@ -48,25 +48,25 @@
      COMA = 264,
      TIPOSIMPLE = 265,
      PROCED = 266,
-     CORDER = 267,
-     IF = 268,
-     ELSE = 269,
-     WHILE = 270,
-     READ = 271,
-     WRITE = 272,
-     SWITCH = 273,
-     CASE = 274,
-     DEFAULT = 275,
-     DOSP = 276,
-     BREAK = 277,
-     CONSTANTE = 278,
-     PARDER = 279,
-     PARIZ = 280,
-     CADENA = 281,
-     IDENTIFICADOR = 282,
-     CONSTANTE_E = 283,
-     CARACTER = 284,
-     CORIZ = 285,
+     CORIZ = 267,
+     CORDER = 268,
+     IF = 269,
+     ELSE = 270,
+     WHILE = 271,
+     READ = 272,
+     WRITE = 273,
+     SWITCH = 274,
+     CASE = 275,
+     DEFAULT = 276,
+     DOSP = 277,
+     BREAK = 278,
+     CONSTANTE = 279,
+     PARDER = 280,
+     PARIZ = 281,
+     CADENA = 282,
+     IDENTIFICADOR = 283,
+     CONSTANTE_E = 284,
+     CARACTER = 285,
      ASIG = 286,
      OPU = 287,
      OPBLOG = 288,
@@ -85,25 +85,25 @@
 #define COMA 264
 #define TIPOSIMPLE 265
 #define PROCED 266
-#define CORDER 267
-#define IF 268
-#define ELSE 269
-#define WHILE 270
-#define READ 271
-#define WRITE 272
-#define SWITCH 273
-#define CASE 274
-#define DEFAULT 275
-#define DOSP 276
-#define BREAK 277
-#define CONSTANTE 278
-#define PARDER 279
-#define PARIZ 280
-#define CADENA 281
-#define IDENTIFICADOR 282
-#define CONSTANTE_E 283
-#define CARACTER 284
-#define CORIZ 285
+#define CORIZ 267
+#define CORDER 268
+#define IF 269
+#define ELSE 270
+#define WHILE 271
+#define READ 272
+#define WRITE 273
+#define SWITCH 274
+#define CASE 275
+#define DEFAULT 276
+#define DOSP 277
+#define BREAK 278
+#define CONSTANTE 279
+#define PARDER 280
+#define PARIZ 281
+#define CADENA 282
+#define IDENTIFICADOR 283
+#define CONSTANTE_E 284
+#define CARACTER 285
 #define ASIG 286
 #define OPU 287
 #define OPBLOG 288
