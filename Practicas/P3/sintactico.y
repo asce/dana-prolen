@@ -150,7 +150,6 @@ caso_por_defecto: DEFAULT DOSP sentencia
 
 
 
-
 %%
 void yyerror( char *msg )
 {
