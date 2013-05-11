@@ -50,10 +50,10 @@ marca_fin_declar_variables: FINV;
 variables_locales: variables_locales cuerpo_declar_variables
 			| cuerpo_declar_variables;
 
-cuerpo_declar_variables: TIPOSIMPLE lista_variables PYC | TIPOSIMPLE lista_array PYC;
+cuerpo_declar_variables: TIPOSIMPLE lista_variables PYC | TIPOSIMPLE lista_array PYC | error;
 
 lista_variables: IDENTIFICADOR
-		| lista_variables COMA IDENTIFICADOR;
+		| lista_variables COMA IDENTIFICADOR | error ;
 
 lista_array: IDENTIFICADOR CORIZ dimension_array CORDER
 		| lista_array COMA IDENTIFICADOR CORIZ dimension_array CORDER;
@@ -65,7 +65,7 @@ cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros PARDER;
 
 declar_parametros: param_simple | param_array 
 		| declar_parametros COMA param_simple
-		| declar_parametros COMA param_array;
+		| declar_parametros COMA param_array | error;
 
 param_simple: TIPOSIMPLE IDENTIFICADOR;
 
@@ -85,7 +85,7 @@ sentencia: bloque
 		| sentencia_entrada
 		| sentencia_salida
 		| procedimiento
-		| sentencia_case;
+		| sentencia_case | error;
 
 sentencia_asignacion: iden_array ASIG expresion PYC
 			| IDENTIFICADOR ASIG expresion PYC;
@@ -100,7 +100,7 @@ expresion: PARIZ expresion PARDER
 		| CONSTANTE
 		| CONSTANTE_E
 		| procedimiento
-		| agregados;
+		| agregados | error;
 
 iden_array: IDENTIFICADOR CORIZ expresion CORDER
 		| IDENTIFICADOR CORIZ expresion COMA expresion CORDER;

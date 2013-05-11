@@ -26,7 +26,7 @@ main{
               			end_declare
 	      			x1 = 1.3;
               			if(c2 > x1)
-					c2 = c2 - 1;
+					c2=c2 - 1;
 	      			else
 					x1 = 3.1;
 
