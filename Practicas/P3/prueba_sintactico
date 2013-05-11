@@ -12,9 +12,9 @@ main{
 	end_declare
 
   	void funcionA(int a1, double a2, char a3){
-      	begin_declare
+      		begin_declare
 			int x1, x2;
-      	end_declare
+      		end_declare
       
       	void funcionB(char b1, bool b2){
           	begin_declare
@@ -46,7 +46,7 @@ main{
 				begin_declare
 	  				char vc;
 				end_declare
-	  			//read "Introduzca caracter: ", e1;/*REVISAR*/
+	  			read "Introduzca caracter: ", e1;
 
 				switch(e1){
 					case 'a':
@@ -71,7 +71,6 @@ main{
 	  			d1 = d1 / 1000.0;
 			}
 		}
-		/* Operaciones con ED array */
 	
   		iv[0]=0;
   		iv[1]=1;
@@ -106,7 +105,7 @@ main{
 		im[1,0] = iv;
 		im[1,1] = iv;
 
-		im = im ** im
+		im = im ** im;
 
 		ve = 0;
 
@@ -118,4 +117,3 @@ main{
 	}
 
 }
-

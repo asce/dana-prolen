@@ -53,7 +53,9 @@ variables_locales: variables_locales cuerpo_declar_variables
 cuerpo_declar_variables: TIPOSIMPLE lista_variables PYC | TIPOSIMPLE lista_array PYC | error;
 
 lista_variables: IDENTIFICADOR
-		| lista_variables COMA IDENTIFICADOR | error ;
+		| lista_variables COMA IDENTIFICADOR | error 
+		| CADENA
+		| lista_variables COMA CADENA;
 
 lista_array: IDENTIFICADOR CORIZ dimension_array CORDER
 		| lista_array COMA IDENTIFICADOR CORIZ dimension_array CORDER;
@@ -99,6 +101,9 @@ expresion: PARIZ expresion PARDER
 		| iden_array
 		| CONSTANTE
 		| CONSTANTE_E
+		| CARACTER
+		|IDENTIFICADOR
+		| CADENA
 		| procedimiento
 		| agregados | error;
 
@@ -121,19 +126,16 @@ alternativa_doble: IF expresion sentencia ELSE sentencia;
 
 sentencia_while: WHILE PARIZ expresion PARDER sentencia;
 
-sentencia_entrada: nomb_entrada lista_variables;
+sentencia_entrada: nomb_entrada lista_variables PYC;
 
 nomb_entrada: READ;
 
-sentencia_salida: nomb_salida PARIZ lista_expresiones_o_cadena PARDER;
+sentencia_salida: nomb_salida PARIZ lista_expresiones_o_cadena PARDER PYC;
 
 nomb_salida: WRITE;
 
-expresion_o_cadena : expresion
-		| CADENA;
-
-lista_expresiones_o_cadena: expresion_o_cadena
-		| lista_expresiones_o_cadena COMA expresion_o_cadena;
+lista_expresiones_o_cadena: expresion
+		| lista_expresiones_o_cadena COMA expresion;
 
 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO caso caso_por_defecto FINBLO;
 
@@ -143,7 +145,7 @@ caso: CASE opcion DOSP sentencia BREAK PYC caso
 opcion: CONSTANTE_E
 		| CARACTER;
 
-caso_por_defecto: DEFAULT DOSP sentencia PYC
+caso_por_defecto: DEFAULT DOSP sentencia
 		| ;
 
 
@@ -156,4 +158,3 @@ void yyerror( char *msg )
 	
 
 }
-
