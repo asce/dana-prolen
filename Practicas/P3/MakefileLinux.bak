@@ -1,6 +1,0 @@
-pr3:
-	lex -X -8 lexico.lex
-	yacc -dtv sintactico.y
-	gcc -o lexico lex.yy.c -lfl
-clean:
-	rm *.o lex.yy.c *~

@@ -2,8 +2,8 @@ main{
 
 	begin_declare
 		int ve;
-		double vf;
-		char vc;
+		double vf vf2, vf3
+		char vc vc2;
 		bool vl;
 		int iv[2],im[2,2];
 		double fv[2],fm[2,2];
@@ -46,7 +46,7 @@ main{
 				begin_declare
 	  				char vc;
 				end_declare
-	  			read "Introduzca caracter: ", e1;
+	  			read e1;
 
 				switch(e1){
 					case 'a':
@@ -59,7 +59,7 @@ main{
 						vc = 'z';
 				}
 			}
-			read "Introduzca valor entero", valor;
+			read valor;
 			if(d1 > 0.0){
 	  			begin_declare
 	    			int dato;

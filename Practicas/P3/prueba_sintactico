@@ -46,7 +46,7 @@ main{
 				begin_declare
 	  				char vc;
 				end_declare
-	  			read "Introduzca caracter: ", e1;
+	  			read e1;
 
 				switch(e1){
 					case 'a':
@@ -59,7 +59,7 @@ main{
 						vc = 'z';
 				}
 			}
-			read "Introduzca valor entero", valor;
+			read valor;
 			if(d1 > 0.0){
 	  			begin_declare
 	    			int dato;

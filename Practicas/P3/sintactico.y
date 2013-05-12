@@ -12,22 +12,51 @@ void yyerror(char *msg) ;
 %}
 %error-verbose
 
-%token MAIN INICIO FINBLO INICIOV FINV PYC COMA TIPOSIMPLE PROCED CORIZ CORDER IF ELSE
-%token WHILE READ WRITE SWITCH CASE DEFAULT DOSP BREAK CONSTANTE PARDER PARIZ CADENA
-%token IDENTIFICADOR CONSTANTE_E CARACTER
+%token MAIN
+%token INICIO 
+%token FINBLO 
+%token INICIOV
+%token FINV 
+%token PYC
+%token COMA
+%token TIPOSIMPLE
+%token PROCED
+%token CORIZ
+%token CORDER
+%token IF
+%token ELSE
+%token WHILE 
+%token READ 
+%token WRITE
+%token SWITCH
+%token CASE
+%token DEFAULT
+%token DOSP
+%token BREAK
+%token CONSTANTE
+%token PARDER
+%token PARIZ
+%token CADENA
+%token IDENTIFICADOR 
+%token CONSTANTE_E 
+%token CARACTER
 
 
 %right ASIG
 %right OPU
-%left OPBLOG
-%left OPBIG
-%left OPB
-%left SUMA_RESTA
+
+%left OPB_ARRAY_MUL  /* ** */
+%left OPB_OR         /* || */
+%left OPB_AND        /* && */
+%left OPB_IG         /* ==, !=  */
+%left OPB_REL        /* <, >, <=, >=  */
+%left OPB_ADD        /* +,- */
+%left OPB_MUL        /* *, /, %  */
 
 %start programa
 
 %%
-programa: cabecera_programa bloque {printf("\nAnalisis sintactico correcto\n"); return 0;};
+programa: cabecera_programa bloque {printf("\nAnalisis sintactico finalizado.\n"); return 0;};
 
 cabecera_programa: MAIN;
 
@@ -41,6 +70,14 @@ declar_de_subprogs: declar_de_subprogs declar_subprog | ;
 
 declar_subprog: cabecera_subprograma bloque;
 
+cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros PARDER;
+
+declar_parametros: mas_parametros TIPOSIMPLE iden | |error;
+
+mas_parametros: mas_parametros TIPOSIMPLE iden COMA |;
+
+iden: IDENTIFICADOR | IDENTIFICADOR CORIZ expresion CORDER | IDENTIFICADOR CORIZ expresion COMA expresion CORDER;
+
 declar_de_variables_locales: marca_ini_declar_variables variables_locales marca_fin_declar_variables | ;
 
 marca_ini_declar_variables: INICIOV;
@@ -50,104 +87,69 @@ marca_fin_declar_variables: FINV;
 variables_locales: variables_locales cuerpo_declar_variables
 			| cuerpo_declar_variables;
 
-cuerpo_declar_variables: TIPOSIMPLE lista_variables PYC | TIPOSIMPLE lista_array PYC | error;
-
-lista_variables: IDENTIFICADOR
-		| lista_variables COMA IDENTIFICADOR | error 
-		| CADENA
-		| lista_variables COMA CADENA;
-
-lista_array: IDENTIFICADOR CORIZ dimension_array CORDER
-		| lista_array COMA IDENTIFICADOR CORIZ dimension_array CORDER;
+cuerpo_declar_variables: TIPOSIMPLE lista_variables PYC | error;
 
 
-dimension_array: CONSTANTE_E | CONSTANTE_E COMA CONSTANTE_E;
+lista_variables: lista_variables COMA iden | iden;
 
-cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros PARDER;
+sentencias: sentencias sentencia | sentencia;
 
-declar_parametros: param_simple | param_array 
-		| declar_parametros COMA param_simple
-		| declar_parametros COMA param_array | error;
+sentencia: sentencia_asignacion
+	   | sentencia_if
+           | sentencia_while
+	   | sentencia_entrada
+	   | sentencia_salida
+	   | procedimiento
+	   | sentencia_case 
+           | error;
 
-param_simple: TIPOSIMPLE IDENTIFICADOR;
-
-param_array: TIPOSIMPLE IDENTIFICADOR CORIZ CORDER
-		| TIPOSIMPLE IDENTIFICADOR CORIZ CORDER CORIZ CONSTANTE_E CORDER;
-
-
-
-
-sentencias: sentencias sentencia
-			|sentencia;
-
-sentencia: bloque
-		| sentencia_asignacion
-		| sentencia_if
-		| sentencia_while
-		| sentencia_entrada
-		| sentencia_salida
-		| procedimiento
-		| sentencia_case | error;
-
-sentencia_asignacion: iden_array ASIG expresion PYC
-			| IDENTIFICADOR ASIG expresion PYC;
+sentencia_asignacion: iden ASIG expresion PYC;
 
 expresion: PARIZ expresion PARDER
 		| OPU expresion
-		| expresion OPBIG expresion
-		| expresion OPBLOG expresion
-		| expresion OPB expresion
-		| expresion SUMA_RESTA expresion
-		| iden_array
-		| CONSTANTE
+		| expresion OPB_IG expresion
+		| expresion OPB_REL expresion
+		| expresion OPB_ADD expresion
+		| expresion OPB_MUL expresion
+		| expresion OPB_OR expresion
+		| expresion OPB_AND expresion
+		| expresion OPB_ARRAY_MUL expresion
+		| iden
+		| CONSTANTE 
 		| CONSTANTE_E
 		| CARACTER
-		|IDENTIFICADOR
 		| CADENA
 		| procedimiento
-		| agregados | error;
-
-iden_array: IDENTIFICADOR CORIZ expresion CORDER
-		| IDENTIFICADOR CORIZ expresion COMA expresion CORDER;
+                | agregados
+		| error;
 
 procedimiento: IDENTIFICADOR PARIZ lista_expresiones PARDER;
 
 agregados: INICIO lista_expresiones FINBLO;
 
-lista_expresiones: expresion
-		| lista_expresiones COMA expresion;
+lista_expresiones: lista_expresiones COMA expresion | expresion;
 
-sentencia_if: alternativa_doble
-		| alternativa_simple;
+sentencia_if: alternativa_doble	| alternativa_simple;
 
-alternativa_simple: IF expresion sentencia;
+alternativa_simple: IF expresion sentencia_o_bloque;
 
-alternativa_doble: IF expresion sentencia ELSE sentencia;
+alternativa_doble: IF expresion sentencia_o_bloque ELSE sentencia_o_bloque;
+
+sentencia_o_bloque: sentencia | bloque;
 
 sentencia_while: WHILE PARIZ expresion PARDER sentencia;
 
-sentencia_entrada: nomb_entrada lista_variables PYC;
+sentencia_entrada: READ lista_variables PYC;
 
-nomb_entrada: READ;
+sentencia_salida: WRITE PARIZ lista_expresiones PARDER PYC;
 
-sentencia_salida: nomb_salida PARIZ lista_expresiones_o_cadena PARDER PYC;
+sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO;
 
-nomb_salida: WRITE;
+casos: casos CASE opcion DOSP sentencias BREAK PYC | ;
 
-lista_expresiones_o_cadena: expresion
-		| lista_expresiones_o_cadena COMA expresion;
+opcion: CONSTANTE_E | CARACTER;
 
-sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO caso caso_por_defecto FINBLO;
-
-caso: CASE opcion DOSP sentencia BREAK PYC caso
-		| ;
-
-opcion: CONSTANTE_E
-		| CARACTER;
-
-caso_por_defecto: DEFAULT DOSP sentencia
-		| ;
-
+caso_por_defecto: DEFAULT DOSP sentencias | ;
 
 
 %%

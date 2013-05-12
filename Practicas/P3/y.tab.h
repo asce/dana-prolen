@@ -67,48 +67,15 @@
      CARACTER = 285,
      ASIG = 286,
      OPU = 287,
-     OPBLOG = 288,
-     OPBIG = 289,
-     OPB = 290,
-     SUMA_RESTA = 291
+     OPB_ARRAY_MUL = 288,
+     OPB_OR = 289,
+     OPB_AND = 290,
+     OPB_IG = 291,
+     OPB_REL = 292,
+     OPB_ADD = 293,
+     OPB_MUL = 294
    };
 #endif
-/* Tokens.  */
-#define MAIN 258
-#define INICIO 259
-#define FINBLO 260
-#define INICIOV 261
-#define FINV 262
-#define PYC 263
-#define COMA 264
-#define TIPOSIMPLE 265
-#define PROCED 266
-#define CORIZ 267
-#define CORDER 268
-#define IF 269
-#define ELSE 270
-#define WHILE 271
-#define READ 272
-#define WRITE 273
-#define SWITCH 274
-#define CASE 275
-#define DEFAULT 276
-#define DOSP 277
-#define BREAK 278
-#define CONSTANTE 279
-#define PARDER 280
-#define PARIZ 281
-#define CADENA 282
-#define IDENTIFICADOR 283
-#define CONSTANTE_E 284
-#define CARACTER 285
-#define ASIG 286
-#define OPU 287
-#define OPBLOG 288
-#define OPBIG 289
-#define OPB 290
-#define SUMA_RESTA 291
-
 
 
 

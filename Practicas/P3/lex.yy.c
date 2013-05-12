@@ -395,16 +395,16 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[152] =
     {   0,
-        0,    0,   56,   54,   50,   50,   34,   54,   54,   54,
-       48,   47,   36,   49,    9,   37,   32,   26,    8,   42,
-       17,   44,   53,   15,   16,   53,   53,   53,   53,   53,
+        0,    0,   56,   54,   50,   50,   35,   54,   54,   54,
+       48,   47,   37,   49,    9,   38,   32,   26,    8,   44,
+       17,   45,   53,   15,   16,   53,   53,   53,   53,   53,
        53,   53,   53,   53,   53,   53,   53,    2,   54,    3,
-       54,   50,   41,    0,   51,   38,    0,   35,    0,   32,
-        0,   43,   46,   45,   53,   53,   53,   53,   53,   53,
+       54,   50,   34,    0,   51,   39,    0,   36,    0,   32,
+        0,   42,   46,   43,   53,   53,   53,   53,   53,   53,
        53,   53,   53,   53,   53,   18,   53,   53,   53,   53,
-       53,   53,   53,   53,   39,    0,   52,   33,    0,    0,
+       53,   53,   53,   53,   40,    0,   52,   33,    0,    0,
        53,   53,   53,   53,   53,   53,   53,   53,   53,   53,
-       10,   53,   53,   53,   53,   53,   53,   53,   40,    0,
+       10,   53,   53,   53,   53,   53,   53,   53,   41,    0,
 
        28,   29,   53,   12,   53,   24,   13,   53,   53,   19,
        53,   53,    1,   21,   53,    6,   14,   53,   53,    0,
@@ -1035,67 +1035,67 @@ YY_RULE_SETUP
 case 34:
 YY_RULE_SETUP
 #line 51 "lexico.l"
-{return OPU;}
+{return OPB_IG;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 52 "lexico.l"
-{return OPB;}
+{return OPU;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 53 "lexico.l"
-{return OPB;}
+{return OPB_ARRAY_MUL;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 54 "lexico.l"
-{return OPB;}
+{return OPB_MUL;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
 #line 55 "lexico.l"
-{return OPBLOG;}
+{return OPB_MUL;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 56 "lexico.l"
-{return OPBLOG;}
+{return OPB_AND;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 57 "lexico.l"
-{return OPBLOG;}
+{return OPB_OR;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 58 "lexico.l"
-{return OPBIG;}
+{return OPB_OR;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 59 "lexico.l"
-{return OPBIG;}
+{return OPB_REL;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 60 "lexico.l"
-{return OPBIG;}
+{return OPB_REL;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
 #line 61 "lexico.l"
-{return OPBIG;}
+{return OPB_REL;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
 #line 62 "lexico.l"
-{return OPBIG;}
+{return OPB_REL;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
 #line 63 "lexico.l"
-{return OPBIG;}
+{return OPB_IG;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
@@ -1110,7 +1110,7 @@ YY_RULE_SETUP
 case 49:
 YY_RULE_SETUP
 #line 66 "lexico.l"
-{return SUMA_RESTA;}
+{return OPB_ADD;}
 	YY_BREAK
 case 50:
 /* rule 50 can match eol */
