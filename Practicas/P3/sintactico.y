@@ -92,7 +92,7 @@ cuerpo_declar_variables: TIPOSIMPLE lista_variables PYC | error;
 
 lista_variables: lista_variables COMA iden | iden;
 
-sentencias: sentencias sentencia | sentencia;
+sentencias: sentencias sentencia | sentencia |;
 
 sentencia: sentencia_asignacion
 	   | sentencia_if
