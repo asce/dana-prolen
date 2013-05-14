@@ -10,7 +10,7 @@ main.o: main.c
 	gcc -c main.c
 
 y.tab.c: sintactico.y lex.yy.c
-	bison -d -o y.tab.c sintactico.y
+	bison -d --report=state -o y.tab.c sintactico.y
 
 lex.yy.c: lexico.l
 	flex lexico.l

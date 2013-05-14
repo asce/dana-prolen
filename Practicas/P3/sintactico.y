@@ -72,36 +72,41 @@ declar_subprog: cabecera_subprograma bloque;
 
 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros PARDER;
 
-declar_parametros: mas_parametros TIPOSIMPLE iden | |error;
+declar_parametros: mas_parametros TIPOSIMPLE iden |;
 
 mas_parametros: mas_parametros TIPOSIMPLE iden COMA |;
-
-iden: IDENTIFICADOR | IDENTIFICADOR CORIZ expresion CORDER | IDENTIFICADOR CORIZ expresion COMA expresion CORDER;
-
-declar_de_variables_locales: marca_ini_declar_variables variables_locales marca_fin_declar_variables | ;
-
-marca_ini_declar_variables: INICIOV;
-
-marca_fin_declar_variables: FINV;
-
-variables_locales: variables_locales cuerpo_declar_variables
-			| cuerpo_declar_variables;
-
-cuerpo_declar_variables: TIPOSIMPLE lista_variables PYC | error;
+//Ojo
 
 
-lista_variables: lista_variables COMA iden | iden;
 
-sentencias: sentencias sentencia | sentencia |;
+iden: IDENTIFICADOR | IDENTIFICADOR CORIZ expresion CORDER | IDENTIFICADOR CORIZ expresion COMA expresion CORDER;//| error;
 
-sentencia: sentencia_asignacion
+declar_de_variables_locales: INICIOV TIPOSIMPLE linea FINV | ;
+
+linea: elems TIPOSIMPLE elems | elems;
+
+elems: iden COMA elems | iden PYC | error;
+
+//variables_locales:  variables_locales TIPOSIMPLE lista_variables PYC | TIPOSIMPLE lista_variables PYC | error ;//sincroniza con tipo;
+
+
+//cuerpo_declar_variables: TIPOSIMPLE iden lista_elem_variable ;
+//elem_variable: COMA iden ;
+//lista_elem_variable: elem_variable lista_elem_variable | PYC | error ;
+
+//cuerpo_declar_variables: lista_variables  | error;
+lista_variables: lista_variables COMA iden | iden ;//| error ;//sincroniza con PYC
+
+sentencias: sentencias sentencia | sentencia;
+
+sentencia: bloque
+           |sentencia_asignacion
 	   | sentencia_if
            | sentencia_while
 	   | sentencia_entrada
 	   | sentencia_salida
 	   | procedimiento
-	   | sentencia_case 
-           | error;
+           | sentencia_case | error;
 
 sentencia_asignacion: iden ASIG expresion PYC;
 
@@ -120,8 +125,8 @@ expresion: PARIZ expresion PARDER
 		| CARACTER
 		| CADENA
 		| procedimiento
-                | agregados
-		| error;
+                | agregados;
+                | error;
 
 procedimiento: IDENTIFICADOR PARIZ lista_expresiones PARDER;
 
@@ -130,12 +135,10 @@ agregados: INICIO lista_expresiones FINBLO;
 lista_expresiones: lista_expresiones COMA expresion | expresion;
 
 sentencia_if: alternativa_doble	| alternativa_simple;
+//2
+alternativa_simple: IF expresion sentencia;
 
-alternativa_simple: IF expresion sentencia_o_bloque;
-
-alternativa_doble: IF expresion sentencia_o_bloque ELSE sentencia_o_bloque;
-
-sentencia_o_bloque: sentencia | bloque;
+alternativa_doble: IF expresion sentencia ELSE sentencia;
 
 sentencia_while: WHILE PARIZ expresion PARDER sentencia;
 

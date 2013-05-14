@@ -1,9 +1,7 @@
 main{
 
-	begin_declare
+	be··gin_declare
 		int ve;
-		double vf vf2, vf3
-		char vc vc2;
 		bool vl;
 		int iv[2],im[2,2];
 		double fv[2],fm[2,2];
@@ -11,9 +9,11 @@ main{
 		bool bv[2],bm[2,2];
 	end_declare
 
-  	void funcionA(int a1, double a2, char a3){
+  	void funcionA(int a1,double a2, char a3){
       		begin_declare
 			int x1, x2;
+			double vf vff, vf3
+			char vc,vc3 vc2;
       		end_declare
       
       	void funcionB(char b1, bool b2){

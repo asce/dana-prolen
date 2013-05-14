@@ -1,0 +1,72 @@
+%{
+#include "y.tab.h"
+#include <stdio.h>
+
+%}
+
+%option noyywrap
+%option yylineno
+
+letra [a-zA-Z]
+digito [0-9]
+guionbajo [_]
+delimitador [ \t\n]
+espacioblanco	{delimitador}+
+suma_resta [+-]
+%%
+
+"main"			{printf("MAIN ");return MAIN;}
+"{"			{printf("INICIO ");return INICIO;}
+"}"			{printf("FINBLO ");return FINBLO;}
+"begin_declare"		{printf("INICIOV ");return INICIOV;}
+"end_declare"		{printf("FINV ");return FINV;}
+"true"		       {printf("CONSTANTE ");return CONSTANTE;}
+"false"		       {printf("CONSTANTE ");return CONSTANTE;}
+";"			{printf("PYC\n");return PYC;}
+","			{printf("COMA ");return COMA;}
+"int"			{printf("TIPOSIMPLE ");return TIPOSIMPLE;}
+"double"		{printf("TIPOSIMPLE ");return TIPOSIMPLE;}
+"bool"			{printf("TIPOSIMPLE ");return TIPOSIMPLE;}
+"char"			{printf("TIPOSIMPLE ");return TIPOSIMPLE;}
+"void"			{printf("PROCED ");return PROCED;}
+"["			{printf("CORIZ ");return CORIZ;}
+"]"			{printf("CORDER ");return CORDER;}
+"="			{printf("ASIG ");return ASIG;}
+"if"			{printf("IF ");return IF;}
+"else"			{printf("ELSE ");return ELSE;}
+"while"			{printf("WHILE ");return WHILE;}
+"read"			{printf("READ ");return READ;}
+"write"			{printf("WRITE ");return WRITE;}
+"switch"		{printf("SWITCH ");return SWITCH;}
+"case"			{printf("CASE ");return CASE;}
+"default"		{printf("DEFAULT ");return DEFAULT;}
+":"			{printf("DOSP ");return DOSP;}
+"break"			{printf("BREAK ");return BREAK;}
+{digito}+"E+"{digito}+	{printf("CONSTANTE ");return CONSTANTE;}
+{digito}+"E-"{digito}+	{printf("CONSTANTE ");return CONSTANTE;}
+{digito}+"."{digito}+"E+"{digito}+	{printf("CONSTANTE ");return CONSTANTE;}
+{digito}+"."{digito}+"E-"{digito}+	{printf("CONSTANTE ");return CONSTANTE;}
+{digito}+ 		{printf("CONSTANTE_E ");return CONSTANTE_E;}
+{digito}+"."{digito}+	{printf("CONSTANTE ");return CONSTANTE;}
+"!="					{printf("OPB_IG ");return OPB_IG;}
+"!" 					{printf("OPU ");return OPU;}
+"**"					{printf("OPB_ARRAY_MUL ");return OPB_ARRAY_MUL;}
+"*"					{printf("OPB_MUL ");return OPB_MUL;}
+"/"					{printf("OPB_MUL ");return OPB_MUL;}
+"&&"					{printf("OPB_AND ");return OPB_AND;}
+"||"					{printf("OPB_OR ");return OPB_OR;}
+"¬|"					{printf("OPB_OR ");return OPB_OR;}
+"<="					{printf("OPB_REL ");return OPB_REL;}
+">="					{printf("OPB_REL ");return OPB_REL;}
+"<"					{printf("OPB_REL ");return OPB_REL;}
+">"					{printf("OPB_REL ");return OPB_REL;}
+"=="					{printf("OPB_IG ");return OPB_IG;}
+")"					{printf("PARDER ");return PARDER;}
+"("					{printf("PARIZ ");return PARIZ;}
+{suma_resta}			        {printf("OPB_ADD ");return OPB_ADD;}
+{espacioblanco}				{					;}
+\"[^\"\n]*\"				{printf("CADENA ");return CADENA;}
+"'"[^"'"]"'"				{printf("CARACTER ");return CARACTER;}
+{letra}({letra}|{digito}|{guionbajo})*	{printf("IDENTIFICADOR ");return IDENTIFICADOR;}
+.					{printf("(linea %d) ERROR_LEXICO: token %s\n",yylineno,yytext);}
+%%
