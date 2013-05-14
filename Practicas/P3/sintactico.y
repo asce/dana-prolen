@@ -70,11 +70,12 @@ declar_de_subprogs: declar_de_subprogs declar_subprog | ;
 
 declar_subprog: cabecera_subprograma bloque;
 
-cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros PARDER;
+cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros PARDER
+|PROCED IDENTIFICADOR PARIZ PARDER;
 
-declar_parametros: mas_parametros TIPOSIMPLE iden |;
+declar_parametros: declar_parametros COMA TIPOSIMPLE iden | TIPOSIMPLE iden | error;//error3
 
-mas_parametros: mas_parametros TIPOSIMPLE iden COMA |;
+//mas_parametros: mas_parametros TIPOSIMPLE iden COMA |;
 //Ojo
 
 

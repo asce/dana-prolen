@@ -16,11 +16,11 @@ main{
 			char vc,vc3 vc2;
       		end_declare
       
-      	void funcionB(char b1, bool b2){
+      	void funcionB(char b1  bool b2){
           	begin_declare
 	    		double xf,x2;
           	end_declare
-	  		void funcionC(bool c1, int c2){
+	  		void funcionC(bol c1, int c2){
 	      			begin_declare
 					double x1;
               			end_declare
@@ -72,6 +72,12 @@ main{
 			}
 		}
 	
+
+		
+                x2= x2*xf 7+ (2*(i**2)) ;
+		valor = 1+2 * (d1 || k d2) && 4 (d1 + d2 || d2));
+
+
   		iv[0]=0;
   		iv[1]=1;
   		iv[2]=2;
