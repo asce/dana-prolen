@@ -1,34 +1,34 @@
 main{
 
-	begin_declare
-		int ve vv,bb,vvv
-		double vf,dd ff;
-		char vc;
-		bo··ol vl;
+	be··gin_declare
+		int ve;
+		bool vl;
 		int iv[2],im[2,2];
 		double fv[2],fm[2,2];
 		char cv[2],cm[2,2];
 		bool bv[2],bm[2,2];
 	end_declare
 
-  	void funcionA(int c a1, double a2, char a3){
+  	void funcionA(int a1,double a2, char a3){
       		begin_declare
 			int x1, x2;
+			double vf vff, vfff, vf3
+			char vc3 vc2;
       		end_declare
       
-      	void funcionB(char c b1, bool b2){
+      	void funcionB(char b1  bool b2){
           	begin_declare
 	    		double xf,x2;
           	end_declare
-	  		void funcionC(bool c1, int c2){
+	  		void funcionC(bol c1, int c2){
 	      			begin_declare
 					double x1;
               			end_declare
 	      			x1 = 1.3;
-              			if(c2 > x1+)
-					c2 = c2 - 1(;
+              			if(c2 > x1)
+					c2 = c2 - 1;
 	      			else
-					x1 = 3.1+;
+					x1 = 3.1;
 
 	  		}
 	  		xf = 15.0;
@@ -60,7 +60,6 @@ main{
 				}
 			}
 			read valor;
-			write "Esto ",valor," es ", vc " una prueba";
 			if(d1 > 0.0){
 	  			begin_declare
 	    			int dato;
@@ -73,6 +72,12 @@ main{
 			}
 		}
 	
+
+		
+                x2= x2*xf 7+ (2*(i**2)) ;
+		valor = 1+2 * (d1 || k d2) && 4 (d1 + d2 || d2));
+
+
   		iv[0]=0;
   		iv[1]=1;
   		iv[2]=2;
@@ -116,7 +121,5 @@ main{
 		fm[ve+1,1] = fv;
       
 	}
-	ve=100;
 
- x=2;
 }

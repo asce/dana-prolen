@@ -5,7 +5,7 @@
 #include<string.h>
 #include "lex.yy.c"
 
-void yyerror(const char *msg) ;
+void yyerror(char *msg) ;
 
 
 
@@ -41,15 +41,17 @@ void yyerror(const char *msg) ;
 %token CONSTANTE_E 
 %token CARACTER
 
-%token ASIG
 
+%right ASIG
+%right OPU
+
+%left OPB_ARRAY_MUL  /* ** */
 %left OPB_OR         /* || */
 %left OPB_AND        /* && */
 %left OPB_IG         /* ==, !=  */
 %left OPB_REL        /* <, >, <=, >=  */
 %left OPB_ADD        /* +,- */
-%left OPB_MUL        /* **, *, /, %  */
-%right OPU
+%left OPB_MUL        /* *, /, %  */
 
 %start programa
 
@@ -73,16 +75,36 @@ cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros PARDER
 
 declar_parametros: declar_parametros COMA TIPOSIMPLE iden | TIPOSIMPLE iden | error;//error3
 
+//mas_parametros: mas_parametros TIPOSIMPLE iden COMA |;
+//Ojo
 
-iden: IDENTIFICADOR | IDENTIFICADOR CORIZ expresion CORDER | IDENTIFICADOR CORIZ expresion COMA expresion CORDER;
+
+
+iden: IDENTIFICADOR | IDENTIFICADOR CORIZ expresion CORDER | IDENTIFICADOR CORIZ expresion COMA expresion CORDER;//| error;
 
 declar_de_variables_locales: INICIOV variables_locales FINV | ;
 variables_locales:variables_locales cuerpo_decla_variables
-	|cuerpo_decla_variables | error;
+	|cuerpo_decla_variables;
 
 cuerpo_decla_variables: TIPOSIMPLE lista_variables PYC;
 
-lista_variables: lista_variables COMA iden | iden | error ;//sincroniza con COMA o PYC
+lista_variables: lista_variables COMA iden | iden | error ;//sincroniza con PYC
+
+
+//2lineas: lineas linea | linea;
+
+//2linea: elems TIPOSIMPLE elems | elems;
+
+//2elems: iden COMA elems | iden PYC | error;
+
+//variables_locales:  variables_locales TIPOSIMPLE lista_variables PYC | TIPOSIMPLE lista_variables PYC | error ;//sincroniza con tipo;
+
+
+//cuerpo_declar_variables: TIPOSIMPLE iden lista_elem_variable ;
+//elem_variable: COMA iden ;
+//lista_elem_variable: elem_variable lista_elem_variable | PYC | error ;
+
+//cuerpo_declar_variables: lista_variables  | error;
 
 sentencias: sentencias sentencia | sentencia;
 
@@ -98,19 +120,21 @@ sentencia: bloque
 sentencia_asignacion: iden ASIG expresion PYC;
 
 expresion: PARIZ expresion PARDER
-		| OPB_ADD expresion %prec OPU
-		| expresion OPB_OR expresion
-		| expresion OPB_AND expresion
+		| OPU expresion
 		| expresion OPB_IG expresion
 		| expresion OPB_REL expresion
 		| expresion OPB_ADD expresion
 		| expresion OPB_MUL expresion
-		| OPU expresion
+		| expresion OPB_OR expresion
+		| expresion OPB_AND expresion
+		| expresion OPB_ARRAY_MUL expresion
 		| iden
 		| CONSTANTE 
 		| CONSTANTE_E
 		| CARACTER
-                | agregados
+		| CADENA
+		| procedimiento
+                | agregados;
                 | error;
 
 procedimiento: IDENTIFICADOR PARIZ lista_expresiones PARDER;
@@ -120,7 +144,7 @@ agregados: INICIO lista_expresiones FINBLO;
 lista_expresiones: lista_expresiones COMA expresion | expresion;
 
 sentencia_if: alternativa_doble	| alternativa_simple;
-
+//2
 alternativa_simple: IF expresion sentencia;
 
 alternativa_doble: IF expresion sentencia ELSE sentencia;
@@ -129,11 +153,7 @@ sentencia_while: WHILE PARIZ expresion PARDER sentencia;
 
 sentencia_entrada: READ lista_variables PYC;
 
-sentencia_salida: WRITE lista_expresiones_o_cadena PYC;
-
-lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA expresion_o_cadena | expresion_o_cadena;
-
-expresion_o_cadena: expresion | CADENA ;
+sentencia_salida: WRITE PARIZ lista_expresiones PARDER PYC;
 
 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO;
 
@@ -145,7 +165,7 @@ caso_por_defecto: DEFAULT DOSP sentencias | ;
 
 
 %%
-void yyerror( const char *msg )
+void yyerror( char *msg )
 {
 	printf("\nLinea %d: ERROR-> %s y se ha encontrado: %s\n", yylineno, msg, yytext);
 	
