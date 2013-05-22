@@ -11,7 +11,7 @@ main{
 		bool bv[2],bm[2,2];
 	end_declare
 
-  	void funcionA(int a1, double a2, char a3){
+  	void funcionA(int a1[3,3], double a2, char a3){
       		begin_declare
 			int x1, x2;
       		end_declare

@@ -21,14 +21,31 @@ suma_resta [+-]
 "}"			{return FINBLO;}
 "begin_declare"		{return INICIOV;}
 "end_declare"		{return FINV;}
-"true"		       {yylval.atrib = 7;return CONSTANTE;}
-"false"		       {yylval.atrib = 8;return CONSTANTE;}
+"true"		       {yylval.atrib = 7;
+                        yylval.tipo = booleano;
+                        return CONSTANTE;}
+"false"		       {yylval.atrib = 8;
+                        yylval.tipo = booleano;
+                        return CONSTANTE;}
 ";"			{return PYC;}
 ","			{return COMA;}
-"int"			{yylval.atrib = 1; return TIPOSIMPLE;}
-"double"		{yylval.atrib = 2; return TIPOSIMPLE;}
-"bool"			{yylval.atrib = 3; return TIPOSIMPLE;}
-"char"			{yylval.atrib = 4; return TIPOSIMPLE;}
+
+"int"			{yylval.atrib = 1; 
+                         yylval.tipo = entero;                                           
+                         return TIPOSIMPLE;}
+
+"double"		{yylval.atrib = 2; 
+                        yylval.tipo = real;                                              
+                        return TIPOSIMPLE;}
+
+"bool"			{yylval.atrib = 3; 
+                         yylval.tipo = booleano;
+                         return TIPOSIMPLE;}
+
+"char"			{yylval.atrib = 4; 
+                         yylval.tipo = caracter;                        
+                         return TIPOSIMPLE;}
+
 "void"			{return PROCED;}
 "["			{return CORIZ;}
 "]"			{return CORDER;}

@@ -80,46 +80,34 @@ bloque { subProg = 0; }
 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ {TS_InsertaSUBPROG(&$2);} declar_parametros PARDER
 |PROCED IDENTIFICADOR PARIZ {TS_InsertaSUBPROG(&$2);} PARDER;
 
-declar_parametros: declar_parametros COMA TIPOSIMPLE {tipoTmp = $3.tipo; dec_param_flag = 1;} iden {TS_InsertaPARAMF(&$5);} 
-| TIPOSIMPLE {tipoTmp = $1.tipo; dec_param_flag = 1; } iden {TS_InsertaPARAMF(&$3);}
+declar_parametros: declar_parametros COMA TIPOSIMPLE {tipoTmp = $3.tipo;} iden {TS_InsertaPARAMF(&$5);} 
+| TIPOSIMPLE {tipoTmp = $1.tipo;} iden {TS_InsertaPARAMF(&$3);}
 | error;//error3
 
 
 iden: IDENTIFICADOR 
-{ if(dec_param_flag==1){ 
-    dec_param_flag = 0; 
-    /*atributocpy(&att_tmp,&$1);*/
+{ 
     atributocpy(&$$,&$1);
-  } 
+    $$.tipo = tipoTmp;
 }
 
 | IDENTIFICADOR CORIZ expresion CORDER 
-{ if(dec_param_flag==1){ 
-    dec_param_flag = 0; 
-    /*atributocpy(&att_tmp,&$1);*/
+{ 
     atributocpy(&$$,&$1);
-    /*att_tmp.dimensiones = 1;*/
+    $$.tipo = tipoEnArray(tipoTmp);
     $$.dimensiones = 1;
-    /*att_tmp.TamDimen1 = 10;*/ /* revisar */ 
-    $$.TamDimen1 = 1;
-
-  } 
+    $$.TamDimen1 = 10; /* revisar */
+  
 } 
 
 | IDENTIFICADOR CORIZ expresion COMA expresion CORDER 
-{ if(dec_param_flag==1){ 
-    dec_param_flag = 0; 
-    /*atributocpy(&att_tmp,&$1);*/
+{ 
     atributocpy(&$$,&$1);
-
-    /*att_tmp.dimensiones = 2;*/
+    $$.tipo = tipoEnArray(tipoTmp);
     $$.dimensiones = 2;
-    /*att_tmp.TamDimen1 = 10;*/ /* revisar */
     $$.TamDimen1 = 10; /* revisar */
-    /*att_tmp.TamDimen2 = 10;*/ /* revisar */
     $$.TamDimen2 = 10; /* revisar */
-
-  } 
+  
 }
 ;
 
@@ -129,7 +117,7 @@ variables_locales:variables_locales cuerpo_decla_variables
 
 cuerpo_decla_variables: TIPOSIMPLE {tipoTmp = $1.tipo;} lista_variables PYC;
 
-lista_variables: lista_variables COMA iden | iden | error ;//sincroniza con COMA o PYC
+lista_variables: lista_variables COMA iden {TS_InsertaVAR(&$3)} | iden {TS_InsertaVAR(&$1)} | error ;//sincroniza con COMA o PYC
 
 sentencias: sentencias sentencia | sentencia;
 

@@ -42,8 +42,6 @@ typedef struct {
   //int numArgumentos;
 } atributos ;
 
-atributos att_tmp;
-
 #define YYSTYPE atributos 		/* A partir de ahora, cada símbolo tiene una estructura de tipo atributos*/
 #define MAX_TS 1000
 
@@ -78,13 +76,13 @@ char* dtipo2str(dtipo tipo){
 	if(tipo == booleano)
 		return("booleano");	
 	if(tipo == array_entero)
-		return("pila entero");
+		return("array entero");
 	if(tipo == array_real)
-		return("pila real");
-	if(tipo == array_caracter)
-		return("pila booleano");
+		return("array real");
 	if(tipo == array_booleano)
-		return("pila caracter");
+		return("array booleano");
+	if(tipo == array_caracter)
+		return("array caracter");
 	if(tipo == desconocido)
 		return("desconocido");
         if(tipo == vacio)
@@ -443,10 +441,32 @@ void TS_InsertaPARAMF(atributos* att){
     getchar();
     exit(0);
   }
-  entrada_paramf.tipoDato = tipoTmp;
+  entrada_paramf.tipoDato = att->tipo;
+  entrada_paramf.dimensiones = att->dimensiones;
+  entrada_paramf.TamDimen1 = att->TamDimen1;
+  entrada_paramf.TamDimen2 = att->TamDimen2;
   pushEntradaTS(&entrada_paramf);
+  //AnyCheck?                                                                                                       
+}
+void TS_InsertaVAR(atributos* att){
+  entradaTS entrada_var;
+  entrada_var.entrada = variable;
+  if(att->lexema != NULL && att->lexema != 0){
+    entrada_var.nombre = strdup(att->lexema);
+  }else{
+    printf("ERROR: Se ha pasado att con lexema no inicializado en TS_InsertaVAR(att)\n");
+    getchar();
+    exit(0);
+  }
+  entrada_var.tipoDato = att->tipo;
+  entrada_var.dimensiones = att->dimensiones;
+  entrada_var.TamDimen1 = att->TamDimen1;
+  entrada_var.TamDimen2 = att->TamDimen2;
+  pushEntradaTS(&entrada_var);
   //AnyCheck?
 }
+
+
 void showAtt(atributos* att){
   printf("Atts values:\n");
   printf("atrib: %i\nlexema: %s\ntipo: %i\nDimens: %i\nd1: %i\nd2: %i\n",
