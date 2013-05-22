@@ -3,7 +3,9 @@
 #include<stdlib.h>
 #include<stdio.h>
 #include<string.h>
-#include "lex.yy.c"
+
+#include "tablaSimbolos.h"
+
 
 void yyerror(const char *msg) ;
 
@@ -54,33 +56,64 @@ void yyerror(const char *msg) ;
 %start programa
 
 %%
-programa: cabecera_programa bloque {printf("\nAnalisis sintactico finalizado.\n"); return 0;};
+programa: {initTS();imprimeTS();} cabecera_programa bloque {printf("\nAnalisis sintactico finalizado.\n"); return 0;};
 
 cabecera_programa: MAIN;
 
-bloque : inicio_de_bloque declar_de_variables_locales declar_de_subprogs sentencias fin_de_bloque;
+bloque : INICIO {IntroIniBloq();} 
+declar_de_variables_locales 
+declar_de_subprogs 
+sentencias 
+FINBLO {IntroFinBloq();}
+;
 
-inicio_de_bloque:INICIO;
-
-fin_de_bloque:FINBLO;
 
 declar_de_subprogs: declar_de_subprogs declar_subprog | ;
 
-declar_subprog: cabecera_subprograma bloque;
+declar_subprog: cabecera_subprograma { subProg = 1; } 
+bloque { subProg = 0; }
+                ;
 
-cabecera_subprograma: PROCED IDENTIFICADOR PARIZ declar_parametros PARDER
-|PROCED IDENTIFICADOR PARIZ PARDER;
+cabecera_subprograma: PROCED IDENTIFICADOR PARIZ {TS_InsertaSUBPROG(&$2);} declar_parametros PARDER
+|PROCED IDENTIFICADOR PARIZ {TS_InsertaSUBPROG(&$2);} PARDER;
 
-declar_parametros: declar_parametros COMA TIPOSIMPLE iden | TIPOSIMPLE iden | error;//error3
+declar_parametros: declar_parametros COMA TIPOSIMPLE {tipoTmp = $3.tipo; dec_param_flag = 1;} iden {TS_InsertaPARAMF(&att_tmp);} 
+| TIPOSIMPLE {tipoTmp = $1.tipo; dec_param_flag = 1; } iden {TS_InsertaPARAMF(&att_tmp);}
+| error;//error3
 
 
-iden: IDENTIFICADOR | IDENTIFICADOR CORIZ expresion CORDER | IDENTIFICADOR CORIZ expresion COMA expresion CORDER;
+iden: IDENTIFICADOR 
+{ if(dec_param_flag==1){ 
+    dec_param_flag = 0; 
+    atributocpy(&att_tmp,&$1); 
+  } 
+}
+
+| IDENTIFICADOR CORIZ expresion CORDER 
+{ if(dec_param_flag==1){ 
+    dec_param_flag = 0; 
+    atributocpy(&att_tmp,&$1); 
+    att_tmp.dimensiones = 1; 
+    att_tmp.TamDimen1 = 10; /* revisar */ 
+  } 
+} 
+
+| IDENTIFICADOR CORIZ expresion COMA expresion CORDER 
+{ if(dec_param_flag==1){ 
+    dec_param_flag = 0; 
+    atributocpy(&att_tmp,&$1); 
+    att_tmp.dimensiones = 2; 
+    att_tmp.TamDimen1 = 10; /* revisar */
+    att_tmp.TamDimen2 = 10; /* revisar */
+  } 
+}
+;
 
 declar_de_variables_locales: INICIOV variables_locales FINV | ;
 variables_locales:variables_locales cuerpo_decla_variables
 	|cuerpo_decla_variables | error;
 
-cuerpo_decla_variables: TIPOSIMPLE lista_variables PYC;
+cuerpo_decla_variables: TIPOSIMPLE {tipoTmp = $1.tipo;} lista_variables PYC;
 
 lista_variables: lista_variables COMA iden | iden | error ;//sincroniza con COMA o PYC
 
@@ -145,9 +178,13 @@ caso_por_defecto: DEFAULT DOSP sentencias | ;
 
 
 %%
+
+#include "lex.yy.c"
+
+
 void yyerror( const char *msg )
 {
-	printf("\nLinea %d: ERROR-> %s y se ha encontrado: %s\n", yylineno, msg, yytext);
+	printf("\nLinea %d: ERROR-> %s\n", yylineno, msg);
 	
 
 }
