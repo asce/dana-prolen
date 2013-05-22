@@ -113,7 +113,8 @@ expresion: PARIZ expresion PARDER
                 | agregados
                 | error;
 
-procedimiento: IDENTIFICADOR PARIZ lista_expresiones PARDER;
+procedimiento: IDENTIFICADOR PARIZ lista_expresiones PARDER PYC
+|IDENTIFICADOR PARIZ PARDER PYC;
 
 agregados: INICIO lista_expresiones FINBLO;
 

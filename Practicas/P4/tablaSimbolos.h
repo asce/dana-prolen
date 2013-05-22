@@ -47,8 +47,8 @@ typedef struct {
 
 unsigned int TOPE=-1 ; 			/* TOPE de la pila */
 unsigned int subProg ; 			/* Indicador de comienzo de bloque de un subprog */
-unsigned int dec_param_flag;
-unsigned int dec_var_flag;
+unsigned int dec_flag = 0;
+
 /* FLAG de decl de param */
 entradaTS TS[MAX_TS] ; 			/* Pila de la tabla de símbolos */
 
@@ -290,7 +290,7 @@ void IntroIniBloq() {
     if(TS[index].entrada == procedimiento){
       TS[index].parametros = num_params;
     }else{
-      printf("\nERROR: Hay algo mal en la TS, no se ha encontrado procedimiento después de los params.\n");
+      printf("\nWARNING: Hay algo mal en la TS, no se ha encontrado procedimiento después de los params.\n");
       //showEntrada(&TS[index]);
       //imprimeTS();
 	getchar();
@@ -305,6 +305,11 @@ void showEntrada(entradaTS * e){
   printf("Entrada: %s\nnombre: %s\ntipoDato: %s\nparametros: %i\nDimens: %i\nd1: %i\nd2: %i\n",
          tipoEntrada2str(e->entrada),e->nombre,dtipo2str(e->tipoDato),e->parametros,e->dimensiones,e->TamDimen1,e->TamDimen2);
 
+}
+void showNewBlock(){
+  printf("-------------------------------------- NUEVO BLOQUE --------------------------------------\n");
+  showTS();
+  getchar();
 }
 
 void IntroFinBloq () {
@@ -413,13 +418,18 @@ void pushMarca(){
 }
 void TS_InsertaSUBPROG(atributos* att){
   entradaTS entrada_subprog;
-  pushMarca();
   /* ojo, si att.lexema es NULL va a petar */
   if(att->lexema != NULL && att->lexema != 0){
+    if(declaredIden(att->lexema)){
+      printf("[Linea %i] ERROR SEMÁNTICO: Ya existe \"%s\" en el bloque.\n",yylineno,att->lexema);
+      getchar();
+      return;
+    }
+    pushMarca();
     entrada_subprog.nombre = strdup(att->lexema);
   }else{
     showAtt(att);
-    printf("ERROR: Se ha pasado att con lexema no inicializado en TS_InsertaSUBPROG(att)\n");
+    printf("WARNING: Se ha pasado att con lexema no inicializado en TS_InsertaSUBPROG(att)\n");
     getchar();
     exit(0);
   }
@@ -452,9 +462,14 @@ void TS_InsertaVAR(atributos* att){
   entradaTS entrada_var;
   entrada_var.entrada = variable;
   if(att->lexema != NULL && att->lexema != 0){
+    if(declaredIden(att->lexema)){
+      printf("[Linea %i] ERROR SEMÁNTICO: Ya existe \"%s\" en el bloque.\n",yylineno,att->lexema);
+      getchar();
+      return;
+    }
     entrada_var.nombre = strdup(att->lexema);
   }else{
-    printf("ERROR: Se ha pasado att con lexema no inicializado en TS_InsertaVAR(att)\n");
+    printf("WARNING: Se ha pasado att con lexema no inicializado en TS_InsertaVAR(att)\n");
     getchar();
     exit(0);
   }
@@ -465,6 +480,23 @@ void TS_InsertaVAR(atributos* att){
   pushEntradaTS(&entrada_var);
   //AnyCheck?
 }
+/**
+ * Devuelve 1 si existe un identificador 'iden' en el bloque actual y 0 en otro caso 
+ */
+int declaredIden(char* iden){
+  int i;
+  for(i=TOPE;i>=0 && TS[i].entrada!=marca;i--){
+    if(TS[i].nombre!=0 && TS[i].nombre!=NULL){
+      if(strcmp(TS[i].nombre,iden)==0) //ident. 'iden' exists
+	return 1;
+    }else{
+      printf("\nWARNING: Algo va mal en TS, hay una entrada sin nombre\n");
+      getchar();
+      exit(0);
+    }
+  }
+  return 0;
+}
 
 
 void showAtt(atributos* att){
@@ -473,4 +505,58 @@ void showAtt(atributos* att){
 	 att->atrib,att->lexema,att->tipo,att->dimensiones,att->TamDimen1,att->TamDimen2);
 
 }
+/**
+ * Devuelve 1 si se encuentra iden en el ambito y 0 en otro caso
+ */
+int inScope(char* iden){
+  int i;
+  for(i=TOPE;i>=0;i--){
+    if(TS[i].nombre!=0 && TS[i].nombre!=NULL){
+      if(strcmp(TS[i].nombre,iden)==0) //ident. 'iden' exists
+	return 1;
+    }else if(TS[i].entrada!=marca){
+      printf("\nWARNING: Algo va mal en TS, hay una entrada sin nombre\n");
+      getchar();
+      exit(0);
+    }
+  }
+  return 0;
+}
 
+void checkScope(atributos* att){
+
+  if(att->lexema != NULL && att->lexema != 0){
+    if(inScope(att->lexema)==0){
+      printf("[Linea %i] ERROR SEMÁNTICO: \"%s\" no se ha declarado en el ámbito.\n",yylineno,att->lexema);
+      getchar();
+      return;
+    }
+  }else{
+    printf("WARNING: Se ha pasado att con lexema no inicializado en checkScope(att)\n");
+    getchar();
+    exit(0);
+  }
+
+}
+/*
+void checkProced(atributos* att){
+  char* iden;
+  if(att->lexema==NULL ||att->lexema ==0){
+    printf("WARNING: Se ha pasado atributo sin lexema en checkProced\n");
+    return;
+  }
+  iden=strdup(att->lexema);
+  int i;
+  for(i=TOPE;i>=0;i--){
+    if(TS[i].nombre!=0 && TS[i].nombre!=NULL){
+      if(strcmp(TS[i].nombre,iden)==0) //ident. 'iden' exists
+	return 1;
+    }else if(TS[i].entrada!=marca){
+      printf("\nWARNING: Algo va mal en TS, hay una entrada sin nombre\n");
+      getchar();
+      exit(0);
+    }
+  }
+  return 0;
+}
+*/

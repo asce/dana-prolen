@@ -61,10 +61,7 @@ programa: {initTS();} cabecera_programa bloque {printf("\nAnalisis sintactico fi
 cabecera_programa: MAIN;
 
 bloque : INICIO {IntroIniBloq();} 
-declar_de_variables_locales 
-{printf("-------------------------------------- NUEVO BLOQUE --------------------------------------\n");
-showTS();
-getchar();} 
+declar_de_variables_locales {showNewBlock();} 
 declar_de_subprogs 
 sentencias 
 FINBLO {IntroFinBloq();}
@@ -115,9 +112,9 @@ declar_de_variables_locales: INICIOV variables_locales FINV | ;
 variables_locales:variables_locales cuerpo_decla_variables
 	|cuerpo_decla_variables | error;
 
-cuerpo_decla_variables: TIPOSIMPLE {tipoTmp = $1.tipo;} lista_variables PYC;
+cuerpo_decla_variables: TIPOSIMPLE {tipoTmp = $1.tipo;dec_flag=1;} lista_variables {dec_flag=0;} PYC;
 
-lista_variables: lista_variables COMA iden {TS_InsertaVAR(&$3)} | iden {TS_InsertaVAR(&$1)} | error ;//sincroniza con COMA o PYC
+lista_variables: lista_variables COMA iden {if(dec_flag)TS_InsertaVAR(&$3);} | iden {if(dec_flag)TS_InsertaVAR(&$1);} | error ;//sincroniza con COMA o PYC
 
 sentencias: sentencias sentencia | sentencia;
 
@@ -127,10 +124,10 @@ sentencia: bloque
            | sentencia_while
 	   | sentencia_entrada
 	   | sentencia_salida
-	   | procedimiento
+| procedimiento/* {checkProced(&$1);}*/
            | sentencia_case | error;
 
-sentencia_asignacion: iden ASIG expresion PYC;
+sentencia_asignacion: iden {checkScope(&$1);} ASIG expresion PYC;
 
 expresion: PARIZ expresion PARDER
 		| OPB_ADD expresion %prec OPU
@@ -141,14 +138,16 @@ expresion: PARIZ expresion PARDER
 		| expresion OPB_ADD expresion
 		| expresion OPB_MUL expresion
 		| OPU expresion
-		| iden
+                | iden {checkScope(&$1);}
 		| CONSTANTE 
 		| CONSTANTE_E
 		| CARACTER
                 | agregados
                 | error;
 
-procedimiento: IDENTIFICADOR PARIZ lista_expresiones PARDER;
+procedimiento: IDENTIFICADOR PARIZ lista_expresiones PARDER PYC
+|IDENTIFICADOR PARIZ PARDER PYC
+;
 
 agregados: INICIO lista_expresiones FINBLO;
 

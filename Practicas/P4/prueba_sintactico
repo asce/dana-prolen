@@ -1,7 +1,7 @@
 main{
 
 	begin_declare
-		int ve,vv,bb,vvv;
+		int x,v1,vv,bb,vvv;
 		double vf,dd, ff;
 		char vc;
 		bool vl;
@@ -11,9 +11,9 @@ main{
 		bool bv[2],bm[2,2];
 	end_declare
 
-  	void funcionA(int a1[3,3], double a2, char a3){
+  	void funcionA(int v1[3,3], double a2, char a3){
       		begin_declare
-			int x1, x2;
+			int v1, vv,funcionA;
       		end_declare
       
       	void funcionB(char b1, bool b2){
@@ -42,7 +42,7 @@ main{
 	  			char dato;
 	  			int valor;
 			end_declare
-	  		void funcionE(char e1){
+			void funcionE(char e1){
 				begin_declare
 	  				char vc;
 				end_declare
@@ -59,6 +59,7 @@ main{
 						vc = 'z';
 				}
 			}
+			dato = 'a';
 			read valor;
                         write "Esto ",valor," es ", vc," una prueba";
 
@@ -118,6 +119,6 @@ main{
       
 	}
 	ve=100;
-
+	funcionB(1,2,3);
  x=2;
 }
