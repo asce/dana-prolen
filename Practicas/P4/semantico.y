@@ -80,34 +80,45 @@ bloque { subProg = 0; }
 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ {TS_InsertaSUBPROG(&$2);} declar_parametros PARDER
 |PROCED IDENTIFICADOR PARIZ {TS_InsertaSUBPROG(&$2);} PARDER;
 
-declar_parametros: declar_parametros COMA TIPOSIMPLE {tipoTmp = $3.tipo; dec_param_flag = 1;} iden {TS_InsertaPARAMF(&att_tmp);} 
-| TIPOSIMPLE {tipoTmp = $1.tipo; dec_param_flag = 1; } iden {TS_InsertaPARAMF(&att_tmp);}
+declar_parametros: declar_parametros COMA TIPOSIMPLE {tipoTmp = $3.tipo; dec_param_flag = 1;} iden {TS_InsertaPARAMF(&$5);} 
+| TIPOSIMPLE {tipoTmp = $1.tipo; dec_param_flag = 1; } iden {TS_InsertaPARAMF(&$3);}
 | error;//error3
 
 
 iden: IDENTIFICADOR 
 { if(dec_param_flag==1){ 
     dec_param_flag = 0; 
-    atributocpy(&att_tmp,&$1); 
+    /*atributocpy(&att_tmp,&$1);*/
+    atributocpy(&$$,&$1);
   } 
 }
 
 | IDENTIFICADOR CORIZ expresion CORDER 
 { if(dec_param_flag==1){ 
     dec_param_flag = 0; 
-    atributocpy(&att_tmp,&$1); 
-    att_tmp.dimensiones = 1; 
-    att_tmp.TamDimen1 = 10; /* revisar */ 
+    /*atributocpy(&att_tmp,&$1);*/
+    atributocpy(&$$,&$1);
+    /*att_tmp.dimensiones = 1;*/
+    $$.dimensiones = 1;
+    /*att_tmp.TamDimen1 = 10;*/ /* revisar */ 
+    $$.TamDimen1 = 1;
+
   } 
 } 
 
 | IDENTIFICADOR CORIZ expresion COMA expresion CORDER 
 { if(dec_param_flag==1){ 
     dec_param_flag = 0; 
-    atributocpy(&att_tmp,&$1); 
-    att_tmp.dimensiones = 2; 
-    att_tmp.TamDimen1 = 10; /* revisar */
-    att_tmp.TamDimen2 = 10; /* revisar */
+    /*atributocpy(&att_tmp,&$1);*/
+    atributocpy(&$$,&$1);
+
+    /*att_tmp.dimensiones = 2;*/
+    $$.dimensiones = 2;
+    /*att_tmp.TamDimen1 = 10;*/ /* revisar */
+    $$.TamDimen1 = 10; /* revisar */
+    /*att_tmp.TamDimen2 = 10;*/ /* revisar */
+    $$.TamDimen2 = 10; /* revisar */
+
   } 
 }
 ;

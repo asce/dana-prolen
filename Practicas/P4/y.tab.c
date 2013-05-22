@@ -487,13 +487,13 @@ static const yytype_uint8 yyrline[] =
 {
        0,    59,    59,    59,    61,    63,    65,    63,    74,    74,
       76,    76,    80,    80,    81,    81,    83,    83,    84,    84,
-      85,    88,    95,   104,   115,   115,   116,   117,   117,   119,
-     119,   121,   121,   121,   123,   123,   125,   126,   127,   128,
-     129,   130,   131,   132,   132,   134,   136,   137,   138,   139,
-     140,   141,   142,   143,   144,   145,   146,   147,   148,   149,
-     150,   152,   154,   156,   156,   158,   158,   160,   162,   164,
-     166,   168,   170,   170,   172,   172,   174,   176,   176,   178,
-     178,   180,   180
+      85,    88,    96,   109,   126,   126,   127,   128,   128,   130,
+     130,   132,   132,   132,   134,   134,   136,   137,   138,   139,
+     140,   141,   142,   143,   143,   145,   147,   148,   149,   150,
+     151,   152,   153,   154,   155,   156,   157,   158,   159,   160,
+     161,   163,   165,   167,   167,   169,   169,   171,   173,   175,
+     177,   179,   181,   181,   183,   183,   185,   187,   187,   189,
+     189,   191,   191
 };
 #endif
 
@@ -1619,7 +1619,7 @@ getchar();}
 
 /* Line 1806 of yacc.c  */
 #line 83 "semantico.y"
-    {TS_InsertaPARAMF(&att_tmp);}
+    {TS_InsertaPARAMF(&(yyvsp[(5) - (5)]));}
     break;
 
   case 18:
@@ -1633,7 +1633,7 @@ getchar();}
 
 /* Line 1806 of yacc.c  */
 #line 84 "semantico.y"
-    {TS_InsertaPARAMF(&att_tmp);}
+    {TS_InsertaPARAMF(&(yyvsp[(3) - (3)]));}
     break;
 
   case 21:
@@ -1642,7 +1642,8 @@ getchar();}
 #line 89 "semantico.y"
     { if(dec_param_flag==1){ 
     dec_param_flag = 0; 
-    atributocpy(&att_tmp,&(yyvsp[(1) - (1)])); 
+    /*atributocpy(&att_tmp,&$1);*/
+    atributocpy(&(yyval),&(yyvsp[(1) - (1)]));
   } 
 }
     break;
@@ -1650,12 +1651,16 @@ getchar();}
   case 22:
 
 /* Line 1806 of yacc.c  */
-#line 96 "semantico.y"
+#line 97 "semantico.y"
     { if(dec_param_flag==1){ 
     dec_param_flag = 0; 
-    atributocpy(&att_tmp,&(yyvsp[(1) - (4)])); 
-    att_tmp.dimensiones = 1; 
-    att_tmp.TamDimen1 = 10; /* revisar */ 
+    /*atributocpy(&att_tmp,&$1);*/
+    atributocpy(&(yyval),&(yyvsp[(1) - (4)]));
+    /*att_tmp.dimensiones = 1;*/
+    (yyval).dimensiones = 1;
+    /*att_tmp.TamDimen1 = 10;*/ /* revisar */ 
+    (yyval).TamDimen1 = 1;
+
   } 
 }
     break;
@@ -1663,13 +1668,19 @@ getchar();}
   case 23:
 
 /* Line 1806 of yacc.c  */
-#line 105 "semantico.y"
+#line 110 "semantico.y"
     { if(dec_param_flag==1){ 
     dec_param_flag = 0; 
-    atributocpy(&att_tmp,&(yyvsp[(1) - (6)])); 
-    att_tmp.dimensiones = 2; 
-    att_tmp.TamDimen1 = 10; /* revisar */
-    att_tmp.TamDimen2 = 10; /* revisar */
+    /*atributocpy(&att_tmp,&$1);*/
+    atributocpy(&(yyval),&(yyvsp[(1) - (6)]));
+
+    /*att_tmp.dimensiones = 2;*/
+    (yyval).dimensiones = 2;
+    /*att_tmp.TamDimen1 = 10;*/ /* revisar */
+    (yyval).TamDimen1 = 10; /* revisar */
+    /*att_tmp.TamDimen2 = 10;*/ /* revisar */
+    (yyval).TamDimen2 = 10; /* revisar */
+
   } 
 }
     break;
@@ -1677,14 +1688,14 @@ getchar();}
   case 29:
 
 /* Line 1806 of yacc.c  */
-#line 119 "semantico.y"
+#line 130 "semantico.y"
     {tipoTmp = (yyvsp[(1) - (1)]).tipo;}
     break;
 
 
 
 /* Line 1806 of yacc.c  */
-#line 1688 "y.tab.c"
+#line 1699 "y.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1915,7 +1926,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 183 "semantico.y"
+#line 194 "semantico.y"
 
 
 #include "lex.yy.c"

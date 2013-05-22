@@ -50,6 +50,7 @@ atributos att_tmp;
 unsigned int TOPE=-1 ; 			/* TOPE de la pila */
 unsigned int subProg ; 			/* Indicador de comienzo de bloque de un subprog */
 unsigned int dec_param_flag;
+unsigned int dec_var_flag;
 /* FLAG de decl de param */
 entradaTS TS[MAX_TS] ; 			/* Pila de la tabla de símbolos */
 
