@@ -254,18 +254,28 @@ void IntroIniBloq() {
       entradacpy(&elem_variable,&TS[index]);
       elem_variable.entrada = variable;
       pushEntradaTS(&elem_variable);
-      index++;
+      index--;
       num_params++;
     }
     if(TS[index].entrada == procedimiento){
       TS[index].parametros = num_params;
     }else{
       printf("\nERROR: Hay algo mal en la TS, no se ha encontrado procedimiento después de los params.\n");
+      //showEntrada(&TS[index]);
+      imprimeTS();
 	getchar();
     }
   }
 
 	//MostrarTS();
+}
+void showEntrada(entradaTS * e){
+
+
+  printf("Entrada values:\n");
+  printf("Entrada: %i\nnombre: %s\ntipoDato: %i\nparametros: %i\nDimens: %i\nd1: %i\nd2: %i\n",
+         e->entrada,e->nombre,e->tipoDato,e->parametros,e->dimensiones,e->TamDimen1,e->TamDimen2);
+
 }
 
 void IntroFinBloq () {
@@ -370,6 +380,7 @@ void TS_InsertaSUBPROG(atributos* att){
   if(att->lexema != NULL && att->lexema != 0){
     entrada_subprog.nombre = strdup(att->lexema);
   }else{
+    showAtt(att);
     printf("ERROR: Se ha pasado att con lexema no inicializado en TS_InsertaSUBPROG(att)\n");
     getchar();
     exit(0);
@@ -394,5 +405,11 @@ void TS_InsertaPARAMF(atributos* att){
   entrada_paramf.tipoDato = tipoTmp;
   pushEntradaTS(&entrada_paramf);
   //AnyCheck?
+}
+void showAtt(atributos* att){
+  printf("Atts values:\n");
+  printf("atrib: %i\nlexema: %s\ntipo: %i\nDimens: %i\nd1: %i\nd2: %i\n",
+	 att->atrib,att->lexema,att->tipo,att->dimensiones,att->TamDimen1,att->TamDimen2);
+
 }
 

@@ -74,11 +74,11 @@ declar_subprog: cabecera_subprograma { subProg = 1; }
 bloque { subProg = 0; }
                 ;
 
-cabecera_subprograma: PROCED IDENTIFICADOR PARIZ {TS_InsertaSUBPROG(&$2);} declar_parametros PARDER
-|PROCED IDENTIFICADOR PARIZ {TS_InsertaSUBPROG(&$2);} PARDER;
+cabecera_subprograma: PROCED IDENTIFICADOR PARIZ {showAtt(&$2);TS_InsertaSUBPROG(&$2);} declar_parametros PARDER
+|PROCED IDENTIFICADOR PARIZ {showAtt(&$2);TS_InsertaSUBPROG(&$2);} PARDER;
 
-declar_parametros: declar_parametros COMA TIPOSIMPLE {tipoTmp = $3.tipo; dec_param_flag = 1;} iden {TS_InsertaPARAMF(&att_tmp);} 
-| TIPOSIMPLE {tipoTmp = $1.tipo; dec_param_flag = 1; } iden {TS_InsertaPARAMF(&att_tmp);}
+declar_parametros: declar_parametros COMA TIPOSIMPLE {tipoTmp = $3.tipo; dec_param_flag = 1;} iden {showAtt(&att_tmp);TS_InsertaPARAMF(&att_tmp);} 
+| TIPOSIMPLE {tipoTmp = $1.tipo; dec_param_flag = 1; } iden {showAtt(&att_tmp);TS_InsertaPARAMF(&att_tmp);}
 | error;//error3
 
 

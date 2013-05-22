@@ -21,14 +21,14 @@ suma_resta [+-]
 "}"			{return FINBLO;}
 "begin_declare"		{return INICIOV;}
 "end_declare"		{return FINV;}
-"true"		       {return CONSTANTE;}
-"false"		       {return CONSTANTE;}
+"true"		       {yylval.atrib = 7;return CONSTANTE;}
+"false"		       {yylval.atrib = 8;return CONSTANTE;}
 ";"			{return PYC;}
 ","			{return COMA;}
-"int"			{return TIPOSIMPLE;}
-"double"		{return TIPOSIMPLE;}
-"bool"			{return TIPOSIMPLE;}
-"char"			{return TIPOSIMPLE;}
+"int"			{yylval.atrib = 1; return TIPOSIMPLE;}
+"double"		{yylval.atrib = 2; return TIPOSIMPLE;}
+"bool"			{yylval.atrib = 3; return TIPOSIMPLE;}
+"char"			{yylval.atrib = 4; return TIPOSIMPLE;}
 "void"			{return PROCED;}
 "["			{return CORIZ;}
 "]"			{return CORDER;}
@@ -43,31 +43,34 @@ suma_resta [+-]
 "default"		{return DEFAULT;}
 ":"			{return DOSP;}
 "break"			{return BREAK;}
-{digito}+"E+"{digito}+	{return CONSTANTE;}
-{digito}+"E-"{digito}+	{return CONSTANTE;}
-{digito}+"."{digito}+"E+"{digito}+	{return CONSTANTE;}
-{digito}+"."{digito}+"E-"{digito}+	{return CONSTANTE;}
+{digito}+"E+"{digito}+	{yylval.atrib = 2;return CONSTANTE;}
+{digito}+"E-"{digito}+	{yylval.atrib = 3;return CONSTANTE;}
+{digito}+"."{digito}+"E+"{digito}+	{yylval.atrib = 4;return CONSTANTE;}
+{digito}+"."{digito}+"E-"{digito}+	{yylval.atrib = 5;return CONSTANTE;}
 {digito}+ 		{return CONSTANTE_E;}
-{digito}+"."{digito}+	{return CONSTANTE;}
-"!="					{return OPB_IG;}
+{digito}+"."{digito}+	{yylval.atrib = 1;return CONSTANTE;}
+"!="					{yylval.atrib = 2; return OPB_IG;}
 "!" 					{return OPU;}
-"**"					{return OPB_MUL;}
-"*"					{return OPB_MUL;}
-"/"					{return OPB_MUL;}
+"**"					{yylval.atrib = 1; return OPB_MUL;}
+"*"					{yylval.atrib = 2; return OPB_MUL;}
+"/"					{yylval.atrib = 3; return OPB_MUL;}
 "&&"					{return OPB_AND;}
 "||"					{return OPB_OR;}
 "¬|"					{return OPB_OR;}
-"<="					{return OPB_REL;}
-">="					{return OPB_REL;}
-"<"					{return OPB_REL;}
-">"					{return OPB_REL;}
-"=="					{return OPB_IG;}
+"<="					{yylval.atrib = 3; return OPB_REL;}
+">="					{yylval.atrib = 4; return OPB_REL;}
+"<"					{yylval.atrib = 1; return OPB_REL;}
+">"					{yylval.atrib = 2; return OPB_REL;}
+"=="					{yylval.atrib = 1; return OPB_IG;}
 ")"					{return PARDER;}
 "("					{return PARIZ;}
-{suma_resta}			        {return OPB_ADD;}
+"+"			                {yylval.atrib = 1; return OPB_ADD;}
+"-"                                     {yylval.atrib = 2; return OPB_ADD;}                 
 {espacioblanco}				{					;}
 \"[^\"\n]*\"				{return CADENA;}
 "'"[^"'"]"'"				{return CARACTER;}
-{letra}({letra}|{digito}|{guionbajo})*	{return IDENTIFICADOR;}
+{letra}({letra}|{digito}|{guionbajo})*	{ yylval.lexema = strdup(yytext); 
+                                          return IDENTIFICADOR;
+                                        }
 .					{printf("(linea %d) ERROR_LEXICO: token %s\n",yylineno,yytext);}
 %%

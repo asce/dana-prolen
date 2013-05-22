@@ -66,7 +66,7 @@
 /* Copy the first part of user declarations.  */
 
 /* Line 268 of yacc.c  */
-#line 1 "sintactico.y"
+#line 1 "semantico.y"
 
 
 #include<stdlib.h>
@@ -1549,91 +1549,91 @@ yyreduce:
         case 2:
 
 /* Line 1806 of yacc.c  */
-#line 59 "sintactico.y"
+#line 59 "semantico.y"
     {initTS();imprimeTS();}
     break;
 
   case 3:
 
 /* Line 1806 of yacc.c  */
-#line 59 "sintactico.y"
+#line 59 "semantico.y"
     {printf("\nAnalisis sintactico finalizado.\n"); return 0;}
     break;
 
   case 5:
 
 /* Line 1806 of yacc.c  */
-#line 63 "sintactico.y"
+#line 63 "semantico.y"
     {IntroIniBloq();}
     break;
 
   case 6:
 
 /* Line 1806 of yacc.c  */
-#line 67 "sintactico.y"
+#line 67 "semantico.y"
     {IntroFinBloq();}
     break;
 
   case 9:
 
 /* Line 1806 of yacc.c  */
-#line 73 "sintactico.y"
+#line 73 "semantico.y"
     { subProg = 1; }
     break;
 
   case 10:
 
 /* Line 1806 of yacc.c  */
-#line 74 "sintactico.y"
+#line 74 "semantico.y"
     { subProg = 0; }
     break;
 
   case 11:
 
 /* Line 1806 of yacc.c  */
-#line 77 "sintactico.y"
-    {TS_InsertaSUBPROG(&(yyvsp[(2) - (3)]));}
+#line 77 "semantico.y"
+    {showAtt(&(yyvsp[(2) - (3)]));TS_InsertaSUBPROG(&(yyvsp[(2) - (3)]));}
     break;
 
   case 13:
 
 /* Line 1806 of yacc.c  */
-#line 78 "sintactico.y"
-    {TS_InsertaSUBPROG(&(yyvsp[(2) - (3)]));}
+#line 78 "semantico.y"
+    {showAtt(&(yyvsp[(2) - (3)]));TS_InsertaSUBPROG(&(yyvsp[(2) - (3)]));}
     break;
 
   case 15:
 
 /* Line 1806 of yacc.c  */
-#line 80 "sintactico.y"
+#line 80 "semantico.y"
     {tipoTmp = (yyvsp[(3) - (3)]).tipo; dec_param_flag = 1;}
     break;
 
   case 16:
 
 /* Line 1806 of yacc.c  */
-#line 80 "sintactico.y"
-    {TS_InsertaPARAMF(&att_tmp);}
+#line 80 "semantico.y"
+    {showAtt(&att_tmp);TS_InsertaPARAMF(&att_tmp);}
     break;
 
   case 17:
 
 /* Line 1806 of yacc.c  */
-#line 81 "sintactico.y"
+#line 81 "semantico.y"
     {tipoTmp = (yyvsp[(1) - (1)]).tipo; dec_param_flag = 1; }
     break;
 
   case 18:
 
 /* Line 1806 of yacc.c  */
-#line 81 "sintactico.y"
-    {TS_InsertaPARAMF(&att_tmp);}
+#line 81 "semantico.y"
+    {showAtt(&att_tmp);TS_InsertaPARAMF(&att_tmp);}
     break;
 
   case 20:
 
 /* Line 1806 of yacc.c  */
-#line 86 "sintactico.y"
+#line 86 "semantico.y"
     { if(dec_param_flag==1){ 
     dec_param_flag = 0; 
     atributocpy(&att_tmp,&(yyvsp[(1) - (1)])); 
@@ -1644,7 +1644,7 @@ yyreduce:
   case 21:
 
 /* Line 1806 of yacc.c  */
-#line 93 "sintactico.y"
+#line 93 "semantico.y"
     { if(dec_param_flag==1){ 
     dec_param_flag = 0; 
     atributocpy(&att_tmp,&(yyvsp[(1) - (4)])); 
@@ -1657,7 +1657,7 @@ yyreduce:
   case 22:
 
 /* Line 1806 of yacc.c  */
-#line 102 "sintactico.y"
+#line 102 "semantico.y"
     { if(dec_param_flag==1){ 
     dec_param_flag = 0; 
     atributocpy(&att_tmp,&(yyvsp[(1) - (6)])); 
@@ -1671,7 +1671,7 @@ yyreduce:
   case 28:
 
 /* Line 1806 of yacc.c  */
-#line 116 "sintactico.y"
+#line 116 "semantico.y"
     {tipoTmp = (yyvsp[(1) - (1)]).tipo;}
     break;
 
@@ -1909,7 +1909,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 180 "sintactico.y"
+#line 180 "semantico.y"
 
 
 #include "lex.yy.c"
