@@ -18,6 +18,7 @@ typedef enum {
 	array_real,
 	array_booleano,
 	array_caracter,
+	vacio, //No tiene tipo de dato: void
 	desconocido,
 } dtipo ;
 dtipo tipoTmp;
@@ -46,7 +47,7 @@ atributos att_tmp;
 #define YYSTYPE atributos 		/* A partir de ahora, cada símbolo tiene una estructura de tipo atributos*/
 #define MAX_TS 1000
 
-unsigned int TOPE=0 ; 			/* TOPE de la pila */
+unsigned int TOPE=-1 ; 			/* TOPE de la pila */
 unsigned int subProg ; 			/* Indicador de comienzo de bloque de un subprog */
 unsigned int dec_param_flag;
 /* FLAG de decl de param */
@@ -85,6 +86,27 @@ char* dtipo2str(dtipo tipo){
 		return("pila caracter");
 	if(tipo == desconocido)
 		return("desconocido");
+        if(tipo == vacio)
+	  return("void");
+
+}
+char* tipoEntrada2str(tipoEntrada e){
+  switch(e){
+  case marca:
+    return "marca";
+    break;
+  case procedimiento:
+    return "procedimiento";
+    break;
+  case variable:
+    return "variable";
+    break;
+  case parametro:
+    return "parametro";
+    break;
+  default:
+    return "TRASH";
+  }
 }
 
 void imprimeTS () {
@@ -107,6 +129,17 @@ void imprimeTS () {
 	getchar();
 
 	printf("********************************************************************\n");
+}
+void showTS(){
+  int i;
+  printf("Contenido de la TS:\n");
+  for(i=TOPE;i>=0;i--){
+    if(TS[i].entrada!=marca){
+      showEntrada(&TS[i]);
+    }else{
+      printf("<<< MARCA >>>\n");
+    }
+  }
 }
 
 void buscar_repetidas(char *lexema) {
@@ -242,13 +275,11 @@ void IntroIniBloq() {
 	   fueran variables */
   int index;
   unsigned int num_params = 0;
-  entradaTS elem;
   entradaTS elem_variable;
-  elem.entrada = marca;
-  elem.nombre = 0;
-  pushEntradaTS(&elem);
-  if(subProg == 1){/*Es un bloque de subProg*/
-    index = TOPE-1;
+  if(subProg == 0){
+    pushMarca();
+  }else{/* subProg ==1, Es un bloque de subProg*/
+    index = TOPE;
     while(TS[index].entrada == parametro){
       /* Hemos encontrado un parametro, incluirlo como variable */
       entradacpy(&elem_variable,&TS[index]);
@@ -262,19 +293,18 @@ void IntroIniBloq() {
     }else{
       printf("\nERROR: Hay algo mal en la TS, no se ha encontrado procedimiento después de los params.\n");
       //showEntrada(&TS[index]);
-      imprimeTS();
+      //imprimeTS();
 	getchar();
     }
   }
-
 	//MostrarTS();
 }
 void showEntrada(entradaTS * e){
 
 
-  printf("Entrada values:\n");
-  printf("Entrada: %i\nnombre: %s\ntipoDato: %i\nparametros: %i\nDimens: %i\nd1: %i\nd2: %i\n",
-         e->entrada,e->nombre,e->tipoDato,e->parametros,e->dimensiones,e->TamDimen1,e->TamDimen2);
+  printf("------- Entrada values: -------\n");
+  printf("Entrada: %s\nnombre: %s\ntipoDato: %s\nparametros: %i\nDimens: %i\nd1: %i\nd2: %i\n",
+         tipoEntrada2str(e->entrada),e->nombre,dtipo2str(e->tipoDato),e->parametros,e->dimensiones,e->TamDimen1,e->TamDimen2);
 
 }
 
@@ -287,7 +317,10 @@ void IntroFinBloq () {
 	if (TOPE!=0)
 		TOPE--;
 	//MostrarTS();
-	
+
+	printf("--------------------------------------Finalizado bloque--------------------------------------\n");
+	showTS();
+	getchar();
 }
 
 int existeProc (char *lexema) {
@@ -373,9 +406,15 @@ dtipo tipoEnArray(dtipo a){
 		return a;
 
 }
-
+void pushMarca(){
+  entradaTS elem;
+  elem.entrada = marca;
+  elem.nombre = 0;
+  pushEntradaTS(&elem);
+}
 void TS_InsertaSUBPROG(atributos* att){
   entradaTS entrada_subprog;
+  pushMarca();
   /* ojo, si att.lexema es NULL va a petar */
   if(att->lexema != NULL && att->lexema != 0){
     entrada_subprog.nombre = strdup(att->lexema);
@@ -386,6 +425,7 @@ void TS_InsertaSUBPROG(atributos* att){
     exit(0);
   }
   //entrada_subprog.tipoDato = att->tipo;
+  entrada_subprog.tipoDato = vacio;
   entrada_subprog.parametros = 0;
   entrada_subprog.entrada = procedimiento;
   pushEntradaTS(&entrada_subprog);
