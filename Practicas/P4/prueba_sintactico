@@ -119,6 +119,6 @@ main{
       
 	}
 	ve=100;
-	funcionA(1,2,3);
+	funcionB(1,'a',3);
  x=2;
 }

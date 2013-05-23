@@ -85,7 +85,7 @@ suma_resta [+-]
 "-"                                     {yylval.atrib = 2; return OPB_ADD;}                 
 {espacioblanco}				{					;}
 \"[^\"\n]*\"				{return CADENA;}
-"'"[^"'"]"'"				{return CARACTER;}
+"'"[^"'"]"'"				{yylval.tipo=caracter;return CARACTER;}
 {letra}({letra}|{digito}|{guionbajo})*	{ yylval.lexema = strdup(yytext); 
                                           return IDENTIFICADOR;
                                         }

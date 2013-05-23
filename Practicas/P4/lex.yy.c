@@ -1205,7 +1205,7 @@ case 53:
 /* rule 53 can match eol */
 YY_RULE_SETUP
 #line 88 "lexico.l"
-{return CARACTER;}
+{yylval.tipo=caracter;return CARACTER;}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP

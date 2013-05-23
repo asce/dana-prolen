@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-
+#include "ListaInt.h"
 typedef enum {
 	marca, 						/* marca comienzo bloque */
 	procedimiento, 				/* si es subprograma */
@@ -22,6 +22,20 @@ typedef enum {
 	desconocido,
 } dtipo ;
 dtipo tipoTmp;
+dtipo tipoScope = desconocido;
+typedef struct paramf {
+  dtipo tipoDato;
+  struct paramf* next;
+} lista_paramf;
+
+//struct paramf* actual_param = 0;
+
+//lista_paramf* start;
+
+void initListaParamF(lista_paramf* elem){
+  elem->next = 0;
+}
+
 typedef struct {
 	tipoEntrada entrada ;
 	char *nombre ;
@@ -30,6 +44,7 @@ typedef struct {
         unsigned int dimensiones ;           /* si tipoDato = array_... */
         int TamDimen1 ; 		     /* si tipoDato = array_... */	
         int TamDimen2 ; 		     /* si tipoDato = array_... */
+  lista_paramf* lista_parametros;            /* si entrada = procedimiento */
 } entradaTS ;
 
 typedef struct {
@@ -42,29 +57,31 @@ typedef struct {
   //int numArgumentos;
 } atributos ;
 
+/*
 typedef struct{
   atributos att;
   atributos* next;
 }elem_list_t;
-
+*/
+/*
 void initAttList(elem_list_t* list){
   list->att.lexema = 0;
   list->next = 0;
 }
-
-elem_list_t att_list;
+*/
+//elem_list_t att_list;
 int scope_index_TS;
 
 #define YYSTYPE atributos 		/* A partir de ahora, cada símbolo tiene una estructura de tipo atributos*/
 #define MAX_TS 1000
 
-unsigned int TOPE=-1 ; 			/* TOPE de la pila */
+unsigned int TOPE=0 ; 			/* TOPE de la pila */
+unsigned int last_proc_index;
 unsigned int subProg ; 			/* Indicador de comienzo de bloque de un subprog */
 unsigned int dec_flag = 0;
 unsigned int array_flag = 0;
 
 unsigned int call_procedure_flag = 0;
-elem_list_t* procedure_att_end_pointer = 0;
 
 /* FLAG de decl de param */
 entradaTS TS[MAX_TS] ; 			/* Pila de la tabla de símbolos */
@@ -80,6 +97,7 @@ void initTS(){
   int i;
   for(i=0;i<MAX_TS;i++){
     TS[i].nombre = 0;
+    TS[i].lista_parametros = NULL;
   }
 }
 
@@ -292,21 +310,20 @@ void IntroIniBloq() {
   int index;
   unsigned int num_params = 0;
   entradaTS elem_variable;
-  if(subProg == 0){
     pushMarca();
-  }else{/* subProg ==1, Es un bloque de subProg*/
-    index = TOPE;
+  if(subProg == 1){/* subProg ==1, Es un bloque de subProg*/
+    index = TOPE-1;
     while(TS[index].entrada == parametro){
       /* Hemos encontrado un parametro, incluirlo como variable */
       entradacpy(&elem_variable,&TS[index]);
       elem_variable.entrada = variable;
       pushEntradaTS(&elem_variable);
+      //TODO Enlaza param a Func!
+      addParamF(TS[index].tipoDato);
       index--;
-      num_params++;
+      //num_params++;
     }
-    if(TS[index].entrada == procedimiento){
-      TS[index].parametros = num_params;
-    }else{
+    if(index!=last_proc_index){
       printf("\nWARNING: Hay algo mal en la TS, no se ha encontrado procedimiento después de los params.\n");
       //showEntrada(&TS[index]);
       //imprimeTS();
@@ -314,6 +331,17 @@ void IntroIniBloq() {
     }
   }
 	//MostrarTS();
+}
+void addParamF(dtipo tipo_param){
+
+  TS[last_proc_index].parametros++;
+  struct paramf* actual_node;
+  actual_node = TS[last_proc_index].lista_parametros;
+
+  while(actual_node!=0 && actual_node!=NULL){
+    actual_node = actual_node->next;
+  }
+  //enlaza una celda de tipo node
 }
 void showEntrada(entradaTS * e){
 
@@ -335,8 +363,13 @@ void IntroFinBloq () {
 	   vacia */
 
 	for (;TOPE>=0 && TS[TOPE].entrada!=marca;TOPE--);
-	if (TOPE!=0)
-		TOPE--;
+	if (TOPE!=0){
+	  if(TS[TOPE].lista_parametros!=0 && TS[TOPE].lista_parametros!=NULL){
+	    //freeListaParam(TS[TOPE].lista_parametros);
+	  }
+	  TOPE--;
+	
+	}
 	//MostrarTS();
 
 	//printf("--------------------------------------Finalizado bloque--------------------------------------\n");
@@ -442,7 +475,6 @@ void TS_InsertaSUBPROG(atributos* att){
       //getchar();
       return;
     }
-    pushMarca();
     entrada_subprog.nombre = strdup(att->lexema);
   }else{
     showAtt(att);
@@ -455,6 +487,7 @@ void TS_InsertaSUBPROG(atributos* att){
   entrada_subprog.parametros = 0;
   entrada_subprog.entrada = procedimiento;
   pushEntradaTS(&entrada_subprog);
+  last_proc_index = TOPE;
   //AnyCheck?
 }
 
@@ -530,8 +563,10 @@ int inScope(char* iden){
   int i;
   for(i=TOPE;i>=0;i--){
     if(TS[i].nombre!=0 && TS[i].nombre!=NULL){
-      if(strcmp(TS[i].nombre,iden)==0) //ident. 'iden' exists
+      if(strcmp(TS[i].nombre,iden)==0){ //ident. 'iden' exists
+	tipoScope = TS[i].tipoDato;
 	return i;
+      }
     }else if(TS[i].entrada!=marca){
       printf("\nWARNING: Algo va mal en TS, hay una entrada sin nombre\n");
       //getchar();
@@ -556,8 +591,10 @@ int checkScope(atributos* att){
     if(indexTS==0){
       printf("[Linea %i] ERROR SEMÁNTICO: \"%s\" no se ha declarado en el ámbito.\n",yylineno,att->lexema);
       //getchar();
+      att->tipo = desconocido;
       return 0;
     }else{//Está en el ámbito
+      att->tipo = tipoScope;
       return indexTS;
     }
   }else{
@@ -599,17 +636,7 @@ void linkAtt(atributos* att){
   printf("\n");
   getchar();
 }
-void deleteAttList(){
-  elem_list_t* it;
-  elem_list_t* actual_att_ptr;
-  it = att_list.next; 
-  while(it!=0){
-    actual_att_ptr=it;
-    it=it->next;
-    //delete actual_att_ptr;
-  }
-}
-
+//TODO Need Fix?
 void checkSignArray(atributos* attOPB_ADD){
     if(attOPB_ADD->atrib==2){ // Signo -
       printf("[Linea %i] ERROR SEMÁNTICO: No se permite un indice negativo en array.\n",yylineno);
@@ -617,51 +644,91 @@ void checkSignArray(atributos* attOPB_ADD){
       printf("WARNING en linea %i: No se reconoce el signo del indice del array pasado en checkSignArray",yylineno);
     }
 }
-void check_OPB_OR(atributos* op1,atributos* op2){
+int check_OPB_OR(atributos* op1,atributos* op2){
   int equalType = checkEqualType(op1,op2);
+  int valid = 1;
   if(op1->tipo!=booleano){
     printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_OR debe ser booleano\n",yylineno);
+    valid = 0;
   }
   if(op2->tipo!=booleano){
     printf("[Linea %i] ERROR SEMÁNTICO: El op2 de OPB_OR debe ser booleano\n",yylineno);
+    valid = 0;
   }
+  return valid;
 }
-void check_OPB_AND(atributos* op1,atributos* op2){
+int check_OPB_AND(atributos* op1,atributos* op2){
   int equalType = checkEqualType(op1,op2);
+  int valid = 1;
   if(op1->tipo!=booleano){
     printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_AND debe ser booleano\n",yylineno);
+    valid = 0;
   }
   if(op2->tipo!=booleano){
     printf("[Linea %i] ERROR SEMÁNTICO: El op2 de OPB_AND debe ser booleano\n",yylineno);
+    valid = 0;
   }
+  return valid;
 
 }
-void check_OPB_IG(atributos* op1,atributos* op2){
+int check_OPB_IG(atributos* op1,atributos* op2){
+  int valid = 1;
   int equalType = checkEqualType(op1,op2);
+  if(op1->tipo!=entero && op1->tipo!=real){
+    printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_IG debe ser entero o real\n",yylineno);
+    valid = 0;
+  }
+  if(op2->tipo!=entero && op2->tipo!=real){
+    printf("[Linea %i] ERROR SEMÁNTICO: El op2 de OPB_IG debe ser entero o real\n",yylineno);
+    valid = 0;
+  }
+  return valid;
 
 }
-void check_OPB_REL(atributos* op1,atributos* op2){
+//TODO
+int check_OPB_REL(atributos* op1,atributos* op2){
+  int valid =1;
   int equalType = checkEqualType(op1,op2);
+  if(op1->tipo!=entero && op1->tipo!=real){
+    printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_REL debe ser entero o real\n",yylineno);
+    valid = 0;
+  }
+  if(op2->tipo!=entero && op2->tipo!=real){
+    printf("[Linea %i] ERROR SEMÁNTICO: El op2 de OPB_REL debe ser entero o real\n",yylineno);
+    valid = 0;
+  }
+  return valid;
 
 }
-void check_OPB_ADD(atributos* op1,atributos* op2){
+int check_OPB_ADD(atributos* op1,atributos* op2){
+  int valid = 1;
   int equalType = checkEqualType(op1,op2);
   if(op1->tipo!=entero && op1->tipo!=real && op1->tipo!=array_entero && op1->tipo!=array_real){
     printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_ADD debe ser entero,array_entero,real o array_real\n",yylineno);
+    valid = 0;
   }
   if(op2->tipo!=entero && op2->tipo!=real && op2->tipo!=array_entero && op2->tipo!=array_real){
     printf("[Linea %i] ERROR SEMÁNTICO: El op2 de OPB_ADD debe ser entero,array_entero,real o array_real\n",yylineno);
+    valid = 0;
   }
+  return valid;
+
 }
-void check_OPB_MUL(atributos* op1,atributos* op2){
+
+int check_OPB_MUL(atributos* op1,atributos* op2){
+  int valid = 1;
   int equalType = checkEqualType(op1,op2);
   if(op1->tipo!=entero && op1->tipo!=real && op1->tipo!=array_entero && op1->tipo!=array_real){
     printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_MUL debe ser entero,array_entero,real o array_real\n",yylineno);
+    valid = 0;
   }
   if(op2->tipo!=entero && op2->tipo!=real && op2->tipo!=array_entero && op2->tipo!=array_real){
     printf("[Linea %i] ERROR SEMÁNTICO: El op2 de OPB_MUL debe ser entero,array_entero,real o array_real\n",yylineno);
+    valid = 0;
   }
+  return valid;
 }
+
 int checkEqualType(atributos* op1,atributos* op2){
   if(op1->tipo==op2->tipo){
     return 1;
@@ -673,22 +740,39 @@ int checkEqualType(atributos* op1,atributos* op2){
   
  }
 }
+int checkEqualTypeAsig(atributos* op1,atributos* op2){
+  if(op1->tipo==op2->tipo){
+    return 1;
+  }else if(tipoArray(op1->tipo)!=tipoArray(op2->tipo)){
+    printf("[Linea %i] ERROR SEMÁNTICO: Los tipos de la asignación no coinciden. ",yylineno);
+    printf(" %s (dest): %s y %s (expr): %s\n",op1->lexema,dtipo2str(op1->tipo),op2->lexema,dtipo2str(op2->tipo));
+    return 0;
+  }else{//Alguno de los dos es array pero del mismo tipo                                                                                                        
 
- void checkEqualDimenArray(atributos* op1,atributos* op2){
+  }
+}
+
+
+ int checkEqualDimenArray(atributos* op1,atributos* op2){
+   int valid=1;
    if(es_array(op1->tipo) && es_array(op2->tipo)){
    if(op1->dimensiones!=op2->dimensiones ||
       op1->TamDimen1!=op2->TamDimen1 ||
       op1->TamDimen2!=op2->TamDimen2)
-     printf("[Linea %i] ERROR SEMÁNTICO: Las dimensiones de los array no coinciden.\n",yylineno);
+     printf("[Linea %i] ERROR SEMÁNTICO: Las dimensiones de los array no coinciden.\n",yylineno);valid=0;
    }
+   return valid;
  }
-void checkArrayMulDimension(atributos* op1,atributos* op2){
+int checkArrayMulDimension(atributos* op1,atributos* op2){
+  int valid=1;
   if(es_array(op1->tipo) && es_array(op2->tipo)){
-    if(op1->TamDimen2!=op2->TamDimen1)
+    if(op1->TamDimen2!=op2->TamDimen1){
       printf("[Linea %i] ERROR SEMÁNTICO: En la multiplic. de arrays (**) el número de filas del primer operando debe coincidir con el número de columnas del segundo.\n",yylineno);
+      valid=0;}
   }else{
-    printf("[Linea %i] ERROR SEMÁNTICO: La multiplicación de arrays (**) solo se puede aplicar entre dos arrays.\n",yylineno);
+    printf("[Linea %i] ERROR SEMÁNTICO: La multiplicación de arrays (**) solo se puede aplicar entre dos arrays.\n",yylineno);valid=0;
   }
+  return valid;
 }
 
 int checkIndexEntero(atributos* att){
@@ -725,3 +809,4 @@ void checkCallProcWithoutArgs(atributos* att){
   }
 
 }
+

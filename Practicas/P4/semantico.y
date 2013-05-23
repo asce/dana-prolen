@@ -130,7 +130,7 @@ sentencia: bloque
 | procedimiento {checkProced(&$1);}
            | sentencia_case | error;
 
-sentencia_asignacion: iden {checkScope(&$1);/*TODO comprueba tipo*/} ASIG expresion PYC;
+sentencia_asignacion: iden {checkScope(&$1); } ASIG expresion {checkEqualTypeAsig(&$1,&$4)} PYC;
 
 expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
 | OPB_ADD expresion %prec OPU{
@@ -143,41 +143,41 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
 
 } 
 | expresion OPB_OR expresion{
-  check_OPB_OR(&$1,&$3);
   atributocpy(&$$,&$1);
+  if(check_OPB_OR(&$1,&$3)==0) $$.tipo=desconocido;
   $$.lexema = "_";
 }
 | expresion OPB_AND expresion{
-  check_OPB_AND(&$1,&$3);
   atributocpy(&$$,&$1);
+  if(check_OPB_AND(&$1,&$3)==0) $$.tipo=desconocido;
   $$.lexema = "_";
 }
 | expresion OPB_IG expresion{
-  check_OPB_IG(&$1,&$3);
   atributocpy(&$$,&$1);
+  if(check_OPB_IG(&$1,&$3)==0)$$.tipo=desconocido;
   $$.lexema = "_";
 }
 | expresion OPB_REL expresion{
-  check_OPB_REL(&$1,&$3);
   atributocpy(&$$,&$1);
+  if(check_OPB_REL(&$1,&$3)==0)$$.tipo=desconocido;
   $$.lexema = "_";
 }
 | expresion OPB_ADD expresion{
-  check_OPB_ADD(&$1,&$3);
   atributocpy(&$$,&$1);
+  if(check_OPB_ADD(&$1,&$3)==0)$$.tipo=desconocido;
   $$.lexema = "_";
 }
 | expresion OPB_MUL expresion{
-  check_OPB_MUL(&$1,&$3);
-  if($2.atrib == 1){ /*  **  */
-    checkArrayMulDimension(&$1,&$3);
-  }else{
-    checkEqualDimenArray(&$1,&$3);
-  }
   atributocpy(&$$,&$1);
+  if(check_OPB_MUL(&$1,&$3)==0) $$.tipo=desconocido;
+  if($2.atrib == 1){ /*  **  */
+    if(checkArrayMulDimension(&$1,&$3)==0)$$.tipo=desconocido;
+  }else{
+    if(checkEqualDimenArray(&$1,&$3)==0)$$.tipo=desconocido;
+  }
   $$.lexema = "_";
 }
-| OPU expresion { checkBoolean(&$2); }
+| OPU expresion { if(checkBoolean(&$2)==0)$$.tipo=desconocido; }
 | iden 
 {
 scope_index_TS = checkScope(&$1); 
@@ -195,15 +195,15 @@ scope_index_TS = checkScope(&$1);
 
 procedimiento: IDENTIFICADOR PARIZ 
 {call_procedure_flag=1;
-  initAttList(&att_list);
-  atributocpy(&att_list.att,&$1);
-  procedure_att_end_pointer = &att_list;
+  /* initAttList(&att_list);*/
+  /*atributocpy(&att_list.att,&$1);*/
+  /*procedure_att_end_pointer = &att_list;*/
 } 
 lista_expresiones PARDER 
 {
 call_procedure_flag=0;
 checkCallProc(&$1);
- deleteAttList();
+//deleteAttList();
  showTS();
 } PYC
 |IDENTIFICADOR PARIZ PARDER {checkCallProcWithoutArgs(&$1);showTS();}PYC
