@@ -171,7 +171,7 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
   atributocpy(&$$,&$1);
   if(check_OPB_MUL(&$1,&$3)==0) {$$.tipo=desconocido;}
   if($2.atrib == 1){ /*  **  */
-    if(checkArrayMulDimension(&$1,&$3)==0)$$.tipo=desconocido;
+    if(checkArrayMulDimension(&$1,&$3)==0){$$.tipo=desconocido;getchar();}
   }else{
     if(checkEqualDimenArray(&$1,&$3)==0)$$.tipo=desconocido;
   }

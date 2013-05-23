@@ -750,20 +750,26 @@ int checkEqualTypeAsig(atributos* op1,atributos* op2){
 
  int checkEqualDimenArray(atributos* op1,atributos* op2){
    int valid=1;
+   //printf("En equal Dimen Array\n");getchar();
    if(es_array(op1->tipo) && es_array(op2->tipo)){
+     //printf("Ambos son Arrays\n");getchar();
    if(op1->dimensiones!=op2->dimensiones ||
       op1->TamDimen1!=op2->TamDimen1 ||
-      op1->TamDimen2!=op2->TamDimen2)
-     printf("[Linea %i] ERROR SEMÁNTICO: Las dimensiones de los array no coinciden.\n",yylineno);valid=0;
+      op1->TamDimen2!=op2->TamDimen2){
+     printf("[Linea %i] ERROR SEMÁNTICO: Las dimensiones de los array no coinciden.\n",yylineno);valid=0;}
    }
    return valid;
  }
 int checkArrayMulDimension(atributos* op1,atributos* op2){
   int valid=1;
+  //printf("En checkArrayMulDimension\n");
   if(es_array(op1->tipo) && es_array(op2->tipo)){
     if(op1->TamDimen2!=op2->TamDimen1){
       printf("[Linea %i] ERROR SEMÁNTICO: En la multiplic. de arrays (**) el número de filas del primer operando debe coincidir con el número de columnas del segundo.\n",yylineno);
       valid=0;}
+    else{//printf("Valid\n");getchar();TODO
+      /* op1->TamDimen2==op2->TamDimen1  */
+    }
   }else{
     printf("[Linea %i] ERROR SEMÁNTICO: La multiplicación de arrays (**) solo se puede aplicar entre dos arrays.\n",yylineno);valid=0;
   }

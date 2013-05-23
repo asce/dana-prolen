@@ -1814,7 +1814,7 @@ yyreduce:
   atributocpy(&(yyval),&(yyvsp[(1) - (3)]));
   if(check_OPB_MUL(&(yyvsp[(1) - (3)]),&(yyvsp[(3) - (3)]))==0) {(yyval).tipo=desconocido;}
   if((yyvsp[(2) - (3)]).atrib == 1){ /*  **  */
-    if(checkArrayMulDimension(&(yyvsp[(1) - (3)]),&(yyvsp[(3) - (3)]))==0)(yyval).tipo=desconocido;
+    if(checkArrayMulDimension(&(yyvsp[(1) - (3)]),&(yyvsp[(3) - (3)]))==0){(yyval).tipo=desconocido;getchar();}
   }else{
     if(checkEqualDimenArray(&(yyvsp[(1) - (3)]),&(yyvsp[(3) - (3)]))==0)(yyval).tipo=desconocido;
   }

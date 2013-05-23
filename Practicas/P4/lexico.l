@@ -21,10 +21,12 @@ suma_resta [+-]
 "}"			{return FINBLO;}
 "begin_declare"		{return INICIOV;}
 "end_declare"		{return FINV;}
-"true"		       {yylval.atrib = 7;
+"true"		       {yylval.lexema=strdup(yytext);
+                        yylval.atrib = 7;
                         yylval.tipo = booleano;
                         return CONSTANTE;}
-"false"		       {yylval.atrib = 8;
+"false"		       {yylval.lexema=strdup(yytext);
+                        yylval.atrib = 8;
                         yylval.tipo = booleano;
                         return CONSTANTE;}
 ";"			{return PYC;}
@@ -60,12 +62,12 @@ suma_resta [+-]
 "default"		{return DEFAULT;}
 ":"			{return DOSP;}
 "break"			{return BREAK;}
-{digito}+"E+"{digito}+	{yylval.tipo=real;yylval.atrib = 2;return CONSTANTE;}
-{digito}+"E-"{digito}+	{yylval.tipo=real;yylval.atrib = 3;return CONSTANTE;}
-{digito}+"."{digito}+"E+"{digito}+	{yylval.tipo=real;yylval.atrib = 4;return CONSTANTE;}
-{digito}+"."{digito}+"E-"{digito}+	{yylval.tipo=real;yylval.atrib = 5;return CONSTANTE;}
-{digito}+ 		{yylval.lexema=yytext; yylval.tipo=entero; return CONSTANTE_E;}
-{digito}+"."{digito}+	{yylval.tipo=real;yylval.atrib = 1;return CONSTANTE;}
+{digito}+"E+"{digito}+	                {yylval.lexema=strdup(yytext);yylval.tipo=real;yylval.atrib = 2;return CONSTANTE;}
+{digito}+"E-"{digito}+	                {yylval.lexema=strdup(yytext);yylval.tipo=real;yylval.atrib = 3;return CONSTANTE;}
+{digito}+"."{digito}+"E+"{digito}+	{yylval.lexema=strdup(yytext);yylval.tipo=real;yylval.atrib = 4;return CONSTANTE;}
+{digito}+"."{digito}+"E-"{digito}+	{yylval.lexema=strdup(yytext);yylval.tipo=real;yylval.atrib = 5;return CONSTANTE;}
+{digito}+ 		                {yylval.lexema=strdup(yytext); yylval.tipo=entero; return CONSTANTE_E;}
+{digito}+"."{digito}+	                {yylval.lexema=strdup(yytext);yylval.tipo=real;yylval.atrib = 1;return CONSTANTE;}
 "!="					{yylval.atrib = 2; return OPB_IG;}
 "!" 					{return OPU;}
 "**"					{yylval.atrib = 1; return OPB_MUL;}
@@ -86,8 +88,8 @@ suma_resta [+-]
 {espacioblanco}				{					;}
 \"[^\"\n]*\"				{return CADENA;}
 "'"[^"'"]"'"				{yylval.tipo=caracter;return CARACTER;}
-{letra}({letra}|{digito}|{guionbajo})*	{ yylval.lexema = strdup(yytext); 
+{letra}({letra}|{digito}|{guionbajo})*	{ yylval.lexema = strdup(strdup(yytext)); 
                                           return IDENTIFICADOR;
                                         }
-.					{printf("(linea %d) ERROR_LEXICO: token %s\n",yylineno,yytext);}
+.					{printf("(linea %d) ERROR_LEXICO: token %s\n",yylineno,strdup(yytext));}
 %%
