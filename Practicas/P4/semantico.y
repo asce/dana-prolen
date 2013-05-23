@@ -169,7 +169,7 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
 }
 | expresion OPB_MUL expresion{
   atributocpy(&$$,&$1);
-  if(check_OPB_MUL(&$1,&$3)==0) $$.tipo=desconocido;
+  if(check_OPB_MUL(&$1,&$3)==0) {$$.tipo=desconocido;getchar();}
   if($2.atrib == 1){ /*  **  */
     if(checkArrayMulDimension(&$1,&$3)==0)$$.tipo=desconocido;
   }else{

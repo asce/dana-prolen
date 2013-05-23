@@ -645,8 +645,8 @@ void checkSignArray(atributos* attOPB_ADD){
     }
 }
 int check_OPB_OR(atributos* op1,atributos* op2){
-  int equalType = checkEqualType(op1,op2);
-  int valid = 1;
+
+  int valid = checkEqualType(op1,op2);;
   if(op1->tipo!=booleano){
     printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_OR debe ser booleano\n",yylineno);
     valid = 0;
@@ -658,8 +658,7 @@ int check_OPB_OR(atributos* op1,atributos* op2){
   return valid;
 }
 int check_OPB_AND(atributos* op1,atributos* op2){
-  int equalType = checkEqualType(op1,op2);
-  int valid = 1;
+  int valid = checkEqualType(op1,op2);
   if(op1->tipo!=booleano){
     printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_AND debe ser booleano\n",yylineno);
     valid = 0;
@@ -672,8 +671,7 @@ int check_OPB_AND(atributos* op1,atributos* op2){
 
 }
 int check_OPB_IG(atributos* op1,atributos* op2){
-  int valid = 1;
-  int equalType = checkEqualType(op1,op2);
+  int valid  = checkEqualType(op1,op2);
   if(op1->tipo!=entero && op1->tipo!=real){
     printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_IG debe ser entero o real\n",yylineno);
     valid = 0;
@@ -687,8 +685,7 @@ int check_OPB_IG(atributos* op1,atributos* op2){
 }
 //TODO
 int check_OPB_REL(atributos* op1,atributos* op2){
-  int valid =1;
-  int equalType = checkEqualType(op1,op2);
+  int valid = checkEqualType(op1,op2);
   if(op1->tipo!=entero && op1->tipo!=real){
     printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_REL debe ser entero o real\n",yylineno);
     valid = 0;
@@ -701,8 +698,7 @@ int check_OPB_REL(atributos* op1,atributos* op2){
 
 }
 int check_OPB_ADD(atributos* op1,atributos* op2){
-  int valid = 1;
-  int equalType = checkEqualType(op1,op2);
+  int valid = checkEqualType(op1,op2);
   if(op1->tipo!=entero && op1->tipo!=real && op1->tipo!=array_entero && op1->tipo!=array_real){
     printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_ADD debe ser entero,array_entero,real o array_real\n",yylineno);
     valid = 0;
@@ -716,8 +712,7 @@ int check_OPB_ADD(atributos* op1,atributos* op2){
 }
 
 int check_OPB_MUL(atributos* op1,atributos* op2){
-  int valid = 1;
-  int equalType = checkEqualType(op1,op2);
+  int valid = checkEqualType(op1,op2);
   if(op1->tipo!=entero && op1->tipo!=real && op1->tipo!=array_entero && op1->tipo!=array_real){
     printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_MUL debe ser entero,array_entero,real o array_real\n",yylineno);
     valid = 0;
