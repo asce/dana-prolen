@@ -63,7 +63,7 @@ main{
 			read valor;
                         write "Esto ",valor," es ", vc," una prueba";
 
-			if(d1 > 0.0){
+			if(0.0){
 	  			begin_declare
 	    			int dato;
 	  			end_declare

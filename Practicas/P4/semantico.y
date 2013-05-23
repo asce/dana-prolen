@@ -178,7 +178,7 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
   $$.lexema = "_";
 }
 | OPU expresion { if(checkBoolean(&$2)==0)$$.tipo=desconocido; }
-| iden 
+| iden {atributocpy(&$$,&$1);}
 {
 scope_index_TS = checkScope(&$1); 
  if(scope_index_TS){
