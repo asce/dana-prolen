@@ -71,7 +71,7 @@ FINBLO {IntroFinBloq();}
 declar_de_subprogs: declar_de_subprogs declar_subprog | ;
 
 declar_subprog: cabecera_subprograma { subProg = 1; } 
-bloque { subProg = 0; }
+bloque { /*subProg = 0;*/ }
                 ;
 
 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ {TS_InsertaSUBPROG(&$2);} declar_parametros PARDER

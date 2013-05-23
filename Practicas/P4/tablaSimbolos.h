@@ -330,11 +330,9 @@ void IntroIniBloq() {
 	addNode(&TS[last_proc_index].lista_parametros,TS[index].tipoDato);
 	index++;
       }
-      
-
-
     }
   }
+  subProg=0;
 	//MostrarTS();
 }
 
