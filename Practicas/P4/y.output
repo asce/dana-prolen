@@ -1,4 +1,4 @@
-Estado 89 conflictos: 1 desplazamiento(s)/reducción(ones)
+Estado 43 conflictos: 1 desplazamiento(s)/reducción(ones)
 
 
 Gramática
@@ -115,32 +115,38 @@ Gramática
    71 sentencia_if: alternativa_doble
    72             | alternativa_simple
 
-   73 alternativa_simple: IF expresion sentencia
+   73 alternativa_simple: if_expresion_sentencia
 
-   74 alternativa_doble: IF expresion sentencia ELSE sentencia
+   74 alternativa_doble: if_expresion_sentencia ELSE sentencia
 
-   75 sentencia_while: WHILE PARIZ expresion PARDER sentencia
+   75 $@16: /* vacío */
 
-   76 sentencia_entrada: READ lista_variables PYC
+   76 if_expresion_sentencia: IF expresion $@16 sentencia
 
-   77 sentencia_salida: WRITE lista_expresiones_o_cadena PYC
+   77 $@17: /* vacío */
 
-   78 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA expresion_o_cadena
-   79                           | expresion_o_cadena
+   78 sentencia_while: WHILE PARIZ expresion $@17 PARDER sentencia
 
-   80 expresion_o_cadena: expresion
-   81                   | CADENA
+   79 sentencia_entrada: READ lista_variables PYC
 
-   82 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO
+   80 sentencia_salida: WRITE lista_expresiones_o_cadena PYC
 
-   83 casos: casos CASE opcion DOSP sentencias BREAK PYC
-   84      | /* vacío */
+   81 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA expresion_o_cadena
+   82                           | expresion_o_cadena
 
-   85 opcion: CONSTANTE_E
-   86       | CARACTER
+   83 expresion_o_cadena: expresion
+   84                   | CADENA
 
-   87 caso_por_defecto: DEFAULT DOSP sentencias
-   88                 | /* vacío */
+   85 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO
+
+   86 casos: casos CASE opcion DOSP sentencias BREAK PYC
+   87      | /* vacío */
+
+   88 opcion: CONSTANTE_E
+   89       | CARACTER
+
+   90 caso_por_defecto: DEFAULT DOSP sentencias
+   91                 | /* vacío */
 
 
 Terminales con las reglas donde aparecen
@@ -148,33 +154,33 @@ Terminales con las reglas donde aparecen
 $end (0) 0
 error (256) 19 27 33 44 62
 MAIN (258) 3
-INICIO (259) 6 68 82
-FINBLO (260) 6 68 82
+INICIO (259) 6 68 85
+FINBLO (260) 6 68 85
 INICIOV (261) 23
 FINV (262) 23
-PYC (263) 30 47 65 67 76 77 83
-COMA (264) 16 22 31 69 78
+PYC (263) 30 47 65 67 79 80 86
+COMA (264) 16 22 31 69 81
 TIPOSIMPLE (265) 16 18 30
 PROCED (266) 12 14
 CORIZ (267) 21 22
 CORDER (268) 21 22
-IF (269) 73 74
+IF (269) 76
 ELSE (270) 74
-WHILE (271) 75
-READ (272) 76
-WRITE (273) 77
-SWITCH (274) 82
-CASE (275) 83
-DEFAULT (276) 87
-DOSP (277) 83 87
-BREAK (278) 83
+WHILE (271) 78
+READ (272) 79
+WRITE (273) 80
+SWITCH (274) 85
+CASE (275) 86
+DEFAULT (276) 90
+DOSP (277) 86 90
+BREAK (278) 86
 CONSTANTE (279) 58
-PARDER (280) 12 14 48 65 67 75 82
-PARIZ (281) 12 14 48 65 67 75 82
-CADENA (282) 81
-IDENTIFICADOR (283) 12 14 20 21 22 65 67 82
-CONSTANTE_E (284) 59 85
-CARACTER (285) 60 86
+PARDER (280) 12 14 48 65 67 78 85
+PARIZ (281) 12 14 48 65 67 78 85
+CADENA (282) 84
+IDENTIFICADOR (283) 12 14 20 21 22 65 67 85
+CONSTANTE_E (284) 59 88
+CARACTER (285) 60 89
 ASIG (286) 47
 OPB_OR (287) 50
 OPB_AND (288) 51
@@ -232,12 +238,12 @@ $@9 (59)
 $@10 (60)
     en la izquierda: 29, en la derecha: 30
 lista_variables (61)
-    en la izquierda: 31 32 33, en la derecha: 30 31 76
+    en la izquierda: 31 32 33, en la derecha: 30 31 79
 sentencias (62)
-    en la izquierda: 34 35, en la derecha: 6 34 83 87
+    en la izquierda: 34 35, en la derecha: 6 34 86 90
 sentencia (63)
     en la izquierda: 36 37 38 39 40 41 42 43 44, en la derecha: 34
-    35 73 74 75
+    35 74 76 78
 sentencia_asignacion (64)
     en la izquierda: 47, en la derecha: 37
 $@11 (65)
@@ -246,8 +252,8 @@ $@12 (66)
     en la izquierda: 46, en la derecha: 47
 expresion (67)
     en la izquierda: 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62,
-    en la derecha: 21 22 47 48 49 50 51 52 53 54 55 56 69 70 73 74
-    75 80
+    en la derecha: 21 22 47 48 49 50 51 52 53 54 55 56 69 70 76 78
+    83
 procedimiento (68)
     en la izquierda: 65 67, en la derecha: 42
 $@13 (69)
@@ -266,24 +272,30 @@ alternativa_simple (75)
     en la izquierda: 73, en la derecha: 72
 alternativa_doble (76)
     en la izquierda: 74, en la derecha: 71
-sentencia_while (77)
-    en la izquierda: 75, en la derecha: 39
-sentencia_entrada (78)
-    en la izquierda: 76, en la derecha: 40
-sentencia_salida (79)
-    en la izquierda: 77, en la derecha: 41
-lista_expresiones_o_cadena (80)
-    en la izquierda: 78 79, en la derecha: 77 78
-expresion_o_cadena (81)
-    en la izquierda: 80 81, en la derecha: 78 79
-sentencia_case (82)
-    en la izquierda: 82, en la derecha: 43
-casos (83)
-    en la izquierda: 83 84, en la derecha: 82 83
-opcion (84)
-    en la izquierda: 85 86, en la derecha: 83
-caso_por_defecto (85)
-    en la izquierda: 87 88, en la derecha: 82
+if_expresion_sentencia (77)
+    en la izquierda: 76, en la derecha: 73 74
+$@16 (78)
+    en la izquierda: 75, en la derecha: 76
+sentencia_while (79)
+    en la izquierda: 78, en la derecha: 39
+$@17 (80)
+    en la izquierda: 77, en la derecha: 78
+sentencia_entrada (81)
+    en la izquierda: 79, en la derecha: 40
+sentencia_salida (82)
+    en la izquierda: 80, en la derecha: 41
+lista_expresiones_o_cadena (83)
+    en la izquierda: 81 82, en la derecha: 80 81
+expresion_o_cadena (84)
+    en la izquierda: 83 84, en la derecha: 81 82
+sentencia_case (85)
+    en la izquierda: 85, en la derecha: 43
+casos (86)
+    en la izquierda: 86 87, en la derecha: 85 86
+opcion (87)
+    en la izquierda: 88 89, en la derecha: 86
+caso_por_defecto (88)
+    en la izquierda: 90 91, en la derecha: 85
 
 
 estado 0
@@ -465,21 +477,22 @@ estado 19
     SWITCH         desplazar e ir al estado 30
     IDENTIFICADOR  desplazar e ir al estado 31
 
-    bloque                ir al estado 32
-    declar_subprog        ir al estado 33
-    cabecera_subprograma  ir al estado 34
-    iden                  ir al estado 35
-    sentencias            ir al estado 36
-    sentencia             ir al estado 37
-    sentencia_asignacion  ir al estado 38
-    procedimiento         ir al estado 39
-    sentencia_if          ir al estado 40
-    alternativa_simple    ir al estado 41
-    alternativa_doble     ir al estado 42
-    sentencia_while       ir al estado 43
-    sentencia_entrada     ir al estado 44
-    sentencia_salida      ir al estado 45
-    sentencia_case        ir al estado 46
+    bloque                  ir al estado 32
+    declar_subprog          ir al estado 33
+    cabecera_subprograma    ir al estado 34
+    iden                    ir al estado 35
+    sentencias              ir al estado 36
+    sentencia               ir al estado 37
+    sentencia_asignacion    ir al estado 38
+    procedimiento           ir al estado 39
+    sentencia_if            ir al estado 40
+    alternativa_simple      ir al estado 41
+    alternativa_doble       ir al estado 42
+    if_expresion_sentencia  ir al estado 43
+    sentencia_while         ir al estado 44
+    sentencia_entrada       ir al estado 45
+    sentencia_salida        ir al estado 46
+    sentencia_case          ir al estado 47
 
 
 estado 20
@@ -495,7 +508,7 @@ estado 21
    21     | IDENTIFICADOR . CORIZ expresion CORDER
    22     | IDENTIFICADOR . CORIZ expresion COMA expresion CORDER
 
-    CORIZ  desplazar e ir al estado 47
+    CORIZ  desplazar e ir al estado 48
 
     $default  reduce usando la regla 20 (iden)
 
@@ -512,11 +525,11 @@ estado 23
    30 cuerpo_decla_variables: TIPOSIMPLE $@9 lista_variables . $@10 PYC
    31 lista_variables: lista_variables . COMA iden
 
-    COMA  desplazar e ir al estado 48
+    COMA  desplazar e ir al estado 49
 
     $default  reduce usando la regla 29 ($@10)
 
-    $@10  ir al estado 49
+    $@10  ir al estado 50
 
 
 estado 24
@@ -531,74 +544,73 @@ estado 25
    12 cabecera_subprograma: PROCED . IDENTIFICADOR PARIZ $@5 declar_parametros PARDER
    14                     | PROCED . IDENTIFICADOR PARIZ $@6 PARDER
 
-    IDENTIFICADOR  desplazar e ir al estado 50
+    IDENTIFICADOR  desplazar e ir al estado 51
 
 
 estado 26
 
-   73 alternativa_simple: IF . expresion sentencia
-   74 alternativa_doble: IF . expresion sentencia ELSE sentencia
+   76 if_expresion_sentencia: IF . expresion $@16 sentencia
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
     IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    iden       ir al estado 59
-    expresion  ir al estado 60
-    agregados  ir al estado 61
+    iden       ir al estado 60
+    expresion  ir al estado 61
+    agregados  ir al estado 62
 
 
 estado 27
 
-   75 sentencia_while: WHILE . PARIZ expresion PARDER sentencia
+   78 sentencia_while: WHILE . PARIZ expresion $@17 PARDER sentencia
 
-    PARIZ  desplazar e ir al estado 62
+    PARIZ  desplazar e ir al estado 63
 
 
 estado 28
 
-   76 sentencia_entrada: READ . lista_variables PYC
+   79 sentencia_entrada: READ . lista_variables PYC
 
     error          desplazar e ir al estado 20
     IDENTIFICADOR  desplazar e ir al estado 21
 
     iden             ir al estado 22
-    lista_variables  ir al estado 63
+    lista_variables  ir al estado 64
 
 
 estado 29
 
-   77 sentencia_salida: WRITE . lista_expresiones_o_cadena PYC
+   80 sentencia_salida: WRITE . lista_expresiones_o_cadena PYC
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
-    CADENA         desplazar e ir al estado 64
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
+    CADENA         desplazar e ir al estado 65
     IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    iden                        ir al estado 59
-    expresion                   ir al estado 65
-    agregados                   ir al estado 61
-    lista_expresiones_o_cadena  ir al estado 66
-    expresion_o_cadena          ir al estado 67
+    iden                        ir al estado 60
+    expresion                   ir al estado 66
+    agregados                   ir al estado 62
+    lista_expresiones_o_cadena  ir al estado 67
+    expresion_o_cadena          ir al estado 68
 
 
 estado 30
 
-   82 sentencia_case: SWITCH . PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO
+   85 sentencia_case: SWITCH . PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO
 
-    PARIZ  desplazar e ir al estado 68
+    PARIZ  desplazar e ir al estado 69
 
 
 estado 31
@@ -609,8 +621,8 @@ estado 31
    65 procedimiento: IDENTIFICADOR . PARIZ $@13 lista_expresiones PARDER $@14 PYC
    67              | IDENTIFICADOR . PARIZ PARDER $@15 PYC
 
-    CORIZ  desplazar e ir al estado 47
-    PARIZ  desplazar e ir al estado 69
+    CORIZ  desplazar e ir al estado 48
+    PARIZ  desplazar e ir al estado 70
 
     $default  reduce usando la regla 20 (iden)
 
@@ -635,7 +647,7 @@ estado 34
 
     $default  reduce usando la regla 9 ($@4)
 
-    $@4  ir al estado 70
+    $@4  ir al estado 71
 
 
 estado 35
@@ -644,7 +656,7 @@ estado 35
 
     $default  reduce usando la regla 45 ($@11)
 
-    $@11  ir al estado 71
+    $@11  ir al estado 72
 
 
 estado 36
@@ -654,7 +666,7 @@ estado 36
 
     error          desplazar e ir al estado 24
     INICIO         desplazar e ir al estado 6
-    FINBLO         desplazar e ir al estado 72
+    FINBLO         desplazar e ir al estado 73
     IF             desplazar e ir al estado 26
     WHILE          desplazar e ir al estado 27
     READ           desplazar e ir al estado 28
@@ -662,18 +674,19 @@ estado 36
     SWITCH         desplazar e ir al estado 30
     IDENTIFICADOR  desplazar e ir al estado 31
 
-    bloque                ir al estado 32
-    iden                  ir al estado 35
-    sentencia             ir al estado 73
-    sentencia_asignacion  ir al estado 38
-    procedimiento         ir al estado 39
-    sentencia_if          ir al estado 40
-    alternativa_simple    ir al estado 41
-    alternativa_doble     ir al estado 42
-    sentencia_while       ir al estado 43
-    sentencia_entrada     ir al estado 44
-    sentencia_salida      ir al estado 45
-    sentencia_case        ir al estado 46
+    bloque                  ir al estado 32
+    iden                    ir al estado 35
+    sentencia               ir al estado 74
+    sentencia_asignacion    ir al estado 38
+    procedimiento           ir al estado 39
+    sentencia_if            ir al estado 40
+    alternativa_simple      ir al estado 41
+    alternativa_doble       ir al estado 42
+    if_expresion_sentencia  ir al estado 43
+    sentencia_while         ir al estado 44
+    sentencia_entrada       ir al estado 45
+    sentencia_salida        ir al estado 46
+    sentencia_case          ir al estado 47
 
 
 estado 37
@@ -720,189 +733,200 @@ estado 42
 
 estado 43
 
+   73 alternativa_simple: if_expresion_sentencia .
+   74 alternativa_doble: if_expresion_sentencia . ELSE sentencia
+
+    ELSE  desplazar e ir al estado 75
+
+    ELSE      [reduce usando la regla 73 (alternativa_simple)]
+    $default  reduce usando la regla 73 (alternativa_simple)
+
+
+estado 44
+
    39 sentencia: sentencia_while .
 
     $default  reduce usando la regla 39 (sentencia)
 
 
-estado 44
+estado 45
 
    40 sentencia: sentencia_entrada .
 
     $default  reduce usando la regla 40 (sentencia)
 
 
-estado 45
+estado 46
 
    41 sentencia: sentencia_salida .
 
     $default  reduce usando la regla 41 (sentencia)
 
 
-estado 46
+estado 47
 
    43 sentencia: sentencia_case .
 
     $default  reduce usando la regla 43 (sentencia)
 
 
-estado 47
+estado 48
 
    21 iden: IDENTIFICADOR CORIZ . expresion CORDER
    22     | IDENTIFICADOR CORIZ . expresion COMA expresion CORDER
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
     IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    iden       ir al estado 59
-    expresion  ir al estado 74
-    agregados  ir al estado 61
+    iden       ir al estado 60
+    expresion  ir al estado 76
+    agregados  ir al estado 62
 
 
-estado 48
+estado 49
 
    31 lista_variables: lista_variables COMA . iden
 
     IDENTIFICADOR  desplazar e ir al estado 21
 
-    iden  ir al estado 75
-
-
-estado 49
-
-   30 cuerpo_decla_variables: TIPOSIMPLE $@9 lista_variables $@10 . PYC
-
-    PYC  desplazar e ir al estado 76
+    iden  ir al estado 77
 
 
 estado 50
 
-   12 cabecera_subprograma: PROCED IDENTIFICADOR . PARIZ $@5 declar_parametros PARDER
-   14                     | PROCED IDENTIFICADOR . PARIZ $@6 PARDER
+   30 cuerpo_decla_variables: TIPOSIMPLE $@9 lista_variables $@10 . PYC
 
-    PARIZ  desplazar e ir al estado 77
+    PYC  desplazar e ir al estado 78
 
 
 estado 51
+
+   12 cabecera_subprograma: PROCED IDENTIFICADOR . PARIZ $@5 declar_parametros PARDER
+   14                     | PROCED IDENTIFICADOR . PARIZ $@6 PARDER
+
+    PARIZ  desplazar e ir al estado 79
+
+
+estado 52
 
    62 expresion: error .
 
     $default  reduce usando la regla 62 (expresion)
 
 
-estado 52
+estado 53
 
    68 agregados: INICIO . lista_expresiones FINBLO
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
     IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    iden               ir al estado 59
-    expresion          ir al estado 78
-    agregados          ir al estado 61
-    lista_expresiones  ir al estado 79
+    iden               ir al estado 60
+    expresion          ir al estado 80
+    agregados          ir al estado 62
+    lista_expresiones  ir al estado 81
 
 
-estado 53
+estado 54
 
    58 expresion: CONSTANTE .
 
     $default  reduce usando la regla 58 (expresion)
 
 
-estado 54
+estado 55
 
    48 expresion: PARIZ . expresion PARDER
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
     IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    iden       ir al estado 59
-    expresion  ir al estado 80
-    agregados  ir al estado 61
+    iden       ir al estado 60
+    expresion  ir al estado 82
+    agregados  ir al estado 62
 
 
-estado 55
+estado 56
 
    59 expresion: CONSTANTE_E .
 
     $default  reduce usando la regla 59 (expresion)
 
 
-estado 56
+estado 57
 
    60 expresion: CARACTER .
 
     $default  reduce usando la regla 60 (expresion)
 
 
-estado 57
+estado 58
 
    49 expresion: OPB_ADD . expresion
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
     IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    iden       ir al estado 59
-    expresion  ir al estado 81
-    agregados  ir al estado 61
-
-
-estado 58
-
-   56 expresion: OPU . expresion
-
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
-    IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
-
-    iden       ir al estado 59
-    expresion  ir al estado 82
-    agregados  ir al estado 61
+    iden       ir al estado 60
+    expresion  ir al estado 83
+    agregados  ir al estado 62
 
 
 estado 59
+
+   56 expresion: OPU . expresion
+
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
+    IDENTIFICADOR  desplazar e ir al estado 21
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
+
+    iden       ir al estado 60
+    expresion  ir al estado 84
+    agregados  ir al estado 62
+
+
+estado 60
 
    57 expresion: iden .
 
     $default  reduce usando la regla 57 (expresion)
 
 
-estado 60
+estado 61
 
    50 expresion: expresion . OPB_OR expresion
    51          | expresion . OPB_AND expresion
@@ -910,8 +934,150 @@ estado 60
    53          | expresion . OPB_REL expresion
    54          | expresion . OPB_ADD expresion
    55          | expresion . OPB_MUL expresion
-   73 alternativa_simple: IF expresion . sentencia
-   74 alternativa_doble: IF expresion . sentencia ELSE sentencia
+   76 if_expresion_sentencia: IF expresion . $@16 sentencia
+
+    OPB_OR   desplazar e ir al estado 85
+    OPB_AND  desplazar e ir al estado 86
+    OPB_IG   desplazar e ir al estado 87
+    OPB_REL  desplazar e ir al estado 88
+    OPB_ADD  desplazar e ir al estado 89
+    OPB_MUL  desplazar e ir al estado 90
+
+    $default  reduce usando la regla 75 ($@16)
+
+    $@16  ir al estado 91
+
+
+estado 62
+
+   61 expresion: agregados .
+
+    $default  reduce usando la regla 61 (expresion)
+
+
+estado 63
+
+   78 sentencia_while: WHILE PARIZ . expresion $@17 PARDER sentencia
+
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
+    IDENTIFICADOR  desplazar e ir al estado 21
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
+
+    iden       ir al estado 60
+    expresion  ir al estado 92
+    agregados  ir al estado 62
+
+
+estado 64
+
+   31 lista_variables: lista_variables . COMA iden
+   79 sentencia_entrada: READ lista_variables . PYC
+
+    PYC   desplazar e ir al estado 93
+    COMA  desplazar e ir al estado 49
+
+
+estado 65
+
+   84 expresion_o_cadena: CADENA .
+
+    $default  reduce usando la regla 84 (expresion_o_cadena)
+
+
+estado 66
+
+   50 expresion: expresion . OPB_OR expresion
+   51          | expresion . OPB_AND expresion
+   52          | expresion . OPB_IG expresion
+   53          | expresion . OPB_REL expresion
+   54          | expresion . OPB_ADD expresion
+   55          | expresion . OPB_MUL expresion
+   83 expresion_o_cadena: expresion .
+
+    OPB_OR   desplazar e ir al estado 85
+    OPB_AND  desplazar e ir al estado 86
+    OPB_IG   desplazar e ir al estado 87
+    OPB_REL  desplazar e ir al estado 88
+    OPB_ADD  desplazar e ir al estado 89
+    OPB_MUL  desplazar e ir al estado 90
+
+    $default  reduce usando la regla 83 (expresion_o_cadena)
+
+
+estado 67
+
+   80 sentencia_salida: WRITE lista_expresiones_o_cadena . PYC
+   81 lista_expresiones_o_cadena: lista_expresiones_o_cadena . COMA expresion_o_cadena
+
+    PYC   desplazar e ir al estado 94
+    COMA  desplazar e ir al estado 95
+
+
+estado 68
+
+   82 lista_expresiones_o_cadena: expresion_o_cadena .
+
+    $default  reduce usando la regla 82 (lista_expresiones_o_cadena)
+
+
+estado 69
+
+   85 sentencia_case: SWITCH PARIZ . IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO
+
+    IDENTIFICADOR  desplazar e ir al estado 96
+
+
+estado 70
+
+   65 procedimiento: IDENTIFICADOR PARIZ . $@13 lista_expresiones PARDER $@14 PYC
+   67              | IDENTIFICADOR PARIZ . PARDER $@15 PYC
+
+    PARDER  desplazar e ir al estado 97
+
+    $default  reduce usando la regla 63 ($@13)
+
+    $@13  ir al estado 98
+
+
+estado 71
+
+   10 declar_subprog: cabecera_subprograma $@4 . bloque
+
+    INICIO  desplazar e ir al estado 6
+
+    bloque  ir al estado 99
+
+
+estado 72
+
+   47 sentencia_asignacion: iden $@11 . ASIG expresion $@12 PYC
+
+    ASIG  desplazar e ir al estado 100
+
+
+estado 73
+
+    6 bloque: INICIO $@2 declar_de_variables_locales $@3 declar_de_subprogs sentencias FINBLO .
+
+    $default  reduce usando la regla 6 (bloque)
+
+
+estado 74
+
+   34 sentencias: sentencias sentencia .
+
+    $default  reduce usando la regla 34 (sentencias)
+
+
+estado 75
+
+   74 alternativa_doble: if_expresion_sentencia ELSE . sentencia
 
     error          desplazar e ir al estado 24
     INICIO         desplazar e ir al estado 6
@@ -921,155 +1087,23 @@ estado 60
     WRITE          desplazar e ir al estado 29
     SWITCH         desplazar e ir al estado 30
     IDENTIFICADOR  desplazar e ir al estado 31
-    OPB_OR         desplazar e ir al estado 83
-    OPB_AND        desplazar e ir al estado 84
-    OPB_IG         desplazar e ir al estado 85
-    OPB_REL        desplazar e ir al estado 86
-    OPB_ADD        desplazar e ir al estado 87
-    OPB_MUL        desplazar e ir al estado 88
 
-    bloque                ir al estado 32
-    iden                  ir al estado 35
-    sentencia             ir al estado 89
-    sentencia_asignacion  ir al estado 38
-    procedimiento         ir al estado 39
-    sentencia_if          ir al estado 40
-    alternativa_simple    ir al estado 41
-    alternativa_doble     ir al estado 42
-    sentencia_while       ir al estado 43
-    sentencia_entrada     ir al estado 44
-    sentencia_salida      ir al estado 45
-    sentencia_case        ir al estado 46
+    bloque                  ir al estado 32
+    iden                    ir al estado 35
+    sentencia               ir al estado 101
+    sentencia_asignacion    ir al estado 38
+    procedimiento           ir al estado 39
+    sentencia_if            ir al estado 40
+    alternativa_simple      ir al estado 41
+    alternativa_doble       ir al estado 42
+    if_expresion_sentencia  ir al estado 43
+    sentencia_while         ir al estado 44
+    sentencia_entrada       ir al estado 45
+    sentencia_salida        ir al estado 46
+    sentencia_case          ir al estado 47
 
 
-estado 61
-
-   61 expresion: agregados .
-
-    $default  reduce usando la regla 61 (expresion)
-
-
-estado 62
-
-   75 sentencia_while: WHILE PARIZ . expresion PARDER sentencia
-
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
-    IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
-
-    iden       ir al estado 59
-    expresion  ir al estado 90
-    agregados  ir al estado 61
-
-
-estado 63
-
-   31 lista_variables: lista_variables . COMA iden
-   76 sentencia_entrada: READ lista_variables . PYC
-
-    PYC   desplazar e ir al estado 91
-    COMA  desplazar e ir al estado 48
-
-
-estado 64
-
-   81 expresion_o_cadena: CADENA .
-
-    $default  reduce usando la regla 81 (expresion_o_cadena)
-
-
-estado 65
-
-   50 expresion: expresion . OPB_OR expresion
-   51          | expresion . OPB_AND expresion
-   52          | expresion . OPB_IG expresion
-   53          | expresion . OPB_REL expresion
-   54          | expresion . OPB_ADD expresion
-   55          | expresion . OPB_MUL expresion
-   80 expresion_o_cadena: expresion .
-
-    OPB_OR   desplazar e ir al estado 83
-    OPB_AND  desplazar e ir al estado 84
-    OPB_IG   desplazar e ir al estado 85
-    OPB_REL  desplazar e ir al estado 86
-    OPB_ADD  desplazar e ir al estado 87
-    OPB_MUL  desplazar e ir al estado 88
-
-    $default  reduce usando la regla 80 (expresion_o_cadena)
-
-
-estado 66
-
-   77 sentencia_salida: WRITE lista_expresiones_o_cadena . PYC
-   78 lista_expresiones_o_cadena: lista_expresiones_o_cadena . COMA expresion_o_cadena
-
-    PYC   desplazar e ir al estado 92
-    COMA  desplazar e ir al estado 93
-
-
-estado 67
-
-   79 lista_expresiones_o_cadena: expresion_o_cadena .
-
-    $default  reduce usando la regla 79 (lista_expresiones_o_cadena)
-
-
-estado 68
-
-   82 sentencia_case: SWITCH PARIZ . IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO
-
-    IDENTIFICADOR  desplazar e ir al estado 94
-
-
-estado 69
-
-   65 procedimiento: IDENTIFICADOR PARIZ . $@13 lista_expresiones PARDER $@14 PYC
-   67              | IDENTIFICADOR PARIZ . PARDER $@15 PYC
-
-    PARDER  desplazar e ir al estado 95
-
-    $default  reduce usando la regla 63 ($@13)
-
-    $@13  ir al estado 96
-
-
-estado 70
-
-   10 declar_subprog: cabecera_subprograma $@4 . bloque
-
-    INICIO  desplazar e ir al estado 6
-
-    bloque  ir al estado 97
-
-
-estado 71
-
-   47 sentencia_asignacion: iden $@11 . ASIG expresion $@12 PYC
-
-    ASIG  desplazar e ir al estado 98
-
-
-estado 72
-
-    6 bloque: INICIO $@2 declar_de_variables_locales $@3 declar_de_subprogs sentencias FINBLO .
-
-    $default  reduce usando la regla 6 (bloque)
-
-
-estado 73
-
-   34 sentencias: sentencias sentencia .
-
-    $default  reduce usando la regla 34 (sentencias)
-
-
-estado 74
+estado 76
 
    21 iden: IDENTIFICADOR CORIZ expresion . CORDER
    22     | IDENTIFICADOR CORIZ expresion . COMA expresion CORDER
@@ -1080,31 +1114,31 @@ estado 74
    54          | expresion . OPB_ADD expresion
    55          | expresion . OPB_MUL expresion
 
-    COMA     desplazar e ir al estado 99
-    CORDER   desplazar e ir al estado 100
-    OPB_OR   desplazar e ir al estado 83
-    OPB_AND  desplazar e ir al estado 84
-    OPB_IG   desplazar e ir al estado 85
-    OPB_REL  desplazar e ir al estado 86
-    OPB_ADD  desplazar e ir al estado 87
-    OPB_MUL  desplazar e ir al estado 88
+    COMA     desplazar e ir al estado 102
+    CORDER   desplazar e ir al estado 103
+    OPB_OR   desplazar e ir al estado 85
+    OPB_AND  desplazar e ir al estado 86
+    OPB_IG   desplazar e ir al estado 87
+    OPB_REL  desplazar e ir al estado 88
+    OPB_ADD  desplazar e ir al estado 89
+    OPB_MUL  desplazar e ir al estado 90
 
 
-estado 75
+estado 77
 
    31 lista_variables: lista_variables COMA iden .
 
     $default  reduce usando la regla 31 (lista_variables)
 
 
-estado 76
+estado 78
 
    30 cuerpo_decla_variables: TIPOSIMPLE $@9 lista_variables $@10 PYC .
 
     $default  reduce usando la regla 30 (cuerpo_decla_variables)
 
 
-estado 77
+estado 79
 
    12 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ . $@5 declar_parametros PARDER
    14                     | PROCED IDENTIFICADOR PARIZ . $@6 PARDER
@@ -1112,11 +1146,11 @@ estado 77
     PARDER    reduce usando la regla 13 ($@6)
     $default  reduce usando la regla 11 ($@5)
 
-    $@5  ir al estado 101
-    $@6  ir al estado 102
+    $@5  ir al estado 104
+    $@6  ir al estado 105
 
 
-estado 78
+estado 80
 
    50 expresion: expresion . OPB_OR expresion
    51          | expresion . OPB_AND expresion
@@ -1126,26 +1160,26 @@ estado 78
    55          | expresion . OPB_MUL expresion
    70 lista_expresiones: expresion .
 
-    OPB_OR   desplazar e ir al estado 83
-    OPB_AND  desplazar e ir al estado 84
-    OPB_IG   desplazar e ir al estado 85
-    OPB_REL  desplazar e ir al estado 86
-    OPB_ADD  desplazar e ir al estado 87
-    OPB_MUL  desplazar e ir al estado 88
+    OPB_OR   desplazar e ir al estado 85
+    OPB_AND  desplazar e ir al estado 86
+    OPB_IG   desplazar e ir al estado 87
+    OPB_REL  desplazar e ir al estado 88
+    OPB_ADD  desplazar e ir al estado 89
+    OPB_MUL  desplazar e ir al estado 90
 
     $default  reduce usando la regla 70 (lista_expresiones)
 
 
-estado 79
+estado 81
 
    68 agregados: INICIO lista_expresiones . FINBLO
    69 lista_expresiones: lista_expresiones . COMA expresion
 
-    FINBLO  desplazar e ir al estado 103
-    COMA    desplazar e ir al estado 104
+    FINBLO  desplazar e ir al estado 106
+    COMA    desplazar e ir al estado 107
 
 
-estado 80
+estado 82
 
    48 expresion: PARIZ expresion . PARDER
    50          | expresion . OPB_OR expresion
@@ -1155,16 +1189,16 @@ estado 80
    54          | expresion . OPB_ADD expresion
    55          | expresion . OPB_MUL expresion
 
-    PARDER   desplazar e ir al estado 105
-    OPB_OR   desplazar e ir al estado 83
-    OPB_AND  desplazar e ir al estado 84
-    OPB_IG   desplazar e ir al estado 85
-    OPB_REL  desplazar e ir al estado 86
-    OPB_ADD  desplazar e ir al estado 87
-    OPB_MUL  desplazar e ir al estado 88
+    PARDER   desplazar e ir al estado 108
+    OPB_OR   desplazar e ir al estado 85
+    OPB_AND  desplazar e ir al estado 86
+    OPB_IG   desplazar e ir al estado 87
+    OPB_REL  desplazar e ir al estado 88
+    OPB_ADD  desplazar e ir al estado 89
+    OPB_MUL  desplazar e ir al estado 90
 
 
-estado 81
+estado 83
 
    49 expresion: OPB_ADD expresion .
    50          | expresion . OPB_OR expresion
@@ -1177,7 +1211,7 @@ estado 81
     $default  reduce usando la regla 49 (expresion)
 
 
-estado 82
+estado 84
 
    50 expresion: expresion . OPB_OR expresion
    51          | expresion . OPB_AND expresion
@@ -1190,132 +1224,149 @@ estado 82
     $default  reduce usando la regla 56 (expresion)
 
 
-estado 83
+estado 85
 
    50 expresion: expresion OPB_OR . expresion
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
     IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    iden       ir al estado 59
-    expresion  ir al estado 106
-    agregados  ir al estado 61
-
-
-estado 84
-
-   51 expresion: expresion OPB_AND . expresion
-
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
-    IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
-
-    iden       ir al estado 59
-    expresion  ir al estado 107
-    agregados  ir al estado 61
-
-
-estado 85
-
-   52 expresion: expresion OPB_IG . expresion
-
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
-    IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
-
-    iden       ir al estado 59
-    expresion  ir al estado 108
-    agregados  ir al estado 61
+    iden       ir al estado 60
+    expresion  ir al estado 109
+    agregados  ir al estado 62
 
 
 estado 86
 
-   53 expresion: expresion OPB_REL . expresion
+   51 expresion: expresion OPB_AND . expresion
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
     IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    iden       ir al estado 59
-    expresion  ir al estado 109
-    agregados  ir al estado 61
+    iden       ir al estado 60
+    expresion  ir al estado 110
+    agregados  ir al estado 62
 
 
 estado 87
 
-   54 expresion: expresion OPB_ADD . expresion
+   52 expresion: expresion OPB_IG . expresion
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
     IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    iden       ir al estado 59
-    expresion  ir al estado 110
-    agregados  ir al estado 61
+    iden       ir al estado 60
+    expresion  ir al estado 111
+    agregados  ir al estado 62
 
 
 estado 88
 
-   55 expresion: expresion OPB_MUL . expresion
+   53 expresion: expresion OPB_REL . expresion
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
     IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    iden       ir al estado 59
-    expresion  ir al estado 111
-    agregados  ir al estado 61
+    iden       ir al estado 60
+    expresion  ir al estado 112
+    agregados  ir al estado 62
 
 
 estado 89
 
-   73 alternativa_simple: IF expresion sentencia .
-   74 alternativa_doble: IF expresion sentencia . ELSE sentencia
+   54 expresion: expresion OPB_ADD . expresion
 
-    ELSE  desplazar e ir al estado 112
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
+    IDENTIFICADOR  desplazar e ir al estado 21
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    ELSE      [reduce usando la regla 73 (alternativa_simple)]
-    $default  reduce usando la regla 73 (alternativa_simple)
+    iden       ir al estado 60
+    expresion  ir al estado 113
+    agregados  ir al estado 62
 
 
 estado 90
+
+   55 expresion: expresion OPB_MUL . expresion
+
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
+    IDENTIFICADOR  desplazar e ir al estado 21
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
+
+    iden       ir al estado 60
+    expresion  ir al estado 114
+    agregados  ir al estado 62
+
+
+estado 91
+
+   76 if_expresion_sentencia: IF expresion $@16 . sentencia
+
+    error          desplazar e ir al estado 24
+    INICIO         desplazar e ir al estado 6
+    IF             desplazar e ir al estado 26
+    WHILE          desplazar e ir al estado 27
+    READ           desplazar e ir al estado 28
+    WRITE          desplazar e ir al estado 29
+    SWITCH         desplazar e ir al estado 30
+    IDENTIFICADOR  desplazar e ir al estado 31
+
+    bloque                  ir al estado 32
+    iden                    ir al estado 35
+    sentencia               ir al estado 115
+    sentencia_asignacion    ir al estado 38
+    procedimiento           ir al estado 39
+    sentencia_if            ir al estado 40
+    alternativa_simple      ir al estado 41
+    alternativa_doble       ir al estado 42
+    if_expresion_sentencia  ir al estado 43
+    sentencia_while         ir al estado 44
+    sentencia_entrada       ir al estado 45
+    sentencia_salida        ir al estado 46
+    sentencia_case          ir al estado 47
+
+
+estado 92
 
    50 expresion: expresion . OPB_OR expresion
    51          | expresion . OPB_AND expresion
@@ -1323,191 +1374,201 @@ estado 90
    53          | expresion . OPB_REL expresion
    54          | expresion . OPB_ADD expresion
    55          | expresion . OPB_MUL expresion
-   75 sentencia_while: WHILE PARIZ expresion . PARDER sentencia
+   78 sentencia_while: WHILE PARIZ expresion . $@17 PARDER sentencia
 
-    PARDER   desplazar e ir al estado 113
-    OPB_OR   desplazar e ir al estado 83
-    OPB_AND  desplazar e ir al estado 84
-    OPB_IG   desplazar e ir al estado 85
-    OPB_REL  desplazar e ir al estado 86
-    OPB_ADD  desplazar e ir al estado 87
-    OPB_MUL  desplazar e ir al estado 88
+    OPB_OR   desplazar e ir al estado 85
+    OPB_AND  desplazar e ir al estado 86
+    OPB_IG   desplazar e ir al estado 87
+    OPB_REL  desplazar e ir al estado 88
+    OPB_ADD  desplazar e ir al estado 89
+    OPB_MUL  desplazar e ir al estado 90
 
+    $default  reduce usando la regla 77 ($@17)
 
-estado 91
-
-   76 sentencia_entrada: READ lista_variables PYC .
-
-    $default  reduce usando la regla 76 (sentencia_entrada)
-
-
-estado 92
-
-   77 sentencia_salida: WRITE lista_expresiones_o_cadena PYC .
-
-    $default  reduce usando la regla 77 (sentencia_salida)
+    $@17  ir al estado 116
 
 
 estado 93
 
-   78 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA . expresion_o_cadena
+   79 sentencia_entrada: READ lista_variables PYC .
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
-    CADENA         desplazar e ir al estado 64
-    IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
-
-    iden                ir al estado 59
-    expresion           ir al estado 65
-    agregados           ir al estado 61
-    expresion_o_cadena  ir al estado 114
+    $default  reduce usando la regla 79 (sentencia_entrada)
 
 
 estado 94
 
-   82 sentencia_case: SWITCH PARIZ IDENTIFICADOR . PARDER INICIO casos caso_por_defecto FINBLO
+   80 sentencia_salida: WRITE lista_expresiones_o_cadena PYC .
 
-    PARDER  desplazar e ir al estado 115
+    $default  reduce usando la regla 80 (sentencia_salida)
 
 
 estado 95
+
+   81 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA . expresion_o_cadena
+
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
+    CADENA         desplazar e ir al estado 65
+    IDENTIFICADOR  desplazar e ir al estado 21
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
+
+    iden                ir al estado 60
+    expresion           ir al estado 66
+    agregados           ir al estado 62
+    expresion_o_cadena  ir al estado 117
+
+
+estado 96
+
+   85 sentencia_case: SWITCH PARIZ IDENTIFICADOR . PARDER INICIO casos caso_por_defecto FINBLO
+
+    PARDER  desplazar e ir al estado 118
+
+
+estado 97
 
    67 procedimiento: IDENTIFICADOR PARIZ PARDER . $@15 PYC
 
     $default  reduce usando la regla 66 ($@15)
 
-    $@15  ir al estado 116
+    $@15  ir al estado 119
 
 
-estado 96
+estado 98
 
    65 procedimiento: IDENTIFICADOR PARIZ $@13 . lista_expresiones PARDER $@14 PYC
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
     IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    iden               ir al estado 59
-    expresion          ir al estado 78
-    agregados          ir al estado 61
-    lista_expresiones  ir al estado 117
+    iden               ir al estado 60
+    expresion          ir al estado 80
+    agregados          ir al estado 62
+    lista_expresiones  ir al estado 120
 
 
-estado 97
+estado 99
 
    10 declar_subprog: cabecera_subprograma $@4 bloque .
 
     $default  reduce usando la regla 10 (declar_subprog)
 
 
-estado 98
+estado 100
 
    47 sentencia_asignacion: iden $@11 ASIG . expresion $@12 PYC
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
     IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    iden       ir al estado 59
-    expresion  ir al estado 118
-    agregados  ir al estado 61
+    iden       ir al estado 60
+    expresion  ir al estado 121
+    agregados  ir al estado 62
 
 
-estado 99
+estado 101
+
+   74 alternativa_doble: if_expresion_sentencia ELSE sentencia .
+
+    $default  reduce usando la regla 74 (alternativa_doble)
+
+
+estado 102
 
    22 iden: IDENTIFICADOR CORIZ expresion COMA . expresion CORDER
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
     IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    iden       ir al estado 59
-    expresion  ir al estado 119
-    agregados  ir al estado 61
+    iden       ir al estado 60
+    expresion  ir al estado 122
+    agregados  ir al estado 62
 
 
-estado 100
+estado 103
 
    21 iden: IDENTIFICADOR CORIZ expresion CORDER .
 
     $default  reduce usando la regla 21 (iden)
 
 
-estado 101
+estado 104
 
    12 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ $@5 . declar_parametros PARDER
 
-    error       desplazar e ir al estado 120
-    TIPOSIMPLE  desplazar e ir al estado 121
+    error       desplazar e ir al estado 123
+    TIPOSIMPLE  desplazar e ir al estado 124
 
-    declar_parametros  ir al estado 122
+    declar_parametros  ir al estado 125
 
 
-estado 102
+estado 105
 
    14 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ $@6 . PARDER
 
-    PARDER  desplazar e ir al estado 123
+    PARDER  desplazar e ir al estado 126
 
 
-estado 103
+estado 106
 
    68 agregados: INICIO lista_expresiones FINBLO .
 
     $default  reduce usando la regla 68 (agregados)
 
 
-estado 104
+estado 107
 
    69 lista_expresiones: lista_expresiones COMA . expresion
 
-    error          desplazar e ir al estado 51
-    INICIO         desplazar e ir al estado 52
-    CONSTANTE      desplazar e ir al estado 53
-    PARIZ          desplazar e ir al estado 54
+    error          desplazar e ir al estado 52
+    INICIO         desplazar e ir al estado 53
+    CONSTANTE      desplazar e ir al estado 54
+    PARIZ          desplazar e ir al estado 55
     IDENTIFICADOR  desplazar e ir al estado 21
-    CONSTANTE_E    desplazar e ir al estado 55
-    CARACTER       desplazar e ir al estado 56
-    OPB_ADD        desplazar e ir al estado 57
-    OPU            desplazar e ir al estado 58
+    CONSTANTE_E    desplazar e ir al estado 56
+    CARACTER       desplazar e ir al estado 57
+    OPB_ADD        desplazar e ir al estado 58
+    OPU            desplazar e ir al estado 59
 
-    iden       ir al estado 59
-    expresion  ir al estado 124
-    agregados  ir al estado 61
+    iden       ir al estado 60
+    expresion  ir al estado 127
+    agregados  ir al estado 62
 
 
-estado 105
+estado 108
 
    48 expresion: PARIZ expresion PARDER .
 
     $default  reduce usando la regla 48 (expresion)
 
 
-estado 106
+estado 109
 
    50 expresion: expresion . OPB_OR expresion
    50          | expresion OPB_OR expresion .
@@ -1517,16 +1578,16 @@ estado 106
    54          | expresion . OPB_ADD expresion
    55          | expresion . OPB_MUL expresion
 
-    OPB_AND  desplazar e ir al estado 84
-    OPB_IG   desplazar e ir al estado 85
-    OPB_REL  desplazar e ir al estado 86
-    OPB_ADD  desplazar e ir al estado 87
-    OPB_MUL  desplazar e ir al estado 88
+    OPB_AND  desplazar e ir al estado 86
+    OPB_IG   desplazar e ir al estado 87
+    OPB_REL  desplazar e ir al estado 88
+    OPB_ADD  desplazar e ir al estado 89
+    OPB_MUL  desplazar e ir al estado 90
 
     $default  reduce usando la regla 50 (expresion)
 
 
-estado 107
+estado 110
 
    50 expresion: expresion . OPB_OR expresion
    51          | expresion . OPB_AND expresion
@@ -1536,15 +1597,15 @@ estado 107
    54          | expresion . OPB_ADD expresion
    55          | expresion . OPB_MUL expresion
 
-    OPB_IG   desplazar e ir al estado 85
-    OPB_REL  desplazar e ir al estado 86
-    OPB_ADD  desplazar e ir al estado 87
-    OPB_MUL  desplazar e ir al estado 88
+    OPB_IG   desplazar e ir al estado 87
+    OPB_REL  desplazar e ir al estado 88
+    OPB_ADD  desplazar e ir al estado 89
+    OPB_MUL  desplazar e ir al estado 90
 
     $default  reduce usando la regla 51 (expresion)
 
 
-estado 108
+estado 111
 
    50 expresion: expresion . OPB_OR expresion
    51          | expresion . OPB_AND expresion
@@ -1554,14 +1615,14 @@ estado 108
    54          | expresion . OPB_ADD expresion
    55          | expresion . OPB_MUL expresion
 
-    OPB_REL  desplazar e ir al estado 86
-    OPB_ADD  desplazar e ir al estado 87
-    OPB_MUL  desplazar e ir al estado 88
+    OPB_REL  desplazar e ir al estado 88
+    OPB_ADD  desplazar e ir al estado 89
+    OPB_MUL  desplazar e ir al estado 90
 
     $default  reduce usando la regla 52 (expresion)
 
 
-estado 109
+estado 112
 
    50 expresion: expresion . OPB_OR expresion
    51          | expresion . OPB_AND expresion
@@ -1571,13 +1632,13 @@ estado 109
    54          | expresion . OPB_ADD expresion
    55          | expresion . OPB_MUL expresion
 
-    OPB_ADD  desplazar e ir al estado 87
-    OPB_MUL  desplazar e ir al estado 88
+    OPB_ADD  desplazar e ir al estado 89
+    OPB_MUL  desplazar e ir al estado 90
 
     $default  reduce usando la regla 53 (expresion)
 
 
-estado 110
+estado 113
 
    50 expresion: expresion . OPB_OR expresion
    51          | expresion . OPB_AND expresion
@@ -1587,12 +1648,12 @@ estado 110
    54          | expresion OPB_ADD expresion .
    55          | expresion . OPB_MUL expresion
 
-    OPB_MUL  desplazar e ir al estado 88
+    OPB_MUL  desplazar e ir al estado 90
 
     $default  reduce usando la regla 54 (expresion)
 
 
-estado 111
+estado 114
 
    50 expresion: expresion . OPB_OR expresion
    51          | expresion . OPB_AND expresion
@@ -1605,91 +1666,51 @@ estado 111
     $default  reduce usando la regla 55 (expresion)
 
 
-estado 112
-
-   74 alternativa_doble: IF expresion sentencia ELSE . sentencia
-
-    error          desplazar e ir al estado 24
-    INICIO         desplazar e ir al estado 6
-    IF             desplazar e ir al estado 26
-    WHILE          desplazar e ir al estado 27
-    READ           desplazar e ir al estado 28
-    WRITE          desplazar e ir al estado 29
-    SWITCH         desplazar e ir al estado 30
-    IDENTIFICADOR  desplazar e ir al estado 31
-
-    bloque                ir al estado 32
-    iden                  ir al estado 35
-    sentencia             ir al estado 125
-    sentencia_asignacion  ir al estado 38
-    procedimiento         ir al estado 39
-    sentencia_if          ir al estado 40
-    alternativa_simple    ir al estado 41
-    alternativa_doble     ir al estado 42
-    sentencia_while       ir al estado 43
-    sentencia_entrada     ir al estado 44
-    sentencia_salida      ir al estado 45
-    sentencia_case        ir al estado 46
-
-
-estado 113
-
-   75 sentencia_while: WHILE PARIZ expresion PARDER . sentencia
-
-    error          desplazar e ir al estado 24
-    INICIO         desplazar e ir al estado 6
-    IF             desplazar e ir al estado 26
-    WHILE          desplazar e ir al estado 27
-    READ           desplazar e ir al estado 28
-    WRITE          desplazar e ir al estado 29
-    SWITCH         desplazar e ir al estado 30
-    IDENTIFICADOR  desplazar e ir al estado 31
-
-    bloque                ir al estado 32
-    iden                  ir al estado 35
-    sentencia             ir al estado 126
-    sentencia_asignacion  ir al estado 38
-    procedimiento         ir al estado 39
-    sentencia_if          ir al estado 40
-    alternativa_simple    ir al estado 41
-    alternativa_doble     ir al estado 42
-    sentencia_while       ir al estado 43
-    sentencia_entrada     ir al estado 44
-    sentencia_salida      ir al estado 45
-    sentencia_case        ir al estado 46
-
-
-estado 114
-
-   78 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA expresion_o_cadena .
-
-    $default  reduce usando la regla 78 (lista_expresiones_o_cadena)
-
-
 estado 115
 
-   82 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER . INICIO casos caso_por_defecto FINBLO
+   76 if_expresion_sentencia: IF expresion $@16 sentencia .
 
-    INICIO  desplazar e ir al estado 127
+    $default  reduce usando la regla 76 (if_expresion_sentencia)
 
 
 estado 116
 
-   67 procedimiento: IDENTIFICADOR PARIZ PARDER $@15 . PYC
+   78 sentencia_while: WHILE PARIZ expresion $@17 . PARDER sentencia
 
-    PYC  desplazar e ir al estado 128
+    PARDER  desplazar e ir al estado 128
 
 
 estado 117
 
-   65 procedimiento: IDENTIFICADOR PARIZ $@13 lista_expresiones . PARDER $@14 PYC
-   69 lista_expresiones: lista_expresiones . COMA expresion
+   81 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA expresion_o_cadena .
 
-    COMA    desplazar e ir al estado 104
-    PARDER  desplazar e ir al estado 129
+    $default  reduce usando la regla 81 (lista_expresiones_o_cadena)
 
 
 estado 118
+
+   85 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER . INICIO casos caso_por_defecto FINBLO
+
+    INICIO  desplazar e ir al estado 129
+
+
+estado 119
+
+   67 procedimiento: IDENTIFICADOR PARIZ PARDER $@15 . PYC
+
+    PYC  desplazar e ir al estado 130
+
+
+estado 120
+
+   65 procedimiento: IDENTIFICADOR PARIZ $@13 lista_expresiones . PARDER $@14 PYC
+   69 lista_expresiones: lista_expresiones . COMA expresion
+
+    COMA    desplazar e ir al estado 107
+    PARDER  desplazar e ir al estado 131
+
+
+estado 121
 
    47 sentencia_asignacion: iden $@11 ASIG expresion . $@12 PYC
    50 expresion: expresion . OPB_OR expresion
@@ -1699,19 +1720,19 @@ estado 118
    54          | expresion . OPB_ADD expresion
    55          | expresion . OPB_MUL expresion
 
-    OPB_OR   desplazar e ir al estado 83
-    OPB_AND  desplazar e ir al estado 84
-    OPB_IG   desplazar e ir al estado 85
-    OPB_REL  desplazar e ir al estado 86
-    OPB_ADD  desplazar e ir al estado 87
-    OPB_MUL  desplazar e ir al estado 88
+    OPB_OR   desplazar e ir al estado 85
+    OPB_AND  desplazar e ir al estado 86
+    OPB_IG   desplazar e ir al estado 87
+    OPB_REL  desplazar e ir al estado 88
+    OPB_ADD  desplazar e ir al estado 89
+    OPB_MUL  desplazar e ir al estado 90
 
     $default  reduce usando la regla 46 ($@12)
 
-    $@12  ir al estado 130
+    $@12  ir al estado 132
 
 
-estado 119
+estado 122
 
    22 iden: IDENTIFICADOR CORIZ expresion COMA expresion . CORDER
    50 expresion: expresion . OPB_OR expresion
@@ -1721,48 +1742,48 @@ estado 119
    54          | expresion . OPB_ADD expresion
    55          | expresion . OPB_MUL expresion
 
-    CORDER   desplazar e ir al estado 131
-    OPB_OR   desplazar e ir al estado 83
-    OPB_AND  desplazar e ir al estado 84
-    OPB_IG   desplazar e ir al estado 85
-    OPB_REL  desplazar e ir al estado 86
-    OPB_ADD  desplazar e ir al estado 87
-    OPB_MUL  desplazar e ir al estado 88
+    CORDER   desplazar e ir al estado 133
+    OPB_OR   desplazar e ir al estado 85
+    OPB_AND  desplazar e ir al estado 86
+    OPB_IG   desplazar e ir al estado 87
+    OPB_REL  desplazar e ir al estado 88
+    OPB_ADD  desplazar e ir al estado 89
+    OPB_MUL  desplazar e ir al estado 90
 
 
-estado 120
+estado 123
 
    19 declar_parametros: error .
 
     $default  reduce usando la regla 19 (declar_parametros)
 
 
-estado 121
+estado 124
 
    18 declar_parametros: TIPOSIMPLE . $@8 iden
 
     $default  reduce usando la regla 17 ($@8)
 
-    $@8  ir al estado 132
+    $@8  ir al estado 134
 
 
-estado 122
+estado 125
 
    12 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ $@5 declar_parametros . PARDER
    16 declar_parametros: declar_parametros . COMA TIPOSIMPLE $@7 iden
 
-    COMA    desplazar e ir al estado 133
-    PARDER  desplazar e ir al estado 134
+    COMA    desplazar e ir al estado 135
+    PARDER  desplazar e ir al estado 136
 
 
-estado 123
+estado 126
 
    14 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ $@6 PARDER .
 
     $default  reduce usando la regla 14 (cabecera_subprograma)
 
 
-estado 124
+estado 127
 
    50 expresion: expresion . OPB_OR expresion
    51          | expresion . OPB_AND expresion
@@ -1772,199 +1793,220 @@ estado 124
    55          | expresion . OPB_MUL expresion
    69 lista_expresiones: lista_expresiones COMA expresion .
 
-    OPB_OR   desplazar e ir al estado 83
-    OPB_AND  desplazar e ir al estado 84
-    OPB_IG   desplazar e ir al estado 85
-    OPB_REL  desplazar e ir al estado 86
-    OPB_ADD  desplazar e ir al estado 87
-    OPB_MUL  desplazar e ir al estado 88
+    OPB_OR   desplazar e ir al estado 85
+    OPB_AND  desplazar e ir al estado 86
+    OPB_IG   desplazar e ir al estado 87
+    OPB_REL  desplazar e ir al estado 88
+    OPB_ADD  desplazar e ir al estado 89
+    OPB_MUL  desplazar e ir al estado 90
 
     $default  reduce usando la regla 69 (lista_expresiones)
 
 
-estado 125
-
-   74 alternativa_doble: IF expresion sentencia ELSE sentencia .
-
-    $default  reduce usando la regla 74 (alternativa_doble)
-
-
-estado 126
-
-   75 sentencia_while: WHILE PARIZ expresion PARDER sentencia .
-
-    $default  reduce usando la regla 75 (sentencia_while)
-
-
-estado 127
-
-   82 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO . casos caso_por_defecto FINBLO
-
-    $default  reduce usando la regla 84 (casos)
-
-    casos  ir al estado 135
-
-
 estado 128
+
+   78 sentencia_while: WHILE PARIZ expresion $@17 PARDER . sentencia
+
+    error          desplazar e ir al estado 24
+    INICIO         desplazar e ir al estado 6
+    IF             desplazar e ir al estado 26
+    WHILE          desplazar e ir al estado 27
+    READ           desplazar e ir al estado 28
+    WRITE          desplazar e ir al estado 29
+    SWITCH         desplazar e ir al estado 30
+    IDENTIFICADOR  desplazar e ir al estado 31
+
+    bloque                  ir al estado 32
+    iden                    ir al estado 35
+    sentencia               ir al estado 137
+    sentencia_asignacion    ir al estado 38
+    procedimiento           ir al estado 39
+    sentencia_if            ir al estado 40
+    alternativa_simple      ir al estado 41
+    alternativa_doble       ir al estado 42
+    if_expresion_sentencia  ir al estado 43
+    sentencia_while         ir al estado 44
+    sentencia_entrada       ir al estado 45
+    sentencia_salida        ir al estado 46
+    sentencia_case          ir al estado 47
+
+
+estado 129
+
+   85 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO . casos caso_por_defecto FINBLO
+
+    $default  reduce usando la regla 87 (casos)
+
+    casos  ir al estado 138
+
+
+estado 130
 
    67 procedimiento: IDENTIFICADOR PARIZ PARDER $@15 PYC .
 
     $default  reduce usando la regla 67 (procedimiento)
 
 
-estado 129
+estado 131
 
    65 procedimiento: IDENTIFICADOR PARIZ $@13 lista_expresiones PARDER . $@14 PYC
 
     $default  reduce usando la regla 64 ($@14)
 
-    $@14  ir al estado 136
+    $@14  ir al estado 139
 
 
-estado 130
+estado 132
 
    47 sentencia_asignacion: iden $@11 ASIG expresion $@12 . PYC
 
-    PYC  desplazar e ir al estado 137
+    PYC  desplazar e ir al estado 140
 
 
-estado 131
+estado 133
 
    22 iden: IDENTIFICADOR CORIZ expresion COMA expresion CORDER .
 
     $default  reduce usando la regla 22 (iden)
 
 
-estado 132
+estado 134
 
    18 declar_parametros: TIPOSIMPLE $@8 . iden
 
     IDENTIFICADOR  desplazar e ir al estado 21
 
-    iden  ir al estado 138
+    iden  ir al estado 141
 
 
-estado 133
+estado 135
 
    16 declar_parametros: declar_parametros COMA . TIPOSIMPLE $@7 iden
 
-    TIPOSIMPLE  desplazar e ir al estado 139
+    TIPOSIMPLE  desplazar e ir al estado 142
 
 
-estado 134
+estado 136
 
    12 cabecera_subprograma: PROCED IDENTIFICADOR PARIZ $@5 declar_parametros PARDER .
 
     $default  reduce usando la regla 12 (cabecera_subprograma)
 
 
-estado 135
+estado 137
 
-   82 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos . caso_por_defecto FINBLO
-   83 casos: casos . CASE opcion DOSP sentencias BREAK PYC
+   78 sentencia_while: WHILE PARIZ expresion $@17 PARDER sentencia .
 
-    CASE     desplazar e ir al estado 140
-    DEFAULT  desplazar e ir al estado 141
-
-    $default  reduce usando la regla 88 (caso_por_defecto)
-
-    caso_por_defecto  ir al estado 142
+    $default  reduce usando la regla 78 (sentencia_while)
 
 
-estado 136
+estado 138
+
+   85 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos . caso_por_defecto FINBLO
+   86 casos: casos . CASE opcion DOSP sentencias BREAK PYC
+
+    CASE     desplazar e ir al estado 143
+    DEFAULT  desplazar e ir al estado 144
+
+    $default  reduce usando la regla 91 (caso_por_defecto)
+
+    caso_por_defecto  ir al estado 145
+
+
+estado 139
 
    65 procedimiento: IDENTIFICADOR PARIZ $@13 lista_expresiones PARDER $@14 . PYC
 
-    PYC  desplazar e ir al estado 143
+    PYC  desplazar e ir al estado 146
 
 
-estado 137
+estado 140
 
    47 sentencia_asignacion: iden $@11 ASIG expresion $@12 PYC .
 
     $default  reduce usando la regla 47 (sentencia_asignacion)
 
 
-estado 138
+estado 141
 
    18 declar_parametros: TIPOSIMPLE $@8 iden .
 
     $default  reduce usando la regla 18 (declar_parametros)
 
 
-estado 139
+estado 142
 
    16 declar_parametros: declar_parametros COMA TIPOSIMPLE . $@7 iden
 
     $default  reduce usando la regla 15 ($@7)
 
-    $@7  ir al estado 144
-
-
-estado 140
-
-   83 casos: casos CASE . opcion DOSP sentencias BREAK PYC
-
-    CONSTANTE_E  desplazar e ir al estado 145
-    CARACTER     desplazar e ir al estado 146
-
-    opcion  ir al estado 147
-
-
-estado 141
-
-   87 caso_por_defecto: DEFAULT . DOSP sentencias
-
-    DOSP  desplazar e ir al estado 148
-
-
-estado 142
-
-   82 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto . FINBLO
-
-    FINBLO  desplazar e ir al estado 149
+    $@7  ir al estado 147
 
 
 estado 143
+
+   86 casos: casos CASE . opcion DOSP sentencias BREAK PYC
+
+    CONSTANTE_E  desplazar e ir al estado 148
+    CARACTER     desplazar e ir al estado 149
+
+    opcion  ir al estado 150
+
+
+estado 144
+
+   90 caso_por_defecto: DEFAULT . DOSP sentencias
+
+    DOSP  desplazar e ir al estado 151
+
+
+estado 145
+
+   85 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto . FINBLO
+
+    FINBLO  desplazar e ir al estado 152
+
+
+estado 146
 
    65 procedimiento: IDENTIFICADOR PARIZ $@13 lista_expresiones PARDER $@14 PYC .
 
     $default  reduce usando la regla 65 (procedimiento)
 
 
-estado 144
+estado 147
 
    16 declar_parametros: declar_parametros COMA TIPOSIMPLE $@7 . iden
 
     IDENTIFICADOR  desplazar e ir al estado 21
 
-    iden  ir al estado 150
-
-
-estado 145
-
-   85 opcion: CONSTANTE_E .
-
-    $default  reduce usando la regla 85 (opcion)
-
-
-estado 146
-
-   86 opcion: CARACTER .
-
-    $default  reduce usando la regla 86 (opcion)
-
-
-estado 147
-
-   83 casos: casos CASE opcion . DOSP sentencias BREAK PYC
-
-    DOSP  desplazar e ir al estado 151
+    iden  ir al estado 153
 
 
 estado 148
 
-   87 caso_por_defecto: DEFAULT DOSP . sentencias
+   88 opcion: CONSTANTE_E .
+
+    $default  reduce usando la regla 88 (opcion)
+
+
+estado 149
+
+   89 opcion: CARACTER .
+
+    $default  reduce usando la regla 89 (opcion)
+
+
+estado 150
+
+   86 casos: casos CASE opcion . DOSP sentencias BREAK PYC
+
+    DOSP  desplazar e ir al estado 154
+
+
+estado 151
+
+   90 caso_por_defecto: DEFAULT DOSP . sentencias
 
     error          desplazar e ir al estado 24
     INICIO         desplazar e ir al estado 6
@@ -1975,131 +2017,135 @@ estado 148
     SWITCH         desplazar e ir al estado 30
     IDENTIFICADOR  desplazar e ir al estado 31
 
-    bloque                ir al estado 32
-    iden                  ir al estado 35
-    sentencias            ir al estado 152
-    sentencia             ir al estado 37
-    sentencia_asignacion  ir al estado 38
-    procedimiento         ir al estado 39
-    sentencia_if          ir al estado 40
-    alternativa_simple    ir al estado 41
-    alternativa_doble     ir al estado 42
-    sentencia_while       ir al estado 43
-    sentencia_entrada     ir al estado 44
-    sentencia_salida      ir al estado 45
-    sentencia_case        ir al estado 46
+    bloque                  ir al estado 32
+    iden                    ir al estado 35
+    sentencias              ir al estado 155
+    sentencia               ir al estado 37
+    sentencia_asignacion    ir al estado 38
+    procedimiento           ir al estado 39
+    sentencia_if            ir al estado 40
+    alternativa_simple      ir al estado 41
+    alternativa_doble       ir al estado 42
+    if_expresion_sentencia  ir al estado 43
+    sentencia_while         ir al estado 44
+    sentencia_entrada       ir al estado 45
+    sentencia_salida        ir al estado 46
+    sentencia_case          ir al estado 47
 
 
-estado 149
+estado 152
 
-   82 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO .
+   85 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO .
 
-    $default  reduce usando la regla 82 (sentencia_case)
+    $default  reduce usando la regla 85 (sentencia_case)
 
 
-estado 150
+estado 153
 
    16 declar_parametros: declar_parametros COMA TIPOSIMPLE $@7 iden .
 
     $default  reduce usando la regla 16 (declar_parametros)
 
 
-estado 151
-
-   83 casos: casos CASE opcion DOSP . sentencias BREAK PYC
-
-    error          desplazar e ir al estado 24
-    INICIO         desplazar e ir al estado 6
-    IF             desplazar e ir al estado 26
-    WHILE          desplazar e ir al estado 27
-    READ           desplazar e ir al estado 28
-    WRITE          desplazar e ir al estado 29
-    SWITCH         desplazar e ir al estado 30
-    IDENTIFICADOR  desplazar e ir al estado 31
-
-    bloque                ir al estado 32
-    iden                  ir al estado 35
-    sentencias            ir al estado 153
-    sentencia             ir al estado 37
-    sentencia_asignacion  ir al estado 38
-    procedimiento         ir al estado 39
-    sentencia_if          ir al estado 40
-    alternativa_simple    ir al estado 41
-    alternativa_doble     ir al estado 42
-    sentencia_while       ir al estado 43
-    sentencia_entrada     ir al estado 44
-    sentencia_salida      ir al estado 45
-    sentencia_case        ir al estado 46
-
-
-estado 152
-
-   34 sentencias: sentencias . sentencia
-   87 caso_por_defecto: DEFAULT DOSP sentencias .
-
-    error          desplazar e ir al estado 24
-    INICIO         desplazar e ir al estado 6
-    IF             desplazar e ir al estado 26
-    WHILE          desplazar e ir al estado 27
-    READ           desplazar e ir al estado 28
-    WRITE          desplazar e ir al estado 29
-    SWITCH         desplazar e ir al estado 30
-    IDENTIFICADOR  desplazar e ir al estado 31
-
-    FINBLO  reduce usando la regla 87 (caso_por_defecto)
-
-    bloque                ir al estado 32
-    iden                  ir al estado 35
-    sentencia             ir al estado 73
-    sentencia_asignacion  ir al estado 38
-    procedimiento         ir al estado 39
-    sentencia_if          ir al estado 40
-    alternativa_simple    ir al estado 41
-    alternativa_doble     ir al estado 42
-    sentencia_while       ir al estado 43
-    sentencia_entrada     ir al estado 44
-    sentencia_salida      ir al estado 45
-    sentencia_case        ir al estado 46
-
-
-estado 153
-
-   34 sentencias: sentencias . sentencia
-   83 casos: casos CASE opcion DOSP sentencias . BREAK PYC
-
-    error          desplazar e ir al estado 24
-    INICIO         desplazar e ir al estado 6
-    IF             desplazar e ir al estado 26
-    WHILE          desplazar e ir al estado 27
-    READ           desplazar e ir al estado 28
-    WRITE          desplazar e ir al estado 29
-    SWITCH         desplazar e ir al estado 30
-    BREAK          desplazar e ir al estado 154
-    IDENTIFICADOR  desplazar e ir al estado 31
-
-    bloque                ir al estado 32
-    iden                  ir al estado 35
-    sentencia             ir al estado 73
-    sentencia_asignacion  ir al estado 38
-    procedimiento         ir al estado 39
-    sentencia_if          ir al estado 40
-    alternativa_simple    ir al estado 41
-    alternativa_doble     ir al estado 42
-    sentencia_while       ir al estado 43
-    sentencia_entrada     ir al estado 44
-    sentencia_salida      ir al estado 45
-    sentencia_case        ir al estado 46
-
-
 estado 154
 
-   83 casos: casos CASE opcion DOSP sentencias BREAK . PYC
+   86 casos: casos CASE opcion DOSP . sentencias BREAK PYC
 
-    PYC  desplazar e ir al estado 155
+    error          desplazar e ir al estado 24
+    INICIO         desplazar e ir al estado 6
+    IF             desplazar e ir al estado 26
+    WHILE          desplazar e ir al estado 27
+    READ           desplazar e ir al estado 28
+    WRITE          desplazar e ir al estado 29
+    SWITCH         desplazar e ir al estado 30
+    IDENTIFICADOR  desplazar e ir al estado 31
+
+    bloque                  ir al estado 32
+    iden                    ir al estado 35
+    sentencias              ir al estado 156
+    sentencia               ir al estado 37
+    sentencia_asignacion    ir al estado 38
+    procedimiento           ir al estado 39
+    sentencia_if            ir al estado 40
+    alternativa_simple      ir al estado 41
+    alternativa_doble       ir al estado 42
+    if_expresion_sentencia  ir al estado 43
+    sentencia_while         ir al estado 44
+    sentencia_entrada       ir al estado 45
+    sentencia_salida        ir al estado 46
+    sentencia_case          ir al estado 47
 
 
 estado 155
 
-   83 casos: casos CASE opcion DOSP sentencias BREAK PYC .
+   34 sentencias: sentencias . sentencia
+   90 caso_por_defecto: DEFAULT DOSP sentencias .
 
-    $default  reduce usando la regla 83 (casos)
+    error          desplazar e ir al estado 24
+    INICIO         desplazar e ir al estado 6
+    IF             desplazar e ir al estado 26
+    WHILE          desplazar e ir al estado 27
+    READ           desplazar e ir al estado 28
+    WRITE          desplazar e ir al estado 29
+    SWITCH         desplazar e ir al estado 30
+    IDENTIFICADOR  desplazar e ir al estado 31
+
+    FINBLO  reduce usando la regla 90 (caso_por_defecto)
+
+    bloque                  ir al estado 32
+    iden                    ir al estado 35
+    sentencia               ir al estado 74
+    sentencia_asignacion    ir al estado 38
+    procedimiento           ir al estado 39
+    sentencia_if            ir al estado 40
+    alternativa_simple      ir al estado 41
+    alternativa_doble       ir al estado 42
+    if_expresion_sentencia  ir al estado 43
+    sentencia_while         ir al estado 44
+    sentencia_entrada       ir al estado 45
+    sentencia_salida        ir al estado 46
+    sentencia_case          ir al estado 47
+
+
+estado 156
+
+   34 sentencias: sentencias . sentencia
+   86 casos: casos CASE opcion DOSP sentencias . BREAK PYC
+
+    error          desplazar e ir al estado 24
+    INICIO         desplazar e ir al estado 6
+    IF             desplazar e ir al estado 26
+    WHILE          desplazar e ir al estado 27
+    READ           desplazar e ir al estado 28
+    WRITE          desplazar e ir al estado 29
+    SWITCH         desplazar e ir al estado 30
+    BREAK          desplazar e ir al estado 157
+    IDENTIFICADOR  desplazar e ir al estado 31
+
+    bloque                  ir al estado 32
+    iden                    ir al estado 35
+    sentencia               ir al estado 74
+    sentencia_asignacion    ir al estado 38
+    procedimiento           ir al estado 39
+    sentencia_if            ir al estado 40
+    alternativa_simple      ir al estado 41
+    alternativa_doble       ir al estado 42
+    if_expresion_sentencia  ir al estado 43
+    sentencia_while         ir al estado 44
+    sentencia_entrada       ir al estado 45
+    sentencia_salida        ir al estado 46
+    sentencia_case          ir al estado 47
+
+
+estado 157
+
+   86 casos: casos CASE opcion DOSP sentencias BREAK . PYC
+
+    PYC  desplazar e ir al estado 158
+
+
+estado 158
+
+   86 casos: casos CASE opcion DOSP sentencias BREAK PYC .
+
+    $default  reduce usando la regla 86 (casos)

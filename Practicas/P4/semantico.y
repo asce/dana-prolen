@@ -130,7 +130,7 @@ sentencia: bloque
 | procedimiento {checkProced(&$1);}
            | sentencia_case | error;
 
-sentencia_asignacion: iden {checkScope(&$1); } ASIG expresion {checkEqualTypeAsig(&$1,&$4)} PYC;
+sentencia_asignacion: iden {checkScope(&$1); } ASIG expresion {checkEqualTypeAsig(&$1,&$4);} PYC;
 
 expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
 | OPB_ADD expresion %prec OPU{
@@ -169,7 +169,7 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
 }
 | expresion OPB_MUL expresion{
   atributocpy(&$$,&$1);
-  if(check_OPB_MUL(&$1,&$3)==0) {$$.tipo=desconocido;getchar();}
+  if(check_OPB_MUL(&$1,&$3)==0) {$$.tipo=desconocido;}
   if($2.atrib == 1){ /*  **  */
     if(checkArrayMulDimension(&$1,&$3)==0)$$.tipo=desconocido;
   }else{
@@ -225,11 +225,13 @@ lista_expresiones: lista_expresiones COMA expresion
 
 sentencia_if: alternativa_doble	| alternativa_simple;
 
-alternativa_simple: IF expresion sentencia;
+alternativa_simple: if_expresion_sentencia;
 
-alternativa_doble: IF expresion sentencia ELSE sentencia;
+alternativa_doble: if_expresion_sentencia ELSE sentencia;
 
-sentencia_while: WHILE PARIZ expresion PARDER sentencia;
+if_expresion_sentencia: IF expresion {checkBoolean(&$2);} sentencia;
+
+sentencia_while: WHILE PARIZ expresion {checkBoolean(&$3);} PARDER sentencia;
 
 sentencia_entrada: READ lista_variables PYC;
 
