@@ -42,12 +42,29 @@ typedef struct {
   //int numArgumentos;
 } atributos ;
 
+typedef struct{
+  atributos att;
+  atributos* next;
+}elem_list_t;
+
+void initAttList(elem_list_t* list){
+  list->att.lexema = 0;
+  list->next = 0;
+}
+
+elem_list_t att_list;
+int scope_index_TS;
+
 #define YYSTYPE atributos 		/* A partir de ahora, cada símbolo tiene una estructura de tipo atributos*/
 #define MAX_TS 1000
 
 unsigned int TOPE=-1 ; 			/* TOPE de la pila */
 unsigned int subProg ; 			/* Indicador de comienzo de bloque de un subprog */
 unsigned int dec_flag = 0;
+unsigned int array_flag = 0;
+
+unsigned int call_procedure_flag = 0;
+elem_list_t* procedure_att_end_pointer = 0;
 
 /* FLAG de decl de param */
 entradaTS TS[MAX_TS] ; 			/* Pila de la tabla de símbolos */
@@ -293,7 +310,7 @@ void IntroIniBloq() {
       printf("\nWARNING: Hay algo mal en la TS, no se ha encontrado procedimiento después de los params.\n");
       //showEntrada(&TS[index]);
       //imprimeTS();
-	getchar();
+      //getchar();
     }
   }
 	//MostrarTS();
@@ -322,9 +339,9 @@ void IntroFinBloq () {
 		TOPE--;
 	//MostrarTS();
 
-	printf("--------------------------------------Finalizado bloque--------------------------------------\n");
-	showTS();
-	getchar();
+	//printf("--------------------------------------Finalizado bloque--------------------------------------\n");
+	//showTS();
+	//getchar();
 }
 
 int existeProc (char *lexema) {
@@ -422,7 +439,7 @@ void TS_InsertaSUBPROG(atributos* att){
   if(att->lexema != NULL && att->lexema != 0){
     if(declaredIden(att->lexema)){
       printf("[Linea %i] ERROR SEMÁNTICO: Ya existe \"%s\" en el bloque.\n",yylineno,att->lexema);
-      getchar();
+      //getchar();
       return;
     }
     pushMarca();
@@ -430,7 +447,7 @@ void TS_InsertaSUBPROG(atributos* att){
   }else{
     showAtt(att);
     printf("WARNING: Se ha pasado att con lexema no inicializado en TS_InsertaSUBPROG(att)\n");
-    getchar();
+    //getchar();
     exit(0);
   }
   //entrada_subprog.tipoDato = att->tipo;
@@ -447,8 +464,8 @@ void TS_InsertaPARAMF(atributos* att){
   if(att->lexema != NULL && att->lexema != 0){
     entrada_paramf.nombre = strdup(att->lexema);
   }else{
-    printf("ERROR: Se ha pasado att con lexema no inicializado en TS_InsertaPARAMF(att)\n");
-    getchar();
+    printf("WARNING: Se ha pasado att con lexema no inicializado en TS_InsertaPARAMF(att)\n");
+    //getchar();
     exit(0);
   }
   entrada_paramf.tipoDato = att->tipo;
@@ -464,13 +481,13 @@ void TS_InsertaVAR(atributos* att){
   if(att->lexema != NULL && att->lexema != 0){
     if(declaredIden(att->lexema)){
       printf("[Linea %i] ERROR SEMÁNTICO: Ya existe \"%s\" en el bloque.\n",yylineno,att->lexema);
-      getchar();
+      //getchar();
       return;
     }
     entrada_var.nombre = strdup(att->lexema);
   }else{
     printf("WARNING: Se ha pasado att con lexema no inicializado en TS_InsertaVAR(att)\n");
-    getchar();
+    //getchar();
     exit(0);
   }
   entrada_var.tipoDato = att->tipo;
@@ -491,7 +508,7 @@ int declaredIden(char* iden){
 	return 1;
     }else{
       printf("\nWARNING: Algo va mal en TS, hay una entrada sin nombre\n");
-      getchar();
+      //getchar();
       exit(0);
     }
   }
@@ -506,57 +523,205 @@ void showAtt(atributos* att){
 
 }
 /**
- * Devuelve 1 si se encuentra iden en el ambito y 0 en otro caso
+ * Devuelve indice de TS si se encuentra iden en el ambito y 0 en otro caso
+ * (en la posicion 0 siempre hay una marca)
  */
 int inScope(char* iden){
   int i;
   for(i=TOPE;i>=0;i--){
     if(TS[i].nombre!=0 && TS[i].nombre!=NULL){
       if(strcmp(TS[i].nombre,iden)==0) //ident. 'iden' exists
-	return 1;
+	return i;
     }else if(TS[i].entrada!=marca){
       printf("\nWARNING: Algo va mal en TS, hay una entrada sin nombre\n");
-      getchar();
+      //getchar();
       exit(0);
     }
   }
   return 0;
 }
+void getAttFromTS(atributos* att,int indexTS){
+  att->lexema = strdup(TS[indexTS].nombre);
+  att->tipo = TS[indexTS].tipoDato;
+  att->dimensiones = TS[indexTS].dimensiones;
+  att->TamDimen1 = TS[indexTS].TamDimen1;
+  att->TamDimen2 = TS[indexTS].TamDimen2;
+}
 
-void checkScope(atributos* att){
-
+int checkScope(atributos* att){
+  atributos att_found;
+  int indexTS;
+  indexTS = inScope(att->lexema);
   if(att->lexema != NULL && att->lexema != 0){
-    if(inScope(att->lexema)==0){
+    if(indexTS==0){
       printf("[Linea %i] ERROR SEMÁNTICO: \"%s\" no se ha declarado en el ámbito.\n",yylineno,att->lexema);
-      getchar();
-      return;
+      //getchar();
+      return 0;
+    }else{//Está en el ámbito
+      return indexTS;
     }
   }else{
     printf("WARNING: Se ha pasado att con lexema no inicializado en checkScope(att)\n");
-    getchar();
+    //getchar();
     exit(0);
   }
 
 }
-/*
+
 void checkProced(atributos* att){
   char* iden;
+  int i;
   if(att->lexema==NULL ||att->lexema ==0){
     printf("WARNING: Se ha pasado atributo sin lexema en checkProced\n");
     return;
   }
-  iden=strdup(att->lexema);
-  int i;
-  for(i=TOPE;i>=0;i--){
-    if(TS[i].nombre!=0 && TS[i].nombre!=NULL){
-      if(strcmp(TS[i].nombre,iden)==0) //ident. 'iden' exists
-	return 1;
-    }else if(TS[i].entrada!=marca){
-      printf("\nWARNING: Algo va mal en TS, hay una entrada sin nombre\n");
+  i = inScope(att->lexema);
+  if(i==0){
+      printf("[Linea %i] ERROR SEMÁNTICO: \"%s\" no se ha declarado en el ámbito.\n",yylineno,att->lexema);
+      //getchar();
+      return;
+  }else{
+    if(TS[i].entrada!=procedimiento){
+      printf("[Linea %i] ERROR SEMÁNTICO: \"%s\" no se ha declarado en el ámbito como procedimiento.\n",yylineno,att->lexema);
+    }else{
+      /* Gestion parametros : tipo y numero */
+    }
+
+  }
+}
+
+/** ED y Func. para errores en llamadas a procedimientos **/
+
+void linkAtt(atributos* att){
+  //  procedure_att_end_pointer->next = atributecpy(att);
+  printf("Linking ...\n");
+  showAtt(att);
+  printf("\n");
+  getchar();
+}
+void deleteAttList(){
+  elem_list_t* it;
+  elem_list_t* actual_att_ptr;
+  it = att_list.next; 
+  while(it!=0){
+    actual_att_ptr=it;
+    it=it->next;
+    //delete actual_att_ptr;
+  }
+}
+
+void checkSignArray(atributos* attOPB_ADD){
+    if(attOPB_ADD->atrib==2){ // Signo -
+      printf("[Linea %i] ERROR SEMÁNTICO: No se permite un indice negativo en array.\n",yylineno);
+    }else if(attOPB_ADD->atrib!=1){
+      printf("WARNING en linea %i: No se reconoce el signo del indice del array pasado en checkSignArray",yylineno);
+    }
+}
+void check_OPB_OR(atributos* op1,atributos* op2){
+  int equalType = checkEqualType(op1,op2);
+  if(op1->tipo!=booleano){
+    printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_OR debe ser booleano\n",yylineno);
+  }
+  if(op2->tipo!=booleano){
+    printf("[Linea %i] ERROR SEMÁNTICO: El op2 de OPB_OR debe ser booleano\n",yylineno);
+  }
+}
+void check_OPB_AND(atributos* op1,atributos* op2){
+  int equalType = checkEqualType(op1,op2);
+  if(op1->tipo!=booleano){
+    printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_AND debe ser booleano\n",yylineno);
+  }
+  if(op2->tipo!=booleano){
+    printf("[Linea %i] ERROR SEMÁNTICO: El op2 de OPB_AND debe ser booleano\n",yylineno);
+  }
+
+}
+void check_OPB_IG(atributos* op1,atributos* op2){
+  int equalType = checkEqualType(op1,op2);
+
+}
+void check_OPB_REL(atributos* op1,atributos* op2){
+  int equalType = checkEqualType(op1,op2);
+
+}
+void check_OPB_ADD(atributos* op1,atributos* op2){
+  int equalType = checkEqualType(op1,op2);
+  if(op1->tipo!=entero && op1->tipo!=real && op1->tipo!=array_entero && op1->tipo!=array_real){
+    printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_ADD debe ser entero,array_entero,real o array_real\n",yylineno);
+  }
+  if(op2->tipo!=entero && op2->tipo!=real && op2->tipo!=array_entero && op2->tipo!=array_real){
+    printf("[Linea %i] ERROR SEMÁNTICO: El op2 de OPB_ADD debe ser entero,array_entero,real o array_real\n",yylineno);
+  }
+}
+void check_OPB_MUL(atributos* op1,atributos* op2){
+  int equalType = checkEqualType(op1,op2);
+  if(op1->tipo!=entero && op1->tipo!=real && op1->tipo!=array_entero && op1->tipo!=array_real){
+    printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_MUL debe ser entero,array_entero,real o array_real\n",yylineno);
+  }
+  if(op2->tipo!=entero && op2->tipo!=real && op2->tipo!=array_entero && op2->tipo!=array_real){
+    printf("[Linea %i] ERROR SEMÁNTICO: El op2 de OPB_MUL debe ser entero,array_entero,real o array_real\n",yylineno);
+  }
+}
+int checkEqualType(atributos* op1,atributos* op2){
+  if(op1->tipo==op2->tipo){
+    return 1;
+  }else if(tipoArray(op1->tipo)!=tipoArray(op2->tipo)){
+    printf("[Linea %i] ERROR SEMÁNTICO: Los tipos de la expresión no coinciden. ",yylineno);
+    printf("Los operandos son %s (op1): %s y %s (op2): %s\n",op1->lexema,dtipo2str(op1->tipo),op2->lexema,dtipo2str(op2->tipo));
+    return 0;
+  }else{//Alguno de los dos es array pero del mismo tipo
+  
+ }
+}
+
+ void checkEqualDimenArray(atributos* op1,atributos* op2){
+   if(es_array(op1->tipo) && es_array(op2->tipo)){
+   if(op1->dimensiones!=op2->dimensiones ||
+      op1->TamDimen1!=op2->TamDimen1 ||
+      op1->TamDimen2!=op2->TamDimen2)
+     printf("[Linea %i] ERROR SEMÁNTICO: Las dimensiones de los array no coinciden.\n",yylineno);
+   }
+ }
+void checkArrayMulDimension(atributos* op1,atributos* op2){
+  if(es_array(op1->tipo) && es_array(op2->tipo)){
+    if(op1->TamDimen2!=op2->TamDimen1)
+      printf("[Linea %i] ERROR SEMÁNTICO: En la multiplic. de arrays (**) el número de filas del primer operando debe coincidir con el número de columnas del segundo.\n",yylineno);
+  }else{
+    printf("[Linea %i] ERROR SEMÁNTICO: La multiplicación de arrays (**) solo se puede aplicar entre dos arrays.\n",yylineno);
+  }
+}
+
+int checkIndexEntero(atributos* att){
+  if(att->tipo==entero){
+    return 1;
+  }else{
+    printf("[Linea %i] ERROR SEMÁNTICO: El tipo del indice de un array debe ser entero, se ha encontrado tipo %s.\n",yylineno,dtipo2str(att->tipo));
+    return 0;
+  }
+}
+int checkBoolean(atributos* att){
+  if(att->tipo==booleano){
+    return 1;
+  }else{
+    printf("[Linea %i] ERROR SEMÁNTICO: Se esperaba un tipo booleano y se ha encontrado una expresión de tipo %s.\n",yylineno,dtipo2str(att->tipo));
+    return 0;
+  }
+}
+void checkCallProc(atributos* att){
+
+
+}
+void checkCallProcWithoutArgs(atributos* att){
+  int indexTS = inScope(att->lexema);
+  if(indexTS){
+    if(TS[indexTS].entrada == procedimiento){
+      if(TS[indexTS].parametros != 0){
+	printf("[Linea %i] ERROR SEMÁNTICO: El número de parámetros de %s no es correcto.\n",yylineno,att->lexema);
+      }
+    }else{
+      printf("WARNING: en checkCallProcWithoutArgs, metodo inScope podría estar mal ...\n");
       getchar();
-      exit(0);
     }
   }
-  return 0;
+
 }
-*/

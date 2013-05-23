@@ -1078,32 +1078,32 @@ YY_RULE_SETUP
 case 28:
 YY_RULE_SETUP
 #line 63 "lexico.l"
-{yylval.atrib = 2;return CONSTANTE;}
+{yylval.tipo=real;yylval.atrib = 2;return CONSTANTE;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 64 "lexico.l"
-{yylval.atrib = 3;return CONSTANTE;}
+{yylval.tipo=real;yylval.atrib = 3;return CONSTANTE;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 65 "lexico.l"
-{yylval.atrib = 4;return CONSTANTE;}
+{yylval.tipo=real;yylval.atrib = 4;return CONSTANTE;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 66 "lexico.l"
-{yylval.atrib = 5;return CONSTANTE;}
+{yylval.tipo=real;yylval.atrib = 5;return CONSTANTE;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 67 "lexico.l"
-{return CONSTANTE_E;}
+{yylval.lexema=yytext; yylval.tipo=entero; return CONSTANTE_E;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 68 "lexico.l"
-{yylval.atrib = 1;return CONSTANTE;}
+{yylval.tipo=real;yylval.atrib = 1;return CONSTANTE;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
