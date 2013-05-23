@@ -204,7 +204,7 @@ lista_expresiones PARDER
 call_procedure_flag=0;
 checkCallProc(&$1);
 //deleteAttList();
- showTS();
+// showTS();
 } PYC
 |IDENTIFICADOR PARIZ PARDER {checkCallProcWithoutArgs(&$1);showTS();}PYC
 ;

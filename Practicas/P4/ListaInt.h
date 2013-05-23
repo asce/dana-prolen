@@ -57,7 +57,7 @@ void freeNode (node* start) {
   while(node2bfree != NULL) {
     prevptr = node2bfree;
     node2bfree = node2bfree->next;
-    printf("Free %i\n",prevptr->number);
+    //printf("Free %i\n",prevptr->number);
     free (prevptr);
   }
 

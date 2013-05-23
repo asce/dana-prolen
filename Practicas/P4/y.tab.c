@@ -1897,7 +1897,7 @@ scope_index_TS = checkScope(&(yyvsp[(1) - (2)]));
 call_procedure_flag=0;
 checkCallProc(&(yyvsp[(1) - (5)]));
 //deleteAttList();
- showTS();
+// showTS();
 }
     break;
 

@@ -23,18 +23,7 @@ typedef enum {
 } dtipo ;
 dtipo tipoTmp;
 dtipo tipoScope = desconocido;
-typedef struct paramf {
-  dtipo tipoDato;
-  struct paramf* next;
-} lista_paramf;
 
-//struct paramf* actual_param = 0;
-
-//lista_paramf* start;
-
-void initListaParamF(lista_paramf* elem){
-  elem->next = 0;
-}
 
 typedef struct {
 	tipoEntrada entrada ;
@@ -44,9 +33,15 @@ typedef struct {
         unsigned int dimensiones ;           /* si tipoDato = array_... */
         int TamDimen1 ; 		     /* si tipoDato = array_... */	
         int TamDimen2 ; 		     /* si tipoDato = array_... */
-  lista_paramf* lista_parametros;            /* si entrada = procedimiento */
+  node lista_parametros;                     /* si entrada = procedimiento */
 } entradaTS ;
+//lista parametros tiene un numero basura y un puntero a la lista de parametros del
+//procedimiento
 
+void initEntradaTS(entradaTS* e){
+  e->nombre = 0;
+  e->lista_parametros.next = NULL;
+}
 typedef struct {
 	int atrib ; 			       /* Atributo del símbolo (si tiene) */
 	char *lexema ; 			       /* Nombre del lexema */
@@ -56,6 +51,7 @@ typedef struct {
         int TamDimen2 ;                      /* si tipoDato = array_... */
   //int numArgumentos;
 } atributos ;
+node params_last_proc_call = {0,NULL};
 
 /*
 typedef struct{
@@ -96,8 +92,7 @@ int yylineno;					/* Numero de linea */
 void initTS(){
   int i;
   for(i=0;i<MAX_TS;i++){
-    TS[i].nombre = 0;
-    TS[i].lista_parametros = NULL;
+    initEntradaTS(&TS[i]);
   }
 }
 
@@ -111,13 +106,13 @@ char* dtipo2str(dtipo tipo){
 	if(tipo == booleano)
 		return("booleano");	
 	if(tipo == array_entero)
-		return("array entero");
+		return("array_entero");
 	if(tipo == array_real)
-		return("array real");
+		return("array_real");
 	if(tipo == array_booleano)
-		return("array booleano");
+		return("array_booleano");
 	if(tipo == array_caracter)
-		return("array caracter");
+		return("array_caracter");
 	if(tipo == desconocido)
 		return("desconocido");
         if(tipo == vacio)
@@ -269,7 +264,7 @@ void pushEntradaTS(entradaTS* elem){
   TS[TOPE].parametros = elem->parametros;
   TS[TOPE].dimensiones = elem->dimensiones ;
   TS[TOPE].TamDimen1 = elem->TamDimen1;     
-  TS[TOPE].TamDimen2 = elem->TamDimen2;     
+  TS[TOPE].TamDimen2 = elem->TamDimen2;
 
 }
 void entradacpy(entradaTS* lvalue,entradaTS* rvalue){
@@ -310,6 +305,8 @@ void IntroIniBloq() {
   int index;
   unsigned int num_params = 0;
   entradaTS elem_variable;
+  initEntradaTS(&elem_variable);
+
     pushMarca();
   if(subProg == 1){/* subProg ==1, Es un bloque de subProg*/
     index = TOPE-1;
@@ -319,7 +316,6 @@ void IntroIniBloq() {
       elem_variable.entrada = variable;
       pushEntradaTS(&elem_variable);
       //TODO Enlaza param a Func!
-      addParamF(TS[index].tipoDato);
       index--;
       //num_params++;
     }
@@ -327,28 +323,29 @@ void IntroIniBloq() {
       printf("\nWARNING: Hay algo mal en la TS, no se ha encontrado procedimiento después de los params.\n");
       //showEntrada(&TS[index]);
       //imprimeTS();
-      //getchar();
+      getchar();
+    }else{
+      index++;
+      while(TS[index].entrada == parametro){
+	addNode(&TS[last_proc_index].lista_parametros,TS[index].tipoDato);
+	index++;
+      }
+      
+
+
     }
   }
 	//MostrarTS();
 }
-void addParamF(dtipo tipo_param){
 
-  TS[last_proc_index].parametros++;
-  struct paramf* actual_node;
-  actual_node = TS[last_proc_index].lista_parametros;
-
-  while(actual_node!=0 && actual_node!=NULL){
-    actual_node = actual_node->next;
-  }
-  //enlaza una celda de tipo node
-}
 void showEntrada(entradaTS * e){
 
 
   printf("------- Entrada values: -------\n");
   printf("Entrada: %s\nnombre: %s\ntipoDato: %s\nparametros: %i\nDimens: %i\nd1: %i\nd2: %i\n",
          tipoEntrada2str(e->entrada),e->nombre,dtipo2str(e->tipoDato),e->parametros,e->dimensiones,e->TamDimen1,e->TamDimen2);
+  if(e->entrada==procedimiento)
+    showNodes(e->lista_parametros.next);
 
 }
 void showNewBlock(){
@@ -364,8 +361,8 @@ void IntroFinBloq () {
 
 	for (;TOPE>=0 && TS[TOPE].entrada!=marca;TOPE--);
 	if (TOPE!=0){
-	  if(TS[TOPE].lista_parametros!=0 && TS[TOPE].lista_parametros!=NULL){
-	    //freeListaParam(TS[TOPE].lista_parametros);
+	  if(TS[TOPE].lista_parametros.next!=0 && TS[TOPE].lista_parametros.next!=NULL){
+	    freeNode(TS[TOPE].lista_parametros.next);
 	  }
 	  TOPE--;
 	
@@ -462,12 +459,15 @@ dtipo tipoEnArray(dtipo a){
 }
 void pushMarca(){
   entradaTS elem;
+  initEntradaTS(&elem);
   elem.entrada = marca;
   elem.nombre = 0;
   pushEntradaTS(&elem);
 }
 void TS_InsertaSUBPROG(atributos* att){
   entradaTS entrada_subprog;
+  initEntradaTS(&entrada_subprog);
+
   /* ojo, si att.lexema es NULL va a petar */
   if(att->lexema != NULL && att->lexema != 0){
     if(declaredIden(att->lexema)){
@@ -493,6 +493,7 @@ void TS_InsertaSUBPROG(atributos* att){
 
 void TS_InsertaPARAMF(atributos* att){
   entradaTS entrada_paramf;
+  initEntradaTS(&entrada_paramf);
   entrada_paramf.entrada = parametro;
   if(att->lexema != NULL && att->lexema != 0){
     entrada_paramf.nombre = strdup(att->lexema);
@@ -510,6 +511,8 @@ void TS_InsertaPARAMF(atributos* att){
 }
 void TS_InsertaVAR(atributos* att){
   entradaTS entrada_var;
+  initEntradaTS(&entrada_var);
+
   entrada_var.entrada = variable;
   if(att->lexema != NULL && att->lexema != 0){
     if(declaredIden(att->lexema)){
@@ -631,10 +634,11 @@ void checkProced(atributos* att){
 
 void linkAtt(atributos* att){
   //  procedure_att_end_pointer->next = atributecpy(att);
-  printf("Linking ...\n");
-  showAtt(att);
-  printf("\n");
-  getchar();
+  addNode(&params_last_proc_call,att->tipo);
+  //printf("Linking ...\n");
+  //showAtt(att);
+  //printf("\n");
+  //getchar();
 }
 //TODO Need Fix?
 void checkSignArray(atributos* attOPB_ADD){
@@ -793,8 +797,17 @@ int checkBoolean(atributos* att){
   }
 }
 void checkCallProc(atributos* att){
-
-
+  int indexTS = inScope(att->lexema);
+  if(indexTS){
+    if(TS[indexTS].entrada == procedimiento){
+      //checkEqualNodeList(TS[indexTS].lista_parametros.next,params_last_proc_call.next);
+      checkProcCallArgs(att,TS[indexTS].lista_parametros.next,params_last_proc_call.next); 
+      freeNode(params_last_proc_call.next);//getchar();
+    }else{
+      printf("WARNING: en checkCallProcWithoutArgs, metodo inScope podría estar mal ...\n");
+      getchar();
+    }
+  }
 }
 void checkCallProcWithoutArgs(atributos* att){
   int indexTS = inScope(att->lexema);
@@ -811,3 +824,27 @@ void checkCallProcWithoutArgs(atributos* att){
 
 }
 
+int checkProcCallArgs(atributos* att,node* l1,node*l2){
+  int equal = isEqualNodeList(l1,l2);
+  if(equal == 0){
+    printf("[Linea %i] ERROR SEMÁNTICO: Llamada a procedimiento erronea.\n",yylineno);
+    printf("Se esperaba %s (",att->lexema);
+    showNodesTypes(l1);
+    printf(")");
+    printf(" y se ha encontrado %s (",att->lexema);
+    showNodesTypes(l2);
+    printf(")\n");
+  }
+  return equal;
+}
+
+void showNodesTypes (node* start) {
+  node* cur;
+  for (cur = start; cur != NULL; cur = cur->next) {
+
+    printf(" %s",dtipo2str(cur->number));
+    if(cur->next!=NULL)
+      printf(",");
+  }
+  //printf("\n");
+}
