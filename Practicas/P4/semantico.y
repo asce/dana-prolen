@@ -56,7 +56,7 @@ void yyerror(const char *msg) ;
 %start programa
 
 %%
-programa: {initTS();} cabecera_programa bloque {printf("\nAnalisis sintactico finalizado.\n"); return 0;};
+programa: {initTS();} cabecera_programa bloque {printf("\nAnálisis finalizado.\n"); return 0;};
 
 cabecera_programa: MAIN;
 
@@ -159,7 +159,11 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
 }
 | expresion OPB_REL expresion{
   atributocpy(&$$,&$1);
-  if(check_OPB_REL(&$1,&$3)==0)$$.tipo=desconocido;
+  if(check_OPB_REL(&$1,&$3)==0)
+    $$.tipo=desconocido;
+  else{
+    $$.tipo=booleano;
+  }
   $$.lexema = "_";
 }
 | expresion OPB_ADD expresion{
