@@ -492,9 +492,9 @@ static const yytype_uint8 yyrline[] =
      118,   118,   120,   120,   120,   122,   122,   124,   125,   126,
      127,   128,   129,   130,   131,   131,   133,   133,   135,   136,
      145,   150,   155,   160,   165,   170,   180,   181,   190,   191,
-     192,   193,   194,   197,   203,   196,   208,   208,   211,   213,
-     218,   225,   225,   227,   229,   231,   233,   235,   237,   237,
-     239,   239,   241,   243,   243,   245,   245,   247,   247
+     192,   193,   194,   197,   203,   196,   209,   209,   212,   214,
+     219,   226,   226,   228,   230,   232,   234,   236,   238,   238,
+     240,   240,   242,   244,   244,   246,   246,   248,   248
 };
 #endif
 
@@ -1885,20 +1885,21 @@ scope_index_TS = checkScope(&(yyvsp[(1) - (1)]));
 call_procedure_flag=0;
 checkCallProc(&(yyvsp[(1) - (5)]));
  deleteAttList();
+ showTS();
 }
     break;
 
   case 66:
 
 /* Line 1806 of yacc.c  */
-#line 208 "semantico.y"
-    {checkCallProcWithoutArgs(&(yyvsp[(1) - (3)]));}
+#line 209 "semantico.y"
+    {checkCallProcWithoutArgs(&(yyvsp[(1) - (3)]));showTS();}
     break;
 
   case 69:
 
 /* Line 1806 of yacc.c  */
-#line 214 "semantico.y"
+#line 215 "semantico.y"
     {if(call_procedure_flag){
     linkAtt(&(yyvsp[(3) - (3)]));
   }
@@ -1908,7 +1909,7 @@ checkCallProc(&(yyvsp[(1) - (5)]));
   case 70:
 
 /* Line 1806 of yacc.c  */
-#line 219 "semantico.y"
+#line 220 "semantico.y"
     {if(call_procedure_flag){
     linkAtt(&(yyvsp[(1) - (1)]));
   }
@@ -1918,7 +1919,7 @@ checkCallProc(&(yyvsp[(1) - (5)]));
 
 
 /* Line 1806 of yacc.c  */
-#line 1922 "y.tab.c"
+#line 1923 "y.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2149,7 +2150,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 250 "semantico.y"
+#line 251 "semantico.y"
 
 
 #include "lex.yy.c"

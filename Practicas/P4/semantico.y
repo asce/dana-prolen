@@ -204,8 +204,9 @@ lista_expresiones PARDER
 call_procedure_flag=0;
 checkCallProc(&$1);
  deleteAttList();
+ showTS();
 } PYC
-|IDENTIFICADOR PARIZ PARDER {checkCallProcWithoutArgs(&$1);}PYC
+|IDENTIFICADOR PARIZ PARDER {checkCallProcWithoutArgs(&$1);showTS();}PYC
 ;
 
 agregados: INICIO lista_expresiones FINBLO;
