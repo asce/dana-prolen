@@ -801,6 +801,7 @@ void checkCallProc(atributos* att){
       //checkEqualNodeList(TS[indexTS].lista_parametros.next,params_last_proc_call.next);
       checkProcCallArgs(att,TS[indexTS].lista_parametros.next,params_last_proc_call.next); 
       freeNode(params_last_proc_call.next);//getchar();
+      params_last_proc_call.next=NULL;
     }else{
       printf("WARNING: en checkCallProcWithoutArgs, metodo inScope podría estar mal ...\n");
       getchar();
