@@ -2,6 +2,7 @@ main{
 
 	begin_declare
 		int x,v1,ve,vv,bb,vvv;
+		int pep;
 		double vf,dd, ff;
 		char vc;
 		int Ae32[3,2],Ae23[2,3],Ae33[3,3],Ae22[2,2];
@@ -14,7 +15,7 @@ main{
 
   	void funcionA(int v1[3,3], double a2, char a3){
       		begin_declare
-			int vv,funcionA;
+			int x1,x2,vv;
       		end_declare
       
       	void funcionB(char b1, bool b2){
@@ -26,6 +27,8 @@ main{
 					double x1,xc;
               			end_declare
 	      			x1 = 1.3;
+				ve= pep;
+				funcionA(Ae32,2.0*vf,'a');
               			if(xc > x1){
 					c2 = c2 - 1;
 	      			}else{
@@ -50,7 +53,6 @@ main{
 	  				char vc;
 				end_declare
 	  			read e1;
-
 				switch(e1){
 					case 'a':
 						vc = 'a';
@@ -79,48 +81,20 @@ main{
 		}
 		
 	
-  		iv[0]=0;
-  		iv[1]=1;
-  		iv[2]=2;
-  		iv[3]=3;
-  		iv[4]=4;
-
 		iv = iv * iv;
 
-  		fv[0]=0.0;
-  		fv[1]=1.0;
-  		fv[2]=2.0;
-  		fv[3]=3.0;
-  		fv[4]=4.0;
-
 		fv = fv * fv;
-
-  		cv[0]='a';
-  		cv[1]='b';
-  		cv[2]='c';
-  		cv[3]='d';
-  		cv[4]='e';
-
-  		bv[0]=false;
-  		bv[1]=true;
-  		bv[2]=true;
-  		bv[3]=true;
-  		bv[4]=false;
-
-		im[0,0] = iv;
-		im[0,1] = iv;
-		im[1,0] = iv;
-		im[1,1] = iv;
 
 		im = im ** im;
 
 		ve = 0;
 
-		fm[ve,0] = fv;
-		
+			
       
 	}
 	funcionA(im,1.0,'a');
 	ve=100;
- x=2;
+ 	x=2;
+	Ae33 = Ae32**Ae23 + ve;	
+
 }

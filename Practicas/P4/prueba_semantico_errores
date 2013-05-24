@@ -1,9 +1,11 @@
 main{
 
 	begin_declare
-		int x,v1,vv,bb,vvv;
+		int x,v1,ve,vv,bb,vvv;
+		i·nt pep;
 		double vf,dd, ff;
 		char vc;
+		int Ae32[3,2],Ae23[2,3],Ae33[3,3],Ae22[2,2];
 		bool vl;
 		int iv[2],im[2,2];
 		double fv[2],fm[2,2];
@@ -13,7 +15,7 @@ main{
 
   	void funcionA(int v1[3,3], double a2, char a3){
       		begin_declare
-			int v1, vv,funcionA;
+			int x1,x2,vv,a3;
       		end_declare
       
       	void funcionB(char b1, bool b2){
@@ -22,19 +24,24 @@ main{
           	end_declare
 	  		void funcionC(bool c1, int c2){
 	      			begin_declare
-					double x1;
+					double x1,xc;
               			end_declare
 	      			x1 = 1.3;
-              			if(c2 > x1)
+				ve= pep;
+				funcionA(Ae32,2.0*vf,'a');
+				funcionC(2,2,22,4);
+              			if((xc > x1)+2){
 					c2 = c2 - 1;
-	      			else
+	      			}else{
 					x1 = 3.1;
+				}
 
 	  		}
 	  		xf = 15.0;
-			x2 = xf * (1 - 23) / 10.0;
-			while(x2 * 1 - xf < 10.0)
+			x2 = xf * (1.0 - 23.0) / 10.0;
+			while(x2 * 1.0 - xf < 10.0){
 	    			x2 = x2 * xf;
+			}
 	    
       	}
         void funcionD(double d1){
@@ -47,7 +54,7 @@ main{
 	  				char vc;
 				end_declare
 	  			read e1;
-
+				funcionC(2);
 				switch(e1){
 					case 'a':
 						vc = 'a';
@@ -63,7 +70,7 @@ main{
 			read valor;
                         write "Esto ",valor," es ", vc," una prueba";
 
-			if(0.0){
+			if(!true || 2.0 < (3.0 + 5.0) ){
 	  			begin_declare
 	    			int dato;
 	  			end_declare
@@ -74,51 +81,24 @@ main{
 	  			d1 = d1 / 1000.0;
 			}
 		}
+		
 	
-  		iv[0]=0;
-  		iv[1]=1;
-  		iv[2]=2;
-  		iv[3]=3;
-  		iv[4]=4;
-
-		iv = iv + iv;
-
-  		fv[0]=0.0;
-  		fv[1]=1.0;
-  		fv[2]=2.0;
-  		fv[3]=3.0;
-  		fv[4]=4.0;
+		iv = iv * iv;
 
 		fv = fv * fv;
-
-  		cv[0]='a';
-  		cv[1]='b';
-  		cv[2]='c';
-  		cv[3]='d';
-  		cv[4]='e';
-
-  		bv[0]=0;
-  		bv[1]=1;
-  		bv[2]=2;
-  		bv[3]=3;
-  		bv[4]=4;
-
-		im[0,0] = iv;
-		im[0,1] = iv;
-		im[1,0] = iv;
-		im[1,1] = iv;
 
 		im = im ** im;
 
 		ve = 0;
 
-		fm[ve,0] = fv;
-		fm[ve,1] = fv;
-		fm[ve+1,0] = fv;
-		fm[ve+1,1] = fv;
+			
       
 	}
+	funcionA(im,1.0,'a');
 	ve=100;
-	funcionA(1,'a',3,4);
- x=2;
+ 	x=2;
+	Ae33 = Ae32**Ae23 + ve;	
+	Ae22 = Ae23 +Ae32;
+	Ae33 = Ae33*vf;
+
 }

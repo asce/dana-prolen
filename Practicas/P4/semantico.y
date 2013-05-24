@@ -93,9 +93,10 @@ iden: IDENTIFICADOR
   atributocpy(&$$,&$1);
   $$.tipo = tipoEnArray(tipoTmp);
   $$.dimensiones = 1;
-  if(checkIndexEntero(&$4))
-    $$.TamDimen1 = atoi($4.lexema); /* revisar */
-  
+  //if(checkIndexEntero(&$3))
+    $$.TamDimen1 = atoi($3.lexema); /* revisar */
+    //showAtt(&$$);
+    //getchar();
 } 
 
 | IDENTIFICADOR CORIZ  expresion COMA expresion CORDER 
@@ -103,11 +104,12 @@ iden: IDENTIFICADOR
   atributocpy(&$$,&$1);
   $$.tipo = tipoEnArray(tipoTmp);
   $$.dimensiones = 2;
-  if(checkIndexEntero(&$4))
-    $$.TamDimen1 = atoi($4.lexema); /* revisar */
-  if(checkIndexEntero(&$6))
-    $$.TamDimen2 = atoi($6.lexema); /* revisar */
-  
+  //if(checkIndexEntero(&$3))
+    $$.TamDimen1 = atoi($3.lexema); /* revisar */
+    //if(checkIndexEntero(&$5))
+    $$.TamDimen2 = atoi($5.lexema); /* revisar */
+    //showAtt(&$$);
+    //getchar();
 }
 ;
 
@@ -130,7 +132,15 @@ sentencia: bloque
 | procedimiento {checkProced(&$1);}
            | sentencia_case | error;
 
-sentencia_asignacion: iden {checkScope(&$1); } ASIG expresion {checkEqualTypeAsig(&$1,&$4);} PYC;
+sentencia_asignacion: iden {checkScope(&$1); } ASIG expresion {
+checkEqualTypeAsig(&$1,&$4);
+ if(es_array($1.tipo) && es_array($4.tipo)){
+   checkEqualDimenArray(&$1,&$4);
+   //showAtt(&$1);
+   //showAtt(&$4);
+ }
+
+} PYC;
 
 expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
 | OPB_ADD expresion %prec OPU{
@@ -175,9 +185,21 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
   atributocpy(&$$,&$1);
   if(check_OPB_MUL(&$1,&$3)==0) {$$.tipo=desconocido;}
   if($2.atrib == 1){ /*  **  */
-    if(checkArrayMulDimension(&$1,&$3)==0){$$.tipo=desconocido;}
+    if(checkArrayMulDimension(&$1,&$3)==0)
+      {$$.tipo=desconocido;}
+    $$.TamDimen1 = $1.TamDimen1;
+    $$.TamDimen2 = $3.TamDimen2;
+    //showAtt(&$$);
+    //getchar();
   }else{
-    if(checkEqualDimenArray(&$1,&$3)==0)$$.tipo=desconocido;
+    if(checkEqualDimenArray(&$1,&$3)==0){
+      $$.tipo=desconocido;
+    }else{
+      //printf("Opp entre arrays\n");
+      $$.TamDimen1 = $1.TamDimen1;
+      $$.TamDimen2 = $1.TamDimen2;
+      //showAtt(&$$);getchar();
+    }
   }
   $$.lexema = "_";
 }
@@ -203,16 +225,13 @@ scope_index_TS = checkScope(&$1);
 
 procedimiento: IDENTIFICADOR PARIZ 
 {call_procedure_flag=1;
-  /* initAttList(&att_list);*/
-  /*atributocpy(&att_list.att,&$1);*/
-  /*procedure_att_end_pointer = &att_list;*/
+
 } 
 lista_expresiones PARDER 
 {
 call_procedure_flag=0;
 checkCallProc(&$1);
-//deleteAttList();
-// showTS();
+
 } PYC
 |IDENTIFICADOR PARIZ PARDER {checkCallProcWithoutArgs(&$1);showTS();}PYC
 ;

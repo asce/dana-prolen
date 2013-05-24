@@ -592,6 +592,13 @@ int checkScope(atributos* att){
       return 0;
     }else{//Está en el ámbito
       att->tipo = tipoScope;
+      att->dimensiones = TS[indexTS].dimensiones;
+      att->TamDimen1 = TS[indexTS].TamDimen1;
+      att->TamDimen2 = TS[indexTS].TamDimen2;
+      if(es_array(att->tipo)){
+	//showAtt(att);
+	//getchar();
+      }
       return indexTS;
     }
   }else{
@@ -741,7 +748,8 @@ int checkEqualTypeAsig(atributos* op1,atributos* op2){
     printf("[Linea %i] ERROR SEMÁNTICO: Los tipos de la asignación no coinciden. ",yylineno);
     printf(" %s (dest): %s y %s (expr): %s\n",op1->lexema,dtipo2str(op1->tipo),op2->lexema,dtipo2str(op2->tipo));
     return 0;
-  }else{//Alguno de los dos es array pero del mismo tipo                                                                                                        
+  }else{//Alguno de los dos es array pero del mismo tipo                          
+   
 
   }
 }
@@ -755,7 +763,9 @@ int checkEqualTypeAsig(atributos* op1,atributos* op2){
    if(op1->dimensiones!=op2->dimensiones ||
       op1->TamDimen1!=op2->TamDimen1 ||
       op1->TamDimen2!=op2->TamDimen2){
-     printf("[Linea %i] ERROR SEMÁNTICO: Las dimensiones de los array no coinciden.\n",yylineno);valid=0;}
+     printf("[Linea %i] ERROR SEMÁNTICO: Las dimensiones de los array no coinciden.\n",yylineno);valid=0;
+     // showAtt(op1);showAtt(op2);
+   }
    }
    return valid;
  }
@@ -797,13 +807,14 @@ void checkCallProc(atributos* att){
     if(TS[indexTS].entrada == procedimiento){
       //checkEqualNodeList(TS[indexTS].lista_parametros.next,params_last_proc_call.next);
       checkProcCallArgs(att,TS[indexTS].lista_parametros.next,params_last_proc_call.next); 
-      freeNode(params_last_proc_call.next);//getchar();
-      params_last_proc_call.next=NULL;
     }else{
       printf("WARNING: en checkCallProcWithoutArgs, metodo inScope podría estar mal ...\n");
       getchar();
     }
   }
+      freeNode(params_last_proc_call.next);//getchar();
+      params_last_proc_call.next=NULL;
+
 }
 void checkCallProcWithoutArgs(atributos* att){
   int indexTS = inScope(att->lexema);
