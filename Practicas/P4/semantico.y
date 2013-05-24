@@ -178,7 +178,8 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
 }
 | expresion OPB_ADD expresion{
   atributocpy(&$$,&$1);
-  if(check_OPB_ADD(&$1,&$3)==0)$$.tipo=desconocido;
+  if(check_OPB_ADD(&$1,&$3)==0 ||checkEqualDimenArray(&$1,&$3)==0)
+    $$.tipo=desconocido;
   $$.lexema = "_";
 }
 | expresion OPB_MUL expresion{

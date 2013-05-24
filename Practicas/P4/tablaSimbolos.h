@@ -763,7 +763,7 @@ int checkEqualTypeAsig(atributos* op1,atributos* op2){
    if(op1->dimensiones!=op2->dimensiones ||
       op1->TamDimen1!=op2->TamDimen1 ||
       op1->TamDimen2!=op2->TamDimen2){
-     printf("[Linea %i] ERROR SEMÁNTICO: Las dimensiones de los array no coinciden.\n",yylineno);valid=0;
+     printf("[Linea %i] ERROR SEMÁNTICO: Las dimensiones de los array %s y %s no coinciden.\n",yylineno,op1->lexema,op2->lexema);valid=0;
      // showAtt(op1);showAtt(op2);
    }
    }

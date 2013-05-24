@@ -98,7 +98,7 @@ main{
 	ve=100;
  	x=2;
 	Ae33 = Ae32**Ae23 + ve;	
-	Ae22 = Ae23 +Ae32;
+	Ae22 = Ae32 + Ae32;
 	Ae33 = Ae33*vf;
 
 }
