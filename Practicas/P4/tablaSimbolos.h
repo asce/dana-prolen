@@ -75,7 +75,7 @@ unsigned int TOPE=0 ; 			/* TOPE de la pila */
 unsigned int last_proc_index;
 unsigned int subProg ; 			/* Indicador de comienzo de bloque de un subprog */
 unsigned int dec_flag = 0;
-unsigned int array_flag = 0;
+unsigned int array_flag = 0; //TODO
 
 unsigned int call_procedure_flag = 0;
 
@@ -552,16 +552,31 @@ void showAtt(atributos* att){
 	 att->atrib,att->lexema,att->tipo,att->dimensiones,att->TamDimen1,att->TamDimen2);
 
 }
+void getAttFromTS(atributos* att,int index){
+  att->atrib=-1;
+  att->lexema=strdup(TS[index].nombre);
+  att->tipo=TS[index].tipoDato;
+  if(es_array(att->tipo)==0){
+    att->dimensiones=-1;
+    att->TamDimen1=-1;
+    att->TamDimen2=-1;
+  }else{
+    att->dimensiones=TS[index].dimensiones;
+    att->TamDimen1=TS[index].TamDimen1;
+    att->TamDimen2=TS[index].TamDimen2;
+  }
+}
 /**
  * Devuelve indice de TS si se encuentra iden en el ambito y 0 en otro caso
  * (en la posicion 0 siempre hay una marca)
  */
-int inScope(char* iden){
+int inScope(atributos* query,atributos* found){
   int i;
+  char* iden = strdup(query->lexema); 
   for(i=TOPE;i>=0;i--){
     if(TS[i].nombre!=0 && TS[i].nombre!=NULL){
       if(strcmp(TS[i].nombre,iden)==0){ //ident. 'iden' exists
-	tipoScope = TS[i].tipoDato;
+	getAttFromTS(found,i);
 	return i;
       }
     }else if(TS[i].entrada!=marca){
@@ -570,20 +585,22 @@ int inScope(char* iden){
       exit(0);
     }
   }
+  setNotFoundAtt(found,iden);
   return 0;
 }
-void getAttFromTS(atributos* att,int indexTS){
-  att->lexema = strdup(TS[indexTS].nombre);
-  att->tipo = TS[indexTS].tipoDato;
-  att->dimensiones = TS[indexTS].dimensiones;
-  att->TamDimen1 = TS[indexTS].TamDimen1;
-  att->TamDimen2 = TS[indexTS].TamDimen2;
+void setNotFoundAtt(atributos* att,char* name){
+  att->atrib=-1;
+  att->lexema=strdup(name);
+  att->tipo=desconocido;
+  att->dimensiones=-1;
+  att->TamDimen1=-1;
+  att->TamDimen2=-1;
 }
 
-int checkScope(atributos* att){
-  atributos att_found;
+int checkScope(atributos* att,atributos* found){
+  //atributos att_found;
   int indexTS;
-  indexTS = inScope(att->lexema);
+  indexTS = inScope(att,found);
   if(att->lexema != NULL && att->lexema != 0){
     if(indexTS==0){
       printf("[Linea %i] ERROR SEMÁNTICO: \"%s\" no se ha declarado en el ámbito.\n",yylineno,att->lexema);
@@ -591,10 +608,11 @@ int checkScope(atributos* att){
       att->tipo = desconocido;
       return 0;
     }else{//Está en el ámbito
-      att->tipo = tipoScope;
-      att->dimensiones = TS[indexTS].dimensiones;
-      att->TamDimen1 = TS[indexTS].TamDimen1;
-      att->TamDimen2 = TS[indexTS].TamDimen2;
+      //¡¡¡Y su valor está en found!!!
+      //att->tipo = tipoScope;
+      //att->dimensiones = TS[indexTS].dimensiones;
+      //att->TamDimen1 = TS[indexTS].TamDimen1;
+      //att->TamDimen2 = TS[indexTS].TamDimen2;
       if(es_array(att->tipo)){
 	//showAtt(att);
 	//getchar();
@@ -609,14 +627,14 @@ int checkScope(atributos* att){
 
 }
 
-void checkProced(atributos* att){
+void checkProced(atributos* att,atributos* found){
   char* iden;
   int i;
   if(att->lexema==NULL ||att->lexema ==0){
     printf("WARNING: Se ha pasado atributo sin lexema en checkProced\n");
     return;
   }
-  i = inScope(att->lexema);
+  i = inScope(att,found);
   if(i==0){
       printf("[Linea %i] ERROR SEMÁNTICO: \"%s\" no se ha declarado en el ámbito.\n",yylineno,att->lexema);
       //getchar();
@@ -801,11 +819,10 @@ int checkBoolean(atributos* att){
     return 0;
   }
 }
-void checkCallProc(atributos* att){
-  int indexTS = inScope(att->lexema);
+void checkCallProc(atributos* att,atributos* found){
+  int indexTS = inScope(att, found);
   if(indexTS){
     if(TS[indexTS].entrada == procedimiento){
-      //checkEqualNodeList(TS[indexTS].lista_parametros.next,params_last_proc_call.next);
       checkProcCallArgs(att,TS[indexTS].lista_parametros.next,params_last_proc_call.next); 
     }else{
       printf("WARNING: en checkCallProcWithoutArgs, metodo inScope podría estar mal ...\n");
@@ -816,8 +833,8 @@ void checkCallProc(atributos* att){
       params_last_proc_call.next=NULL;
 
 }
-void checkCallProcWithoutArgs(atributos* att){
-  int indexTS = inScope(att->lexema);
+void checkCallProcWithoutArgs(atributos* att,atributos* found){
+  int indexTS = inScope(att,found);
   if(indexTS){
     if(TS[indexTS].entrada == procedimiento){
       if(TS[indexTS].parametros != 0){
@@ -845,6 +862,14 @@ int checkProcCallArgs(atributos* att,node* l1,node*l2){
   return equal;
 }
 
+int checkAccessArray(atributos* att1, atributos* att2){
+  //TODO
+  //en rango filas
+  //en rango columnas
+  // comprobación de tipos
+  return 1;
+}
+
 void showNodesTypes (node* start) {
   node* cur;
   for (cur = start; cur != NULL; cur = cur->next) {
@@ -854,4 +879,22 @@ void showNodesTypes (node* start) {
       printf(",");
   }
   //printf("\n");
+}
+
+int checkIndexIdenArray1D(atributos* array_iden,atributos* array_in_ts){
+
+
+
+
+
+
+}
+
+int checkIndexIdenArray2D(atributos* array_iden,atributos* array_in_ts){
+
+
+
+
+
+
 }

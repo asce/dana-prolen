@@ -86,30 +86,54 @@ iden: IDENTIFICADOR
 { 
     atributocpy(&$$,&$1);
     $$.tipo = tipoTmp;
+    //en principio es lo mismo dec_flag o no ya que en sentencia se sobreescribe
 }
 
 | IDENTIFICADOR CORIZ  expresion CORDER 
 { 
-  atributocpy(&$$,&$1);
-  $$.tipo = tipoEnArray(tipoTmp);
-  $$.dimensiones = 1;
-  //if(checkIndexEntero(&$3))
+  if(dec_flag){
+    atributocpy(&$$,&$1);
+    $$.tipo = tipoEnArray(tipoTmp);
+    $$.dimensiones = 1;
+  if(checkIndexEntero(&$3))
+    $$.TamDimen1 = atoi($3.lexema); /* revisar */
+    
+    //showAtt(&$$);
+    //getchar();
+  }else{
+    atributocpy(&$$,&$1);
+    $$.tipo = tipoEnArray(tipoTmp);
+    $$.dimensiones = 1;
+  if(checkIndexEntero(&$3))
     $$.TamDimen1 = atoi($3.lexema); /* revisar */
     //showAtt(&$$);
     //getchar();
+  }
 } 
 
 | IDENTIFICADOR CORIZ  expresion COMA expresion CORDER 
 { 
-  atributocpy(&$$,&$1);
-  $$.tipo = tipoEnArray(tipoTmp);
-  $$.dimensiones = 2;
-  //if(checkIndexEntero(&$3))
+  if(dec_flag){
+    atributocpy(&$$,&$1);
+    $$.tipo = tipoEnArray(tipoTmp);
+    $$.dimensiones = 2;
+    //if(checkIndexEntero(&$3))
     $$.TamDimen1 = atoi($3.lexema); /* revisar */
     //if(checkIndexEntero(&$5))
     $$.TamDimen2 = atoi($5.lexema); /* revisar */
     //showAtt(&$$);
     //getchar();
+  }else{
+    atributocpy(&$$,&$1);
+    $$.tipo = tipoEnArray(tipoTmp);
+    $$.dimensiones = 2;
+    //if(checkIndexEntero(&$3))
+    $$.TamDimen1 = atoi($3.lexema); /* revisar */
+    //if(checkIndexEntero(&$5))
+    $$.TamDimen2 = atoi($5.lexema); /* revisar */
+    //showAtt(&$$);
+    //getchar();
+  }
 }
 ;
 
@@ -129,10 +153,10 @@ sentencia: bloque
            | sentencia_while
 	   | sentencia_entrada
 	   | sentencia_salida
-| procedimiento {checkProced(&$1);}
+| procedimiento {checkProced(&$1,&$$);}
            | sentencia_case | error;
 
-sentencia_asignacion: iden {checkScope(&$1); } ASIG expresion {
+sentencia_asignacion: iden {checkScope(&$1,&$1); } ASIG expresion {
 checkEqualTypeAsig(&$1,&$4);
  if(es_array($1.tipo) && es_array($4.tipo)){
    checkEqualDimenArray(&$1,&$4);
@@ -148,7 +172,7 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
   /*AnyCheck?*/
   /* si está activo el flag de array dar error para $1.atrib=2 ( - ) */
   if(array_flag){
-    checkSignArray(&$1);
+    checkSignArray(&$1);//TODO
   }
 
 } 
@@ -209,14 +233,14 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
     $$.tipo=desconocido; 
   else $$.tipo=$2.tipo;
 }
-| iden {atributocpy(&$$,&$1);}
+| iden 
 {
-scope_index_TS = checkScope(&$1); 
- if(scope_index_TS){
-   getAttFromTS(&$$,scope_index_TS);
- }
- else
-   $$.tipo = desconocido;
+ checkScope(&$1,&$$);
+ if($$.dimensiones == $1.dimensiones){
+   $$.tipo=tipoArray($$.tipo);
+ }//else if($$.dimensiones == $1.dimensiones+1){
+   //
+ //}
 }
 | CONSTANTE{atributocpy(&$$,&$1);} 
 | CONSTANTE_E{atributocpy(&$$,&$1);}
@@ -231,10 +255,10 @@ procedimiento: IDENTIFICADOR PARIZ
 lista_expresiones PARDER 
 {
 call_procedure_flag=0;
-checkCallProc(&$1);
+ checkCallProc(&$1,&$$);
 
 } PYC
-|IDENTIFICADOR PARIZ PARDER {checkCallProcWithoutArgs(&$1);showTS();}PYC
+|IDENTIFICADOR PARIZ PARDER {checkCallProcWithoutArgs(&$1,&$$);}PYC
 ;
 
 agregados: INICIO lista_expresiones FINBLO;
