@@ -4,6 +4,7 @@ main{
 		int x,v1,ve,vv,bb,vvv;
 		double vf,dd, ff;
 		char vc;
+		int Ae32[3,2],Ae23[2,3],Ae33[3,3],Ae22[2,2];
 		bool vl;
 		int iv[2],im[2,2];
 		double fv[2],fm[2,2];
@@ -119,6 +120,7 @@ main{
 		
       
 	}
+	funcionA(im,1.0,'a');
 	ve=100;
  x=2;
 }
