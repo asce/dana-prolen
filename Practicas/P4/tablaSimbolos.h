@@ -53,19 +53,6 @@ typedef struct {
 } atributos ;
 node params_last_proc_call = {0,NULL};
 
-/*
-typedef struct{
-  atributos att;
-  atributos* next;
-}elem_list_t;
-*/
-/*
-void initAttList(elem_list_t* list){
-  list->att.lexema = 0;
-  list->next = 0;
-}
-*/
-//elem_list_t att_list;
 int scope_index_TS;
 
 #define YYSTYPE atributos 		/* A partir de ahora, cada símbolo tiene una estructura de tipo atributos*/
@@ -138,27 +125,6 @@ char* tipoEntrada2str(tipoEntrada e){
   }
 }
 
-void imprimeTS () {
-	/* Imprime por pantalla la tabla de simbolos */
-	int i;
-	int letra;
-	for (i=0; i<=TOPE; i++) {
-		if (TS[i].entrada==marca)
-			printf("<<< MARCA >>>\n");
-		if (TS[i].entrada==procedimiento){
-			printf("Procedimiento: %s, Tipo: %d, Num. Parametros: %d\n", TS[i].nombre, TS[i].tipoDato, TS[i].parametros);
-		}
-		if (TS[i].entrada == variable){
-			printf("Variable: %s, Tipo: %s\n", TS[i].nombre, dtipo2str(TS[i].tipoDato));
-		}
-			
-		if (TS[i].entrada==parametro)
-			printf("Parametro: %s, Tipo: %s\n", TS[i].nombre,dtipo2str(TS[i].tipoDato));
-	}
-	getchar();
-
-	printf("********************************************************************\n");
-}
 void showTS(){
   int i;
   printf("Contenido de la TS:\n");
@@ -171,86 +137,6 @@ void showTS(){
   }
 }
 
-void buscar_repetidas(char *lexema) {
-	/* Miramos que en la tabla de simbolos no exista otro identificador con el mismo lexema*/
-	int i;
-
-	/* Comprobar si ya existe otro con el mismo lexema en el mismo
-	   bloque */
-	for (i=TOPE; TS[i].entrada != marca; i--){
-
-		if (!strcmp(TS[i].nombre, lexema) && TS[i].entrada != parametro) {
-			printf ("\nError Semantico en la linea %d: Identificador %s ya esta declarado\n", yylineno, lexema);
-			return;
-		}
-	}
-}
-
-
-
-//MAL?
-int es_repetida(char *lexema) {
-	/* Miramos que en la tabla de simbolos no exista otro identificador con el mismo lexema*/
-	int i;
-
-	/* Comprobar si ya existe otro con el mismo lexema en el mismo
-	   bloque */
-	for (i=TOPE; TS[i].entrada != marca; i--){
-		if (!strcmp(TS[i].nombre, lexema) && TS[i].entrada != parametro) {
-			printf ("\nError Semantico en la linea %d: Identificador %s ya esta declarado\n", yylineno, lexema);
-			return 1;
-		}
-	}
-	return 0;
-}
-
-
-int existe(char *lexema) {
-	/* Devuelve 1 si esta definida una variable con el nombre especificado
-	   o 0 en caso contrario */
-	long int temp;
-		
-	for (temp=TOPE; temp>0;temp--)
-		if (TS[temp].entrada == variable && !strcmp(TS[temp].nombre, lexema))
-			return 1;
-
-	return 0;
-}
-
-
-
-
-int BuscarParametroRepetido (char *lexema) {
-	/* Comprobar si ya existe otro parametro con el mismo lexema en el mismo
-	   procedimiento*/
-
-	int i;
-
-	for (i=TOPE; TS[i].entrada != procedimiento; i--){
-		if (!strcmp(TS[i].nombre, lexema)) {
-			printf ("\nError Semantico en la linea %d: Parametro %s esta duplicado\n", yylineno, lexema);
-			return 1;
-		}
-	}
-	return 0;
-}
-
-
-
-/*Porque tipo desconocido??*/
-void CuentaParametros () {
-	/* Asigna el tipo desconocido al procedimiento y  cuenta cuantos parametros tiene */
-	int i;
-	int parametros=0;
-
-	for (i=TOPE;TS[i].entrada != procedimiento;i--)
-		if (TS[i].entrada == parametro) {
-			parametros++;
-		}
-
-	TS[i].tipoDato=desconocido;//wtf?
-	TS[i].parametros=parametros;
-}
 void pushEntradaTS(entradaTS* elem){
 /* Ojo con tipoTmp, asignar cuando lea el tipo en declaración */
   TOPE++;
@@ -370,49 +256,6 @@ void IntroFinBloq () {
 	//printf("--------------------------------------Finalizado bloque--------------------------------------\n");
 	//showTS();
 	//getchar();
-}
-
-int existeProc (char *lexema) {
-/*comprueba que existe un nombre de procedimiento declarado igual al que se le pasa*/
-	int i;
-	int igual=0;
-	for (i=TOPE+1; i>=0 && TS[TOPE].entrada!=marca; i--)
-		if (TS[i].entrada == procedimiento && !strcmp(TS[i].nombre, lexema))
-			igual=1;
-	return igual;
-}
-
-int numParametros(char* lexema){
-/*Devuelve el numero de parametros de un procedimiento*/
-	int i;
-	int igual=0;
-	for (i=TOPE+1; i>=0; i--)
-		if (TS[i].entrada == procedimiento && !strcmp(TS[i].nombre, lexema)){
-			return TS[i].parametros;
-		}
-
-
-}
-
-dtipo tipoParametro(int num, char* lexema){
-/*Devuelve el tipo de parametro del procedimiento llamado lexema en la posicion num*/
-	int i;
-	int igual=0;
-	for (i=TOPE; i>=0; i--)
-		if (TS[i].entrada == procedimiento && !strcmp(TS[i].nombre, lexema)){
-			return (TS[i+num].tipoDato);
-		}
-} 
-
-
-dtipo get_tipo (char *lexema) {
-	/* Devuelve el tipo si esta definida una variable con el nombre lexema
-	    */
-	long int temp;
-
-	for (temp=TOPE; temp>0 && TS[TOPE].entrada!=marca;temp--)
-		if (TS[temp].entrada == variable && !strcmp(TS[temp].nombre, lexema))
-			return TS[temp].tipoDato;
 }
 
 dtipo tipoArray (dtipo elem) {
@@ -544,7 +387,6 @@ int declaredIden(char* iden){
   }
   return 0;
 }
-
 
 void showAtt(atributos* att){
   printf("Atts values:\n");
@@ -879,22 +721,4 @@ void showNodesTypes (node* start) {
       printf(",");
   }
   //printf("\n");
-}
-
-int checkIndexIdenArray1D(atributos* array_iden,atributos* array_in_ts){
-
-
-
-
-
-
-}
-
-int checkIndexIdenArray2D(atributos* array_iden,atributos* array_in_ts){
-
-
-
-
-
-
 }
