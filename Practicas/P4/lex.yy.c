@@ -1201,13 +1201,13 @@ YY_RULE_SETUP
 case 52:
 YY_RULE_SETUP
 #line 89 "lexico.l"
-{return CADENA;}
+{yylval.lexema = strdup(strdup(yytext));return CADENA;}
 	YY_BREAK
 case 53:
 /* rule 53 can match eol */
 YY_RULE_SETUP
 #line 90 "lexico.l"
-{yylval.tipo=caracter;return CARACTER;}
+{yylval.lexema = strdup(strdup(yytext));yylval.tipo=caracter;return CARACTER;}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP

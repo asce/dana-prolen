@@ -86,8 +86,8 @@ suma_resta [+-]
 "+"			                {yylval.atrib = 1; return OPB_ADD;}
 "-"                                     {yylval.atrib = 2; return OPB_ADD;}                 
 {espacioblanco}				{					;}
-\"[^\"\n]*\"				{return CADENA;}
-"'"[^"'"]"'"				{yylval.tipo=caracter;return CARACTER;}
+\"[^\"\n]*\"				{yylval.lexema = strdup(strdup(yytext));return CADENA;}
+"'"[^"'"]"'"				{yylval.lexema = strdup(strdup(yytext));yylval.tipo=caracter;return CARACTER;}
 {letra}({letra}|{digito}|{guionbajo})*	{ yylval.lexema = strdup(strdup(yytext)); 
                                           return IDENTIFICADOR;
                                         }

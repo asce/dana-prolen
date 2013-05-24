@@ -416,9 +416,8 @@ dtipo get_tipo (char *lexema) {
 }
 
 dtipo tipoArray (dtipo elem) {
-	/* Devuelve el tipo de la pila
+	/* Devuelve el tipo del array
 	    */
-	if(es_array(elem)==1){
 		if(elem==array_booleano)
 			return booleano;
 		if(elem==array_entero)
@@ -427,10 +426,7 @@ dtipo tipoArray (dtipo elem) {
 			return real;
 		if(elem==array_caracter)
 			return caracter;
-	}
-	else{
 		return elem;
-	}	
 
 }
 
@@ -715,6 +711,7 @@ int check_OPB_ADD(atributos* op1,atributos* op2){
 
 int check_OPB_MUL(atributos* op1,atributos* op2){
   int valid = checkEqualType(op1,op2);
+
   if(op1->tipo!=entero && op1->tipo!=real && op1->tipo!=array_entero && op1->tipo!=array_real){
     printf("[Linea %i] ERROR SEMÁNTICO: El op1 de OPB_MUL debe ser entero,array_entero,real o array_real\n",yylineno);
     valid = 0;
@@ -734,7 +731,7 @@ int checkEqualType(atributos* op1,atributos* op2){
     printf("Los operandos son %s (op1): %s y %s (op2): %s\n",op1->lexema,dtipo2str(op1->tipo),op2->lexema,dtipo2str(op2->tipo));
     return 0;
   }else{//Alguno de los dos es array pero del mismo tipo
-  
+    return 1;
  }
 }
 int checkEqualTypeAsig(atributos* op1,atributos* op2){

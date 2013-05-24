@@ -486,18 +486,18 @@ static const yytype_int8 yyrhs[] =
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
        0,    59,    59,    59,    61,    63,    64,    63,    71,    71,
       73,    73,    77,    77,    78,    78,    80,    80,    81,    81,
       82,    85,    91,   101,   114,   114,   115,   116,   116,   118,
      118,   118,   120,   120,   120,   122,   122,   124,   125,   126,
      127,   128,   129,   130,   131,   131,   133,   133,   133,   135,
-     136,   145,   150,   155,   160,   169,   174,   184,   185,   185,
-     194,   195,   196,   197,   198,   201,   207,   200,   213,   213,
-     216,   218,   223,   230,   230,   232,   234,   236,   236,   238,
-     238,   240,   242,   244,   244,   246,   246,   248,   250,   250,
-     252,   252,   254,   254
+     136,   145,   150,   155,   160,   169,   174,   184,   189,   189,
+     198,   199,   200,   201,   202,   205,   211,   204,   217,   217,
+     220,   222,   227,   234,   234,   236,   238,   240,   240,   242,
+     242,   244,   246,   248,   248,   250,   250,   252,   254,   254,
+     256,   256,   258,   258
 };
 #endif
 
@@ -1818,7 +1818,7 @@ yyreduce:
   atributocpy(&(yyval),&(yyvsp[(1) - (3)]));
   if(check_OPB_MUL(&(yyvsp[(1) - (3)]),&(yyvsp[(3) - (3)]))==0) {(yyval).tipo=desconocido;}
   if((yyvsp[(2) - (3)]).atrib == 1){ /*  **  */
-    if(checkArrayMulDimension(&(yyvsp[(1) - (3)]),&(yyvsp[(3) - (3)]))==0){(yyval).tipo=desconocido;getchar();}
+    if(checkArrayMulDimension(&(yyvsp[(1) - (3)]),&(yyvsp[(3) - (3)]))==0){(yyval).tipo=desconocido;}
   }else{
     if(checkEqualDimenArray(&(yyvsp[(1) - (3)]),&(yyvsp[(3) - (3)]))==0)(yyval).tipo=desconocido;
   }
@@ -1829,21 +1829,24 @@ yyreduce:
   case 57:
 
 /* Line 1806 of yacc.c  */
-#line 184 "semantico.y"
-    { if(checkBoolean(&(yyvsp[(2) - (2)]))==0)(yyval).tipo=desconocido; }
+#line 185 "semantico.y"
+    { if(checkBoolean(&(yyvsp[(2) - (2)]))==0)
+    (yyval).tipo=desconocido; 
+  else (yyval).tipo=(yyvsp[(2) - (2)]).tipo;
+}
     break;
 
   case 58:
 
 /* Line 1806 of yacc.c  */
-#line 185 "semantico.y"
+#line 189 "semantico.y"
     {atributocpy(&(yyval),&(yyvsp[(1) - (1)]));}
     break;
 
   case 59:
 
 /* Line 1806 of yacc.c  */
-#line 186 "semantico.y"
+#line 190 "semantico.y"
     {
 scope_index_TS = checkScope(&(yyvsp[(1) - (2)])); 
  if(scope_index_TS){
@@ -1857,35 +1860,35 @@ scope_index_TS = checkScope(&(yyvsp[(1) - (2)]));
   case 60:
 
 /* Line 1806 of yacc.c  */
-#line 194 "semantico.y"
+#line 198 "semantico.y"
     {atributocpy(&(yyval),&(yyvsp[(1) - (1)]));}
     break;
 
   case 61:
 
 /* Line 1806 of yacc.c  */
-#line 195 "semantico.y"
+#line 199 "semantico.y"
     {atributocpy(&(yyval),&(yyvsp[(1) - (1)]));}
     break;
 
   case 62:
 
 /* Line 1806 of yacc.c  */
-#line 196 "semantico.y"
+#line 200 "semantico.y"
     {atributocpy(&(yyval),&(yyvsp[(1) - (1)]));}
     break;
 
   case 63:
 
 /* Line 1806 of yacc.c  */
-#line 197 "semantico.y"
+#line 201 "semantico.y"
     { /*que no sea index de array o se pase a proc*/ }
     break;
 
   case 65:
 
 /* Line 1806 of yacc.c  */
-#line 201 "semantico.y"
+#line 205 "semantico.y"
     {call_procedure_flag=1;
   /* initAttList(&att_list);*/
   /*atributocpy(&att_list.att,&$1);*/
@@ -1896,7 +1899,7 @@ scope_index_TS = checkScope(&(yyvsp[(1) - (2)]));
   case 66:
 
 /* Line 1806 of yacc.c  */
-#line 207 "semantico.y"
+#line 211 "semantico.y"
     {
 call_procedure_flag=0;
 checkCallProc(&(yyvsp[(1) - (5)]));
@@ -1908,14 +1911,14 @@ checkCallProc(&(yyvsp[(1) - (5)]));
   case 68:
 
 /* Line 1806 of yacc.c  */
-#line 213 "semantico.y"
+#line 217 "semantico.y"
     {checkCallProcWithoutArgs(&(yyvsp[(1) - (3)]));showTS();}
     break;
 
   case 71:
 
 /* Line 1806 of yacc.c  */
-#line 219 "semantico.y"
+#line 223 "semantico.y"
     {if(call_procedure_flag){
     linkAtt(&(yyvsp[(3) - (3)]));
   }
@@ -1925,7 +1928,7 @@ checkCallProc(&(yyvsp[(1) - (5)]));
   case 72:
 
 /* Line 1806 of yacc.c  */
-#line 224 "semantico.y"
+#line 228 "semantico.y"
     {if(call_procedure_flag){
     linkAtt(&(yyvsp[(1) - (1)]));
   }
@@ -1935,21 +1938,21 @@ checkCallProc(&(yyvsp[(1) - (5)]));
   case 77:
 
 /* Line 1806 of yacc.c  */
-#line 236 "semantico.y"
+#line 240 "semantico.y"
     {checkBoolean(&(yyvsp[(2) - (2)]));}
     break;
 
   case 79:
 
 /* Line 1806 of yacc.c  */
-#line 238 "semantico.y"
+#line 242 "semantico.y"
     {checkBoolean(&(yyvsp[(3) - (3)]));}
     break;
 
 
 
 /* Line 1806 of yacc.c  */
-#line 1953 "y.tab.c"
+#line 1956 "y.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2180,7 +2183,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 257 "semantico.y"
+#line 261 "semantico.y"
 
 
 #include "lex.yy.c"

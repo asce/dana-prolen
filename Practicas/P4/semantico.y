@@ -175,13 +175,17 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
   atributocpy(&$$,&$1);
   if(check_OPB_MUL(&$1,&$3)==0) {$$.tipo=desconocido;}
   if($2.atrib == 1){ /*  **  */
-    if(checkArrayMulDimension(&$1,&$3)==0){$$.tipo=desconocido;getchar();}
+    if(checkArrayMulDimension(&$1,&$3)==0){$$.tipo=desconocido;}
   }else{
     if(checkEqualDimenArray(&$1,&$3)==0)$$.tipo=desconocido;
   }
   $$.lexema = "_";
 }
-| OPU expresion { if(checkBoolean(&$2)==0)$$.tipo=desconocido; }
+| OPU expresion 
+{ if(checkBoolean(&$2)==0)
+    $$.tipo=desconocido; 
+  else $$.tipo=$2.tipo;
+}
 | iden {atributocpy(&$$,&$1);}
 {
 scope_index_TS = checkScope(&$1); 
