@@ -1,0 +1,133 @@
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "ListaInt.h"
+
+typedef enum {
+	marca, 						/* marca comienzo bloque */
+	procedimiento, 				/* si es subprograma */
+	variable, 					/* si es variable */
+	parametro, 					/* si es parametro formal */
+} tipoEntrada ;
+
+typedef enum {
+	entero,
+	real,
+	caracter,
+	booleano,
+	array_entero,
+	array_real,
+	array_booleano,
+	array_caracter,
+	vacio, //No tiene tipo de dato: void
+	desconocido,
+} dtipo ;
+dtipo tipoTmp;
+dtipo tipoScope = desconocido;
+
+
+typedef struct {
+	tipoEntrada entrada ;
+	char *nombre ;
+	dtipo tipoDato ;
+        unsigned int parametros ;            /* si entrada = procedimiento */
+        unsigned int dimensiones ;           /* si tipoDato = array_... */
+        int TamDimen1 ; 		     /* si tipoDato = array_... */	
+        int TamDimen2 ; 		     /* si tipoDato = array_... */
+  node lista_parametros;                     /* si entrada = procedimiento */
+} entradaTS ;
+//lista parametros tiene un numero basura y un puntero a la lista de parametros del
+//procedimiento
+
+typedef struct {
+	int atrib ; 			       /* Atributo del símbolo (si tiene) */
+	char *lexema ; 			       /* Nombre del lexema */
+	dtipo tipo ; 			       /* Tipo del símbolo */
+        unsigned int dimensiones ;           /* si tipoDato = array_... */
+        int TamDimen1 ;                      /* si tipoDato = array_... */
+        int TamDimen2 ;                      /* si tipoDato = array_... */
+  //int numArgumentos;
+} atributos ;
+node params_last_proc_call = {0,NULL};
+
+int scope_index_TS;
+
+#define YYSTYPE atributos 		/* A partir de ahora, cada símbolo tiene una estructura de tipo atributos*/
+#define MAX_TS 1000
+
+unsigned int TOPE=0 ; 			/* TOPE de la pila */
+unsigned int last_proc_index;
+unsigned int subProg ; 			/* Indicador de comienzo de bloque de un subprog */
+unsigned int dec_flag = 0;
+unsigned int array_flag = 0; //TODO
+
+unsigned int call_procedure_flag = 0;
+
+/* FLAG de decl de param */
+entradaTS TS[MAX_TS] ; 			/* Pila de la tabla de símbolos */
+
+int yylineno;					/* Numero de linea */
+
+
+/*********************  FUNCIONES TABLA SIMBOLOS  ****************************************+
+*******************************************************************************************/
+
+
+void initEntradaTS(entradaTS* e);
+void initTS();
+char* dtipo2str(dtipo tipo);
+char* tipoEntrada2str(tipoEntrada e);
+void showTS();
+void pushEntradaTS(entradaTS* elem);
+void entradacpy(entradaTS* lvalue,entradaTS* rvalue);
+void atributocpy(atributos* lvalue,atributos* rvalue);
+void IntroIniBloq();
+void showEntrada(entradaTS * e);
+void showNewBlock();
+void IntroFinBloq ();
+dtipo tipoArray (dtipo elem);
+int es_array(dtipo tipo_array);
+dtipo tipoEnArray(dtipo a);
+void pushMarca();
+void TS_InsertaSUBPROG(atributos* att);
+void TS_InsertaPARAMF(atributos* att);
+void TS_InsertaVAR(atributos* att);
+
+/**
+ * Devuelve 1 si existe un identificador 'iden' en el bloque actual y 0 en otro caso 
+ */
+int declaredIden(char* iden);
+void showAtt(atributos* att);
+void getAttFromTS(atributos* att,int index);
+/**
+ * Devuelve indice de TS si se encuentra iden en el ambito y 0 en otro caso
+ * (en la posicion 0 siempre hay una marca)
+ */
+int inScope(atributos* query,atributos* found);
+void setNotFoundAtt(atributos* att,char* name);
+int checkScope(atributos* att,atributos* found);
+void checkProced(atributos* att,atributos* found);
+/** ED y Func. para errores en llamadas a procedimientos **/
+
+void linkAtt(atributos* att);
+void checkSignArray(atributos* attOPB_ADD);
+int check_OPB_OR(atributos* op1,atributos* op2);
+int check_OPB_AND(atributos* op1,atributos* op2);
+int check_OPB_IG(atributos* op1,atributos* op2);
+int check_OPB_REL(atributos* op1,atributos* op2);
+int check_OPB_ADD(atributos* op1,atributos* op2);
+int check_OPB_MUL(atributos* op1,atributos* op2);
+int checkEqualType(atributos* op1,atributos* op2);
+int checkEqualTypeAsig(atributos* op1,atributos* op2);
+ int checkEqualDimenArray(atributos* op1,atributos* op2);
+int checkArrayMulDimension(atributos* op1,atributos* op2);
+int checkIndexEntero(atributos* att);
+int checkBoolean(atributos* att);
+void checkCallProc(atributos* att,atributos* found);
+void checkCallProcWithoutArgs(atributos* att,atributos* found);
+int checkProcCallArgs(atributos* att,node* l1,node*l2);
+int checkAccessArray(atributos* att1, atributos* att2);
+void showNodesTypes (node* start) ;
+
+
+

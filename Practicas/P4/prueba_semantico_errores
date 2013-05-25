@@ -81,7 +81,7 @@ main{
 	  			d1 = d1 / 1000.0;
 			}
 		}
-		iv[0] = 1.0;
+		iv[0] = 1;
 	
 		iv = iv * iv;
 
@@ -97,7 +97,7 @@ main{
 	funcionA(im,1.0,'a');
 	ve=100;
  	x=2;
-	Ae33 = Ae32**Ae23 + ve;	
+	Ae33 = Ae32**Ae32 + ve;	
 	Ae22 = Ae32 + Ae32;
 	Ae33 = Ae33*vf;
 
