@@ -1,0 +1,100 @@
+main{
+
+	begin_declare
+		int x,v1,ve,vv,bb,vvv;
+		int pep;
+		double vf,dd, ff;
+		char vc;
+		int Ae32[3,2],Ae23[2,3],Ae33[3,3],Ae22[2,2];
+		bool vl;
+		int iv[2],im[2,2];
+		double fv[2],fm[2,2];
+		char cv[2],cm[2,2];
+		bool bv[2],bm[2,2];
+	end_declare
+
+  	void funcionA(int v1[3,3], double a2, char a3){
+      		begin_declare
+			int x1,x2,vv;
+      		end_declare
+      
+      	void funcionB(char b1, bool b2){
+          	begin_declare
+	    		double xf,x2;
+          	end_declare
+	  		void funcionC(bool c1, int c2){
+	      			begin_declare
+					double x1,xc;
+              			end_declare
+	      			x1 = 1.3;
+				ve= pep;
+				funcionA(Ae32,2.0*vf,'a');
+              			if(xc > x1){
+					c2 = c2 - 1;
+	      			}else{
+					x1 = 3.1;
+				}
+
+	  		}
+	  		xf = 15.0;
+			x2 = xf * (1.0 - 23.0) / 10.0;
+			while(x2 * 1.0 - xf < 10.0){
+	    			x2 = x2 * xf;
+			}
+	    
+      	}
+        void funcionD(double d1){
+			begin_declare
+	  			char dato;
+	  			int valor;
+			end_declare
+			void funcionE(char e1){
+				begin_declare
+	  				char vc;
+				end_declare
+	  			read e1;
+				switch(e1){
+					case 'a':
+						vc = 'a';
+					break;
+					case 'b':
+						vc = 'b';
+					break;
+					default:
+						vc = 'z';
+				}
+			}
+			dato = 'a';
+			read valor;
+                        write "Esto ",valor," es ", vc," una prueba";
+
+			if(!true || 2.0 < (3.0 + 5.0) ){
+	  			begin_declare
+	    			int dato;
+	  			end_declare
+	    		dato = 2;
+	  			dato = valor * 20 / dato;
+			}else{
+	  			valor = valor * 100;
+	  			d1 = d1 / 1000.0;
+			}
+		}
+		
+	
+		iv = iv * iv;
+
+		fv = fv * fv;
+
+		im = im ** im;
+
+		ve = 0;
+
+			
+      
+	}
+	funcionA(im,1.0,'a');
+	ve=100;
+ 	x=2;
+	Ae33 = Ae32**Ae23 + ve;	
+
+}
