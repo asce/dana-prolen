@@ -1,13 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 extern FILE *yyin;
+
 int yyparse(void);
 
 FILE* abrir_entrada( int argc, char* argv[]){
-
+  
   FILE* f = NULL;
   if(argc > 1){
+
     f = fopen(argv[1],"r");
     if(f==NULL){
       fprintf(stderr,"Fichero %s no encontrado.\n",argv[1]);

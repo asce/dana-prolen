@@ -68,6 +68,7 @@ unsigned int subProg ; 			/* Indicador de comienzo de bloque de un subprog */
 unsigned int dec_flag = 0;
 unsigned int array_flag = 0; //TODO
 unsigned int call_procedure_flag = 0;
+unsigned int main_flag = 1;
 int yylineno;					/* Numero de linea */
 
 
@@ -78,6 +79,7 @@ int yylineno;					/* Numero de linea */
 void initEntradaTS(entradaTS* e);
 void initTS();
 char* dtipo2str(dtipo tipo);
+char* dtipo2ctipostr(dtipo tipo);
 char* tipoEntrada2str(tipoEntrada e);
 void showTS();
 void pushEntradaTS(entradaTS* elem);
@@ -170,6 +172,19 @@ char* dtipo2str(dtipo tipo){
         if(tipo == vacio)
 	  return("void");
 
+}
+
+char* dtipo2ctipostr(dtipo tipo){
+  if(tipo == entero)
+    return("int");
+  if(tipo == real)
+    return("double");
+  if(tipo == caracter)
+    return("char");
+  if(tipo == booleano)
+    return("bool");
+  if(tipo == vacio)
+    return("void");
 }
 char* tipoEntrada2str(tipoEntrada e){
   switch(e){

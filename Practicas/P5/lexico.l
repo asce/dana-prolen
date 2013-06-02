@@ -93,3 +93,5 @@ suma_resta [+-]
                                         }
 .					{printf("(linea %d) ERROR_LEXICO: token %s\n",yylineno,strdup(yytext));}
 %%
+
+

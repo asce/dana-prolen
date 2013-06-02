@@ -1,0 +1,25 @@
+main{
+	begin_declare
+		int n,curr,d;
+	end_declare
+	write "Introduce número : ";
+	read n;
+	write n," == ";
+	curr = 2;
+	while( curr <= n){
+	
+		d = n/curr;
+		if(d*curr == n){
+			  
+			  write " ",n," ";
+			  n = n/curr;
+		
+		}else{
+			curr = curr + 1;
+			
+		}
+		write "\n";
+
+	}
+
+}

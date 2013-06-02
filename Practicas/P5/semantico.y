@@ -4,8 +4,7 @@
 #include<stdio.h>
 #include<string.h>
 
-#include "tablaSimbolos.h"
-
+#include "traduccion.h"
 
 void yyerror(const char *msg) ;
 
@@ -56,15 +55,33 @@ void yyerror(const char *msg) ;
 %start programa
 
 %%
-programa: {initTS();} cabecera_programa bloque {printf("\nAnálisis finalizado.\n"); return 0;};
+programa: 
+{
+initTS();
+  openFiles("out.c");
+} 
+cabecera_programa 
+bloque 
+{
+printf("\nAnálisis finalizado.\n");
+ closeFiles(); 
+return 0;
+};
 
 cabecera_programa: MAIN;
 
-bloque : INICIO {IntroIniBloq();} 
-declar_de_variables_locales {/*showNewBlock();*/} 
+bloque : INICIO {IntroIniBloq();if(main_flag==0)writeFout("\n{\n");} 
+declar_de_variables_locales 
+{
+  if(main_flag==1){
+    writeMain();
+    main_flag=0;
+  }
+
+} 
 declar_de_subprogs 
 sentencias 
-FINBLO {IntroFinBloq();}
+FINBLO {IntroFinBloq();writeFout("\n}\n");}
 ;
 
 
@@ -86,18 +103,22 @@ iden: IDENTIFICADOR
 { 
     atributocpy(&$$,&$1);
     $$.tipo = tipoTmp;
+    if(dec_flag==1)
+    writeFout($1.lexema);
     //en principio es lo mismo dec_flag o no ya que en sentencia se sobreescribe
 }
 
 | IDENTIFICADOR CORIZ  expresion CORDER 
 { 
-  if(dec_flag){
+  if(dec_flag==1){
     atributocpy(&$$,&$1);
     $$.tipo = tipoEnArray(tipoTmp);
     $$.dimensiones = 1;
   if(checkIndexEntero(&$3))
     $$.TamDimen1 = atoi($3.lexema); /* revisar */
-    
+  char tmp[256];
+  sprintf(tmp,"%s[%i]",$1.lexema,$$.TamDimen1);
+  writeFout(tmp);
     //showAtt(&$$);
     //getchar();
   }else{
@@ -123,6 +144,9 @@ iden: IDENTIFICADOR
     $$.TamDimen2 = atoi($5.lexema); /* revisar */
     //showAtt(&$$);
     //getchar();
+    char tmp[256];
+    sprintf(tmp,"%s[%i][%i]",$1.lexema,$$.TamDimen1,$$.TamDimen2);
+    writeFout(tmp);
   }else{
     atributocpy(&$$,&$1);
     $$.tipo = tipoEnArray(tipoTmp);
@@ -137,13 +161,36 @@ iden: IDENTIFICADOR
 }
 ;
 
-declar_de_variables_locales: INICIOV variables_locales FINV | ;
+declar_de_variables_locales: INICIOV variables_locales FINV |;
 variables_locales:variables_locales cuerpo_decla_variables
 	|cuerpo_decla_variables | error;
 
-cuerpo_decla_variables: TIPOSIMPLE {tipoTmp = $1.tipo;dec_flag=1;} lista_variables {dec_flag=0;} PYC;
+cuerpo_decla_variables: 
+TIPOSIMPLE 
+{
+  tipoTmp = $1.tipo;
+  dec_flag=1;
+  writeFout(dtipo2ctipostr($1.tipo));
+} 
+lista_variables 
+{
+  dec_flag=0;
+  writeFout(";\n");
+} PYC;
 
-lista_variables: lista_variables COMA iden {if(dec_flag)TS_InsertaVAR(&$3);} | iden {if(dec_flag)TS_InsertaVAR(&$1);} | error ;//sincroniza con COMA o PYC
+lista_variables: 
+lista_variables COMA {writeFout(",");} iden 
+{
+  if(dec_flag){
+    TS_InsertaVAR(&$4);
+  }
+} 
+| iden 
+{
+if(dec_flag)
+  TS_InsertaVAR(&$1);
+} 
+| error ;//sincroniza con COMA o PYC
 
 sentencias: sentencias sentencia | sentencia;
 
@@ -188,7 +235,11 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
 }
 | expresion OPB_IG expresion{
   atributocpy(&$$,&$1);
-  if(check_OPB_IG(&$1,&$3)==0)$$.tipo=desconocido;
+  if(check_OPB_IG(&$1,&$3)==0)
+    $$.tipo=desconocido;
+  else
+    $$.tipo=booleano;
+
   $$.lexema = "_";
 }
 | expresion OPB_REL expresion{
@@ -279,11 +330,21 @@ sentencia_if: alternativa_doble	| alternativa_simple;
 
 alternativa_simple: if_expresion_sentencia;
 
-alternativa_doble: if_expresion_sentencia ELSE sentencia;
+alternativa_doble: if_expresion_sentencia ELSE {writeFout("else(_)");} sentencia;
 
-if_expresion_sentencia: IF expresion {checkBoolean(&$2);} sentencia;
+if_expresion_sentencia: IF expresion 
+{
+checkBoolean(&$2);
+writeFout("if(_)");
+} 
+sentencia;
 
-sentencia_while: WHILE PARIZ expresion {checkBoolean(&$3);} PARDER sentencia;
+sentencia_while: WHILE PARIZ expresion 
+{
+checkBoolean(&$3);
+ writeFout("while(_)");
+} 
+PARDER sentencia;
 
 sentencia_entrada: READ lista_variables PYC;
 
