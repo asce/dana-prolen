@@ -1,0 +1,16 @@
+main{
+	begin_declare
+		int m,j,a,b,c,fd;
+		double h, d;
+	end_declare
+	a = 10;
+	b = 1; 
+	d = 5.0;
+	while(a > b){
+	     b = b+c-fd;
+	     m=j*4-a;
+	     b= b + 1;
+	     write "entero: ",b,"\nreal : ",d," \n";
+	}
+
+}

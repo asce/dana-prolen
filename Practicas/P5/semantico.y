@@ -179,16 +179,25 @@ lista_variables
 } PYC;
 
 lista_variables: 
-lista_variables COMA {writeFout(",");} iden 
+lista_variables COMA{if(dec_flag)writeFout(",");} iden 
 {
   if(dec_flag){
     TS_InsertaVAR(&$4);
   }
+  if(read_flag){
+    checkScope(&$4,&$4);
+    write_scanf(&$4);//
+  }
 } 
 | iden 
 {
-if(dec_flag)
+  if(dec_flag){
   TS_InsertaVAR(&$1);
+  }
+  if(read_flag){
+    checkScope(&$1,&$1);
+    write_scanf(&$1);//
+  }
 } 
 | error ;//sincroniza con COMA o PYC
 
@@ -382,19 +391,30 @@ write_else_tag();
 }
 ;
 
-sentencia_while: WHILE PARIZ expresion 
-{
-checkBoolean(&$3);
+sentencia_while: WHILE PARIZ 
+{ 
+write_init_while();
+ write_entry_tag();
 } 
-PARDER sentencia;
+expresion 
+{
+  write_conditional_jump_to_exit(&$4);
+checkBoolean(&$4);
+} 
+PARDER sentencia
+{
+  write_go_to_entry_tag();
+  write_close_while();
+}
+;
 
-sentencia_entrada: READ lista_variables PYC;
+sentencia_entrada: READ {read_flag = 1;} lista_variables {read_flag = 0;} PYC;
 
 sentencia_salida: WRITE lista_expresiones_o_cadena PYC;
 
 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA expresion_o_cadena | expresion_o_cadena;
 
-expresion_o_cadena: expresion | CADENA ;
+expresion_o_cadena: expresion {write_printf(&$1);} | CADENA {write_printf_str(&$1);};
 
 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO;
 

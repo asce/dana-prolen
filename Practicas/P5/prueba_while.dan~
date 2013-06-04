@@ -1,0 +1,15 @@
+main{
+	begin_declare
+		int m,j,a,b,c,fd;
+		int h, d;
+	end_declare
+	a = 10;
+	b = 1; 
+	while(a > b){
+	     b = b+c-fd;
+	     m=j*4-a;
+	     b= b + 1;
+	     write "valor: ",b," \n";
+	}
+
+}

@@ -70,6 +70,7 @@ unsigned int dec_flag = 0;
 unsigned int array_flag = 0; //TODO
 unsigned int call_procedure_flag = 0;
 unsigned int main_flag = 1;
+unsigned int read_flag = 0;
 int yylineno;					/* Numero de linea */
 
 

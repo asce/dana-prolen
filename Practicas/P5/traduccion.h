@@ -116,8 +116,8 @@ void writeOpuExpr(atributos* dest,char* operador,atributos* op1){
   sprintf(expresion_str,"%s %s;\n%s = %s %s;\n",
 	  dtipo2ctipostr(dest->tipo), dest->expr_tmp, dest->expr_tmp,
 	  operador, op1->expr_tmp);
-  printf("%s",expresion_str);
-  getchar();
+  //printf("%s",expresion_str);
+  //getchar();
   writeFout(expresion_str);
 
 }
@@ -180,5 +180,96 @@ void write_else_tag(){
 void write_exit_tag(){
 
   writeFout("exit_tag:;\n");
+
+}
+
+void write_init_while(){
+
+  char exit_tag[20], entry_tag[20], ite_str[256];
+  exit_tag[0]='\0';
+  entry_tag[0]='\0';
+  ite_str[256]='\0';
+  //1 generar etiqueta salida y else
+  generateTmp(exit_tag);
+  generateTmp(entry_tag);
+  control_descriptor_t cd;
+
+  cd.exit_tag = exit_tag;
+  cd.entry_tag = entry_tag;
+  // 2 TODO push cd
+  writeFout("//generamos tags y los introducimos en TS\n");
+
+
+}
+void write_entry_tag(){
+
+  writeFout("entry_tag:;\n");
+
+}
+void write_go_to_entry_tag(){
+
+  writeFout("goto entry_tag;\n");
+
+
+}
+void write_close_while(){
+
+  writeFout("exit_tag:;\n");
+
+}
+
+void write_printf_str(atributos* att){
+  char str_printf[1024];
+  char* str = "printf(\"%s\"";
+  str_printf[0] = '\0';
+  sprintf(str_printf,"%s,%s);\n",str,att->lexema);
+  writeFout(str_printf);
+
+}
+
+void write_printf(atributos* att){
+  char str_printf[1024];
+  char* format;
+  char str[1024];
+  str[0]='\0';
+  if(att->tipo == entero)
+    format = "%i";
+  else if(att->tipo == real)
+    format = "%f";
+  else{
+    printf("Tipo %i\n",att->tipo);
+    getchar();
+  }
+
+  strcat(str,"printf(\"");
+  strcat(str,format);
+  strcat(str,"\"");
+  str_printf[0] = '\0';
+  sprintf(str_printf,"%s,%s);\n",str,att->expr_tmp);
+  writeFout(str_printf);
+
+}
+
+write_scanf(atributos* att){
+
+  char str_scanf[1024];
+  char* format;
+  char str[1024];
+  str[0]='\0';
+  if(att->tipo == entero)
+    format = "\"%i\",&";
+  else if(att->tipo == real)
+    format = "\"%f\",&";
+  else{
+    printf("Tipo %i\n",att->tipo);
+    getchar();
+  }
+
+  strcat(str,"scanf(");
+  strcat(str,format);
+  strcat(str,att->lexema);
+  strcat(str,");\n");
+ 
+  writeFout(str);
 
 }

@@ -9,6 +9,9 @@ y.tab.c: semantico.y lex.yy.c tablaSimbolos.h
 	bison -d --report=state -o y.tab.c semantico.y
 lex.yy.c: lexico.l
 	flex -l lexico.l
+out: out.c
+	gcc -o out out.c
+
 clean:
 	rm -f semantico main.o y.tab.o y.tab.h y.tab.c y.output lex.yy.c
 all:

@@ -1,0 +1,8 @@
+main{
+	begin_declare
+		int m,j,a,b,c,fd;
+		double h, d;
+	end_declare
+	read a,b,c;
+	write "a : ",a,"\nb : ",b,"\nc : ",c,"\n";
+}
