@@ -1,0 +1,8 @@
+main{
+	begin_declare
+		int a,b,c;
+		bool h, d;
+	end_declare
+	h = (a+b-c-1-(4+a) > +(c-3)) && !d;
+
+}

@@ -48,7 +48,8 @@ typedef struct {
         unsigned int dimensiones ;           /* si tipoDato = array_... */
         int TamDimen1 ;                      /* si tipoDato = array_... */
         int TamDimen2 ;                      /* si tipoDato = array_... */
-  //int numArgumentos;
+  char* expr_tmp;
+//int numArgumentos;
 } atributos ;
 
 
@@ -182,7 +183,7 @@ char* dtipo2ctipostr(dtipo tipo){
   if(tipo == caracter)
     return("char");
   if(tipo == booleano)
-    return("bool");
+    return("int");
   if(tipo == vacio)
     return("void");
 }
@@ -260,6 +261,8 @@ void atributocpy(atributos* lvalue,atributos* rvalue){
   lvalue->dimensiones = rvalue->dimensiones ;
   lvalue->TamDimen1 = rvalue->TamDimen1;
   lvalue->TamDimen2 = rvalue->TamDimen2;
+  if(rvalue->expr_tmp != 0 && rvalue->expr_tmp!= NULL)
+    lvalue->expr_tmp = strdup(rvalue->expr_tmp);
 
 }
 

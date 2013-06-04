@@ -1,0 +1,14 @@
+main{
+	begin_declare
+		int m,j,a,b,c,fd;
+		int h, d;
+	end_declare
+	if(a > b){
+	     a = b+c-fd;
+	     m=j*4-a;
+
+	}else{
+	     h=3;
+	}
+
+}

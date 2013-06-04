@@ -1,0 +1,8 @@
+main{
+	begin_declare
+		int a,b,c,fd,j,m;
+	end_declare
+	a = b + c - fd;
+	m = j*4 -a; 
+
+}

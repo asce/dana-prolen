@@ -203,17 +203,23 @@ sentencia: bloque
 | procedimiento {checkProced(&$1,&$$);}
            | sentencia_case | error;
 
-sentencia_asignacion: iden {checkScope(&$1,&$1); } ASIG expresion {
+sentencia_asignacion: iden {checkScope(&$1,&$1);writeFout("{//Inicio asignacion\n"); } ASIG expresion {
 checkEqualTypeAsig(&$1,&$4);
  if(es_array($1.tipo) && es_array($4.tipo)){
    checkEqualDimenArray(&$1,&$4);
    //showAtt(&$1);
    //showAtt(&$4);
  }
+ writeFout($1.lexema); //TODO ARRAYS
+ writeFout(" = ");
+ writeFout($4.expr_tmp);
+ writeFout(";\n}//Fin asignacion\n");
 
 } PYC;
 
-expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
+expresion: 
+PARIZ expresion PARDER 
+{atributocpy(&$$,&$2);}
 | OPB_ADD expresion %prec OPU{
   atributocpy(&$$,&$2);
   /*AnyCheck?*/
@@ -221,17 +227,26 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
   if(array_flag){
     checkSignArray(&$1);//TODO
   }
-
+  writeOpuExpr(&$$,$1.lexema,&$2);
+  //TODO writeExpr
+  //printf("OPU_ADD\n");
+  getchar();
 } 
 | expresion OPB_OR expresion{
   atributocpy(&$$,&$1);
   if(check_OPB_OR(&$1,&$3)==0) $$.tipo=desconocido;
   $$.lexema = "_";
+  writeExpr(&$$,&$1,$2.lexema,&$3);
 }
 | expresion OPB_AND expresion{
+ 
+
   atributocpy(&$$,&$1);
+
   if(check_OPB_AND(&$1,&$3)==0) $$.tipo=desconocido;
   $$.lexema = "_";
+ 
+  writeExpr(&$$,&$1,$2.lexema,&$3);
 }
 | expresion OPB_IG expresion{
   atributocpy(&$$,&$1);
@@ -239,8 +254,8 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
     $$.tipo=desconocido;
   else
     $$.tipo=booleano;
-
   $$.lexema = "_";
+  writeExpr(&$$,&$1,$2.lexema,&$3);
 }
 | expresion OPB_REL expresion{
   atributocpy(&$$,&$1);
@@ -250,12 +265,17 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
     $$.tipo=booleano;
   }
   $$.lexema = "_";
+ 
+  writeExpr(&$$,&$1,$2.lexema,&$3);
+  
 }
 | expresion OPB_ADD expresion{
   atributocpy(&$$,&$1);
   if(check_OPB_ADD(&$1,&$3)==0 ||checkEqualDimenArray(&$1,&$3)==0)
     $$.tipo=desconocido;
   $$.lexema = "_";
+  writeExpr(&$$,&$1,$2.lexema,&$3);
+  //  printf("%s = %s OPB_ADD %s\n",$$.expr_tmp,$1.expr_tmp,$3.expr_tmp);
 }
 | expresion OPB_MUL expresion{
   atributocpy(&$$,&$1);
@@ -278,11 +298,15 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
     }
   }
   $$.lexema = "_";
+  writeExpr(&$$,&$1,$2.lexema,&$3);
 }
 | OPU expresion 
 { if(checkBoolean(&$2)==0)
     $$.tipo=desconocido; 
   else $$.tipo=$2.tipo;
+  //TODO writeExpr
+  writeOpuExpr(&$$,$1.lexema,&$2);
+
 }
 | iden 
 {
@@ -292,10 +316,21 @@ expresion: PARIZ expresion PARDER {atributocpy(&$$,&$2);}
  }//else if($$.dimensiones == $1.dimensiones+1){
    //
  //}
+ $$.expr_tmp = strdup($1.lexema);
+ 
 }
-| CONSTANTE{atributocpy(&$$,&$1);} 
-| CONSTANTE_E{atributocpy(&$$,&$1);}
-| CARACTER{atributocpy(&$$,&$1);}
+| CONSTANTE
+{
+atributocpy(&$$,&$1); $$.expr_tmp = strdup($1.lexema);
+} 
+| CONSTANTE_E
+{
+atributocpy(&$$,&$1); $$.expr_tmp = strdup($1.lexema);
+}
+| CARACTER
+{
+atributocpy(&$$,&$1); $$.expr_tmp = strdup($1.lexema);
+}
 | agregados{ /*que no sea index de array o se pase a proc*/ }
 | error;
 
@@ -326,23 +361,30 @@ lista_expresiones: lista_expresiones COMA expresion
 }
 ;
 
-sentencia_if: alternativa_doble	| alternativa_simple;
+sentencia_if: alternativa_doble {write_close_if();}| alternativa_simple{write_close_if();};
 
-alternativa_simple: if_expresion_sentencia;
+alternativa_simple: if_expresion_sentencia {writeFout("} //Fin Sentencia IF\n");};
 
-alternativa_doble: if_expresion_sentencia ELSE {writeFout("else(_)");} sentencia;
+alternativa_doble: if_expresion_sentencia ELSE sentencia {writeFout("} //Fin Sentencia IF-ELSE\n");};
 
-if_expresion_sentencia: IF expresion 
+if_expresion_sentencia: 
+{writeFout("{ //Sentencia IF\n");}
+IF expresion 
 {
-checkBoolean(&$2);
-writeFout("if(_)");
+  write_init_if();
+  write_conditional_jump_to_else_tag(&$3);
+checkBoolean(&$3);
 } 
-sentencia;
+sentencia
+{
+write_go_to_exit_tag();
+write_else_tag();
+}
+;
 
 sentencia_while: WHILE PARIZ expresion 
 {
 checkBoolean(&$3);
- writeFout("while(_)");
 } 
 PARDER sentencia;
 

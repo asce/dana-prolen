@@ -1,0 +1,49 @@
+
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int n , curr , d ;
+ int main(){
+ {
+ curr  =  2 ;
+}
+ bool tmp0;
+tmp0 = curr <= n;
+ while(_) 
+{
+ {
+ int tmp1;
+tmp1 = n / curr;
+ d  =  tmp1 ;
+}
+ int tmp2;
+tmp2 = d * curr;
+ bool tmp3;
+tmp3 = tmp2 == n;
+ if(_) 
+{
+ {
+ int tmp4;
+tmp4 = n / curr;
+ n  =  tmp4 ;
+}
+ 
+}
+ else(_) 
+{
+ {
+ int tmp5;
+tmp5 = curr + 1;
+ curr  =  tmp5 ;
+}
+ 
+}
+ 
+}
+ 
+}
+ 
