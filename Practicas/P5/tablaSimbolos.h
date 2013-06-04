@@ -177,15 +177,16 @@ char* dtipo2str(dtipo tipo){
 }
 
 char* dtipo2ctipostr(dtipo tipo){
-  if(tipo == entero)
+  dtipo t = tipoArray(tipo);
+  if(t == entero)
     return("int");
-  if(tipo == real)
+  if(t == real)
     return("double");
-  if(tipo == caracter)
+  if(t == caracter)
     return("char");
-  if(tipo == booleano)
+  if(t == booleano)
     return("int");
-  if(tipo == vacio)
+  if(t == vacio)
     return("void");
 }
 char* tipoEntrada2str(tipoEntrada e){
@@ -481,6 +482,7 @@ void showAtt(atributos* att){
 void getAttFromTS(atributos* att,int index){
   att->atrib=-1;
   att->lexema=strdup(TS[index].nombre);
+  att->expr_tmp = strdup(TS[index].nombre);
   att->tipo=TS[index].tipoDato;
   if(es_array(att->tipo)==0){
     att->dimensiones=-1;
@@ -805,4 +807,20 @@ void showNodesTypes (node* start) {
       printf(",");
   }
   //printf("\n");
+}
+
+
+int checkIntOrChar(atributos* att){
+
+  if(att->tipo==entero || att->tipo==caracter){
+    return 1;
+  }else{
+    printf("[Linea %i] ERROR SEMÁNTICO: Se esperaba un tipo entero o caracter y se ha encontrado una expresión de tipo %s.\n",yylineno,dtipo2str(att->tipo));
+    return 0;
+  }
+
+
+
+
+
 }

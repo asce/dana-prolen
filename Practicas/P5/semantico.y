@@ -414,11 +414,31 @@ sentencia_salida: WRITE lista_expresiones_o_cadena PYC;
 
 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA expresion_o_cadena | expresion_o_cadena;
 
-expresion_o_cadena: expresion {write_printf(&$1);} | CADENA {write_printf_str(&$1);};
+expresion_o_cadena: expresion {checkScope(&$1,&$1);write_printf(&$1);} | CADENA {write_printf_str(&$1);};
 
-sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO;
+sentencia_case: 
+SWITCH PARIZ iden 
+{
+checkScope(&$3,&$3);
+checkIntOrChar(&$3);
+write_init_switch(&$3);
+} 
+PARDER INICIO casos caso_por_defecto FINBLO {write_exit_switch();};
 
-casos: casos CASE opcion DOSP sentencias BREAK PYC | ;
+casos: 
+casos CASE opcion DOSP 
+{
+  write_init_case();
+  write_compare_case(&$3);
+} 
+sentencias 
+{
+  write_go_to_exit_switch();
+  write_exit_case_tag();
+  write_close_case();
+
+}
+BREAK PYC | ;
 
 opcion: CONSTANTE_E | CARACTER;
 

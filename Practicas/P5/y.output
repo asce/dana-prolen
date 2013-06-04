@@ -147,16 +147,22 @@ Gramática
    88 expresion_o_cadena: expresion
    89                   | CADENA
 
-   90 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO
+   90 $@23: /* vacío */
 
-   91 casos: casos CASE opcion DOSP sentencias BREAK PYC
-   92      | /* vacío */
+   91 sentencia_case: SWITCH PARIZ iden $@23 PARDER INICIO casos caso_por_defecto FINBLO
 
-   93 opcion: CONSTANTE_E
-   94       | CARACTER
+   92 $@24: /* vacío */
 
-   95 caso_por_defecto: DEFAULT DOSP sentencias
-   96                 | /* vacío */
+   93 $@25: /* vacío */
+
+   94 casos: casos CASE opcion DOSP $@24 sentencias $@25 BREAK PYC
+   95      | /* vacío */
+
+   96 opcion: CONSTANTE_E
+   97       | CARACTER
+
+   98 caso_por_defecto: DEFAULT DOSP sentencias
+   99                 | /* vacío */
 
 
 Terminales con las reglas donde aparecen
@@ -164,11 +170,11 @@ Terminales con las reglas donde aparecen
 $end (0) 0
 error (256) 19 27 34 45 63
 MAIN (258) 3
-INICIO (259) 6 69 90
-FINBLO (260) 6 69 90
+INICIO (259) 6 69 91
+FINBLO (260) 6 69 91
 INICIOV (261) 23
 FINV (262) 23
-PYC (263) 30 48 66 68 84 85 91
+PYC (263) 30 48 66 68 84 85 94
 COMA (264) 16 22 32 70 86
 TIPOSIMPLE (265) 16 18 30
 PROCED (266) 12 14
@@ -179,18 +185,18 @@ ELSE (270) 75
 WHILE (271) 81
 READ (272) 84
 WRITE (273) 85
-SWITCH (274) 90
-CASE (275) 91
-DEFAULT (276) 95
-DOSP (277) 91 95
-BREAK (278) 91
+SWITCH (274) 91
+CASE (275) 94
+DEFAULT (276) 98
+DOSP (277) 94 98
+BREAK (278) 94
 CONSTANTE (279) 59
-PARDER (280) 12 14 49 66 68 81 90
-PARIZ (281) 12 14 49 66 68 81 90
+PARDER (280) 12 14 49 66 68 81 91
+PARIZ (281) 12 14 49 66 68 81 91
 CADENA (282) 89
-IDENTIFICADOR (283) 12 14 20 21 22 66 68 90
-CONSTANTE_E (284) 60 93
-CARACTER (285) 61 94
+IDENTIFICADOR (283) 12 14 20 21 22 66 68
+CONSTANTE_E (284) 60 96
+CARACTER (285) 61 97
 ASIG (286) 48
 OPB_OR (287) 51
 OPB_AND (288) 52
@@ -236,7 +242,7 @@ $@7 (53)
 $@8 (54)
     en la izquierda: 17, en la derecha: 18
 iden (55)
-    en la izquierda: 20 21 22, en la derecha: 16 18 32 33 48 58
+    en la izquierda: 20 21 22, en la derecha: 16 18 32 33 48 58 91
 declar_de_variables_locales (56)
     en la izquierda: 23 24, en la derecha: 6
 variables_locales (57)
@@ -252,7 +258,7 @@ lista_variables (61)
 $@11 (62)
     en la izquierda: 31, en la derecha: 32
 sentencias (63)
-    en la izquierda: 35 36, en la derecha: 6 35 91 95
+    en la izquierda: 35 36, en la derecha: 6 35 94 98
 sentencia (64)
     en la izquierda: 37 38 39 40 41 42 43 44 45, en la derecha: 35
     36 75 78 81
@@ -309,13 +315,19 @@ lista_expresiones_o_cadena (88)
 expresion_o_cadena (89)
     en la izquierda: 88 89, en la derecha: 86 87
 sentencia_case (90)
-    en la izquierda: 90, en la derecha: 44
-casos (91)
-    en la izquierda: 91 92, en la derecha: 90 91
-opcion (92)
-    en la izquierda: 93 94, en la derecha: 91
-caso_por_defecto (93)
-    en la izquierda: 95 96, en la derecha: 90
+    en la izquierda: 91, en la derecha: 44
+$@23 (91)
+    en la izquierda: 90, en la derecha: 91
+casos (92)
+    en la izquierda: 94 95, en la derecha: 91 94
+$@24 (93)
+    en la izquierda: 92, en la derecha: 94
+$@25 (94)
+    en la izquierda: 93, en la derecha: 94
+opcion (95)
+    en la izquierda: 96 97, en la derecha: 94
+caso_por_defecto (96)
+    en la izquierda: 98 99, en la derecha: 91
 
 
 estado 0
@@ -609,7 +621,7 @@ estado 28
 
 estado 29
 
-   90 sentencia_case: SWITCH . PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO
+   91 sentencia_case: SWITCH . PARIZ iden $@23 PARDER INICIO casos caso_por_defecto FINBLO
 
     PARIZ  desplazar e ir al estado 68
 
@@ -1008,9 +1020,11 @@ estado 67
 
 estado 68
 
-   90 sentencia_case: SWITCH PARIZ . IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO
+   91 sentencia_case: SWITCH PARIZ . iden $@23 PARDER INICIO casos caso_por_defecto FINBLO
 
-    IDENTIFICADOR  desplazar e ir al estado 95
+    IDENTIFICADOR  desplazar e ir al estado 21
+
+    iden  ir al estado 95
 
 
 estado 69
@@ -1402,9 +1416,11 @@ estado 94
 
 estado 95
 
-   90 sentencia_case: SWITCH PARIZ IDENTIFICADOR . PARDER INICIO casos caso_por_defecto FINBLO
+   91 sentencia_case: SWITCH PARIZ iden . $@23 PARDER INICIO casos caso_por_defecto FINBLO
 
-    PARDER  desplazar e ir al estado 119
+    $default  reduce usando la regla 90 ($@23)
+
+    $@23  ir al estado 119
 
 
 estado 96
@@ -1710,9 +1726,9 @@ estado 118
 
 estado 119
 
-   90 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER . INICIO casos caso_por_defecto FINBLO
+   91 sentencia_case: SWITCH PARIZ iden $@23 . PARDER INICIO casos caso_por_defecto FINBLO
 
-    INICIO  desplazar e ir al estado 132
+    PARDER  desplazar e ir al estado 132
 
 
 estado 120
@@ -1870,11 +1886,9 @@ estado 131
 
 estado 132
 
-   90 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO . casos caso_por_defecto FINBLO
+   91 sentencia_case: SWITCH PARIZ iden $@23 PARDER . INICIO casos caso_por_defecto FINBLO
 
-    $default  reduce usando la regla 92 (casos)
-
-    casos  ir al estado 142
+    INICIO  desplazar e ir al estado 142
 
 
 estado 133
@@ -1969,22 +1983,18 @@ estado 141
 
 estado 142
 
-   90 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos . caso_por_defecto FINBLO
-   91 casos: casos . CASE opcion DOSP sentencias BREAK PYC
+   91 sentencia_case: SWITCH PARIZ iden $@23 PARDER INICIO . casos caso_por_defecto FINBLO
 
-    CASE     desplazar e ir al estado 148
-    DEFAULT  desplazar e ir al estado 149
+    $default  reduce usando la regla 95 (casos)
 
-    $default  reduce usando la regla 96 (caso_por_defecto)
-
-    caso_por_defecto  ir al estado 150
+    casos  ir al estado 148
 
 
 estado 143
 
    66 procedimiento: IDENTIFICADOR PARIZ $@14 lista_expresiones PARDER @15 . PYC
 
-    PYC  desplazar e ir al estado 151
+    PYC  desplazar e ir al estado 149
 
 
 estado 144
@@ -2007,7 +2017,7 @@ estado 146
 
     $default  reduce usando la regla 15 ($@7)
 
-    $@7  ir al estado 152
+    $@7  ir al estado 150
 
 
 estado 147
@@ -2019,113 +2029,88 @@ estado 147
 
 estado 148
 
-   91 casos: casos CASE . opcion DOSP sentencias BREAK PYC
+   91 sentencia_case: SWITCH PARIZ iden $@23 PARDER INICIO casos . caso_por_defecto FINBLO
+   94 casos: casos . CASE opcion DOSP $@24 sentencias $@25 BREAK PYC
 
-    CONSTANTE_E  desplazar e ir al estado 153
-    CARACTER     desplazar e ir al estado 154
+    CASE     desplazar e ir al estado 151
+    DEFAULT  desplazar e ir al estado 152
 
-    opcion  ir al estado 155
+    $default  reduce usando la regla 99 (caso_por_defecto)
+
+    caso_por_defecto  ir al estado 153
 
 
 estado 149
-
-   95 caso_por_defecto: DEFAULT . DOSP sentencias
-
-    DOSP  desplazar e ir al estado 156
-
-
-estado 150
-
-   90 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto . FINBLO
-
-    FINBLO  desplazar e ir al estado 157
-
-
-estado 151
 
    66 procedimiento: IDENTIFICADOR PARIZ $@14 lista_expresiones PARDER @15 PYC .
 
     $default  reduce usando la regla 66 (procedimiento)
 
 
-estado 152
+estado 150
 
    16 declar_parametros: declar_parametros COMA TIPOSIMPLE $@7 . iden
 
     IDENTIFICADOR  desplazar e ir al estado 21
 
-    iden  ir al estado 158
+    iden  ir al estado 154
+
+
+estado 151
+
+   94 casos: casos CASE . opcion DOSP $@24 sentencias $@25 BREAK PYC
+
+    CONSTANTE_E  desplazar e ir al estado 155
+    CARACTER     desplazar e ir al estado 156
+
+    opcion  ir al estado 157
+
+
+estado 152
+
+   98 caso_por_defecto: DEFAULT . DOSP sentencias
+
+    DOSP  desplazar e ir al estado 158
 
 
 estado 153
 
-   93 opcion: CONSTANTE_E .
+   91 sentencia_case: SWITCH PARIZ iden $@23 PARDER INICIO casos caso_por_defecto . FINBLO
 
-    $default  reduce usando la regla 93 (opcion)
+    FINBLO  desplazar e ir al estado 159
 
 
 estado 154
-
-   94 opcion: CARACTER .
-
-    $default  reduce usando la regla 94 (opcion)
-
-
-estado 155
-
-   91 casos: casos CASE opcion . DOSP sentencias BREAK PYC
-
-    DOSP  desplazar e ir al estado 159
-
-
-estado 156
-
-   95 caso_por_defecto: DEFAULT DOSP . sentencias
-
-    error          desplazar e ir al estado 24
-    INICIO         desplazar e ir al estado 6
-    WHILE          desplazar e ir al estado 26
-    READ           desplazar e ir al estado 27
-    WRITE          desplazar e ir al estado 28
-    SWITCH         desplazar e ir al estado 29
-    IDENTIFICADOR  desplazar e ir al estado 30
-
-    IF  reduce usando la regla 76 ($@17)
-
-    bloque                  ir al estado 31
-    iden                    ir al estado 34
-    sentencias              ir al estado 160
-    sentencia               ir al estado 36
-    sentencia_asignacion    ir al estado 37
-    procedimiento           ir al estado 38
-    sentencia_if            ir al estado 39
-    alternativa_simple      ir al estado 40
-    alternativa_doble       ir al estado 41
-    if_expresion_sentencia  ir al estado 42
-    $@17                    ir al estado 43
-    sentencia_while         ir al estado 44
-    sentencia_entrada       ir al estado 45
-    sentencia_salida        ir al estado 46
-    sentencia_case          ir al estado 47
-
-
-estado 157
-
-   90 sentencia_case: SWITCH PARIZ IDENTIFICADOR PARDER INICIO casos caso_por_defecto FINBLO .
-
-    $default  reduce usando la regla 90 (sentencia_case)
-
-
-estado 158
 
    16 declar_parametros: declar_parametros COMA TIPOSIMPLE $@7 iden .
 
     $default  reduce usando la regla 16 (declar_parametros)
 
 
-estado 159
+estado 155
 
-   91 casos: casos CASE opcion DOSP . sentencias BREAK PYC
+   96 opcion: CONSTANTE_E .
+
+    $default  reduce usando la regla 96 (opcion)
+
+
+estado 156
+
+   97 opcion: CARACTER .
+
+    $default  reduce usando la regla 97 (opcion)
+
+
+estado 157
+
+   94 casos: casos CASE opcion . DOSP $@24 sentencias $@25 BREAK PYC
+
+    DOSP  desplazar e ir al estado 160
+
+
+estado 158
+
+   98 caso_por_defecto: DEFAULT DOSP . sentencias
 
     error          desplazar e ir al estado 24
     INICIO         desplazar e ir al estado 6
@@ -2154,42 +2139,26 @@ estado 159
     sentencia_case          ir al estado 47
 
 
+estado 159
+
+   91 sentencia_case: SWITCH PARIZ iden $@23 PARDER INICIO casos caso_por_defecto FINBLO .
+
+    $default  reduce usando la regla 91 (sentencia_case)
+
+
 estado 160
 
-   35 sentencias: sentencias . sentencia
-   95 caso_por_defecto: DEFAULT DOSP sentencias .
+   94 casos: casos CASE opcion DOSP . $@24 sentencias $@25 BREAK PYC
 
-    error          desplazar e ir al estado 24
-    INICIO         desplazar e ir al estado 6
-    WHILE          desplazar e ir al estado 26
-    READ           desplazar e ir al estado 27
-    WRITE          desplazar e ir al estado 28
-    SWITCH         desplazar e ir al estado 29
-    IDENTIFICADOR  desplazar e ir al estado 30
+    $default  reduce usando la regla 92 ($@24)
 
-    FINBLO  reduce usando la regla 95 (caso_por_defecto)
-    IF      reduce usando la regla 76 ($@17)
-
-    bloque                  ir al estado 31
-    iden                    ir al estado 34
-    sentencia               ir al estado 73
-    sentencia_asignacion    ir al estado 37
-    procedimiento           ir al estado 38
-    sentencia_if            ir al estado 39
-    alternativa_simple      ir al estado 40
-    alternativa_doble       ir al estado 41
-    if_expresion_sentencia  ir al estado 42
-    $@17                    ir al estado 43
-    sentencia_while         ir al estado 44
-    sentencia_entrada       ir al estado 45
-    sentencia_salida        ir al estado 46
-    sentencia_case          ir al estado 47
+    $@24  ir al estado 162
 
 
 estado 161
 
    35 sentencias: sentencias . sentencia
-   91 casos: casos CASE opcion DOSP sentencias . BREAK PYC
+   98 caso_por_defecto: DEFAULT DOSP sentencias .
 
     error          desplazar e ir al estado 24
     INICIO         desplazar e ir al estado 6
@@ -2197,10 +2166,10 @@ estado 161
     READ           desplazar e ir al estado 27
     WRITE          desplazar e ir al estado 28
     SWITCH         desplazar e ir al estado 29
-    BREAK          desplazar e ir al estado 162
     IDENTIFICADOR  desplazar e ir al estado 30
 
-    IF  reduce usando la regla 76 ($@17)
+    FINBLO  reduce usando la regla 98 (caso_por_defecto)
+    IF      reduce usando la regla 76 ($@17)
 
     bloque                  ir al estado 31
     iden                    ir al estado 34
@@ -2220,13 +2189,84 @@ estado 161
 
 estado 162
 
-   91 casos: casos CASE opcion DOSP sentencias BREAK . PYC
+   94 casos: casos CASE opcion DOSP $@24 . sentencias $@25 BREAK PYC
 
-    PYC  desplazar e ir al estado 163
+    error          desplazar e ir al estado 24
+    INICIO         desplazar e ir al estado 6
+    WHILE          desplazar e ir al estado 26
+    READ           desplazar e ir al estado 27
+    WRITE          desplazar e ir al estado 28
+    SWITCH         desplazar e ir al estado 29
+    IDENTIFICADOR  desplazar e ir al estado 30
+
+    IF  reduce usando la regla 76 ($@17)
+
+    bloque                  ir al estado 31
+    iden                    ir al estado 34
+    sentencias              ir al estado 163
+    sentencia               ir al estado 36
+    sentencia_asignacion    ir al estado 37
+    procedimiento           ir al estado 38
+    sentencia_if            ir al estado 39
+    alternativa_simple      ir al estado 40
+    alternativa_doble       ir al estado 41
+    if_expresion_sentencia  ir al estado 42
+    $@17                    ir al estado 43
+    sentencia_while         ir al estado 44
+    sentencia_entrada       ir al estado 45
+    sentencia_salida        ir al estado 46
+    sentencia_case          ir al estado 47
 
 
 estado 163
 
-   91 casos: casos CASE opcion DOSP sentencias BREAK PYC .
+   35 sentencias: sentencias . sentencia
+   94 casos: casos CASE opcion DOSP $@24 sentencias . $@25 BREAK PYC
 
-    $default  reduce usando la regla 91 (casos)
+    error          desplazar e ir al estado 24
+    INICIO         desplazar e ir al estado 6
+    WHILE          desplazar e ir al estado 26
+    READ           desplazar e ir al estado 27
+    WRITE          desplazar e ir al estado 28
+    SWITCH         desplazar e ir al estado 29
+    IDENTIFICADOR  desplazar e ir al estado 30
+
+    IF     reduce usando la regla 76 ($@17)
+    BREAK  reduce usando la regla 93 ($@25)
+
+    bloque                  ir al estado 31
+    iden                    ir al estado 34
+    sentencia               ir al estado 73
+    sentencia_asignacion    ir al estado 37
+    procedimiento           ir al estado 38
+    sentencia_if            ir al estado 39
+    alternativa_simple      ir al estado 40
+    alternativa_doble       ir al estado 41
+    if_expresion_sentencia  ir al estado 42
+    $@17                    ir al estado 43
+    sentencia_while         ir al estado 44
+    sentencia_entrada       ir al estado 45
+    sentencia_salida        ir al estado 46
+    sentencia_case          ir al estado 47
+    $@25                    ir al estado 164
+
+
+estado 164
+
+   94 casos: casos CASE opcion DOSP $@24 sentencias $@25 . BREAK PYC
+
+    BREAK  desplazar e ir al estado 165
+
+
+estado 165
+
+   94 casos: casos CASE opcion DOSP $@24 sentencias $@25 BREAK . PYC
+
+    PYC  desplazar e ir al estado 166
+
+
+estado 166
+
+   94 casos: casos CASE opcion DOSP $@24 sentencias $@25 BREAK PYC .
+
+    $default  reduce usando la regla 94 (casos)

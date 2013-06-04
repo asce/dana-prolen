@@ -1,6 +1,6 @@
 .SUFFIXES:
 semantico: main.o y.tab.o
-	gcc -o semantico main.o y.tab.o
+	gcc -g -o semantico main.o y.tab.o
 y.tab.o: y.tab.c
 	gcc -c y.tab.c
 main.o: main.c

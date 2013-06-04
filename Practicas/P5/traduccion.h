@@ -37,6 +37,32 @@ char* exit_tag;
 char* else_tag;
 char* name_control_var;
 }control_descriptor_t;
+#define TSIC_SIZE 255
+unsigned int TSIC_TOPE = 0;
+control_descriptor_t TSIC[TSIC_SIZE];
+
+void initTSIC(){
+  int i; 
+  for(i=0;i<TSIC_SIZE;i++){
+    TSIC[i].entry_tag=0;
+    TSIC[i].exit_tag=0;
+    TSIC[i].else_tag=0;
+    TSIC[i].name_control_var=0;
+  }
+}
+void pushTSIC(control_descriptor_t* cd){
+  
+  TSIC[TSIC_TOPE].entry_tag=cd->entry_tag;
+  TSIC[TSIC_TOPE].exit_tag=cd->exit_tag;
+  TSIC[TSIC_TOPE].else_tag=cd->else_tag;
+  TSIC[TSIC_TOPE].name_control_var=cd->name_control_var;
+
+}
+void popTSIC(){
+  if(TSIC_TOPE >= 0)
+  TSIC_TOPE--;
+  else printf("WARNING: No quedan más elementos en TSIC\n");
+}
 
 void itostr(int i,char* str){
   sprintf(str,"%i",i);
@@ -92,12 +118,15 @@ void generateTag(char* tag_str){
 
 void writeExpr(atributos* dest,atributos* op1,char* operador,atributos* op2){
   char tmp[20];
+  char expresion_str[256];
+  expresion_str[0]='\0';
   tmp[0]='\0';
   generateTmp(tmp);
   dest->expr_tmp = strdup(tmp);
   //  printf("%s %s",dtipo2ctipostr(dest->tipo), dest->expr_tmp);
   //getchar();
-  sprintf(expresion_str,"%s %s;\n%s = %s %s %s;\n",
+  
+sprintf(expresion_str,"%s %s;\n%s = %s %s %s;\n",
 	  dtipo2ctipostr(dest->tipo), dest->expr_tmp, dest->expr_tmp, op1->expr_tmp,
 	  operador, op2->expr_tmp);
   //printf("%s",expresion_str);
@@ -135,8 +164,8 @@ void write_init_if(){
   else_tag[0]='\0';
   ite_str[256]='\0';
   //1 generar etiqueta salida y else
-  generateTmp(exit_tag);
-  generateTmp(else_tag);
+  generateTag(exit_tag);
+  generateTag(else_tag);
   control_descriptor_t cd;
 
   cd.exit_tag = exit_tag;
@@ -182,6 +211,22 @@ void write_exit_tag(){
   writeFout("exit_tag:;\n");
 
 }
+void write_exit_switch(){
+
+  writeFout("exit_switch_tag:;\n");
+}
+
+write_go_to_exit_switch(){
+
+  writeFout("goto exit_switch_tag;\n");
+
+}
+
+write_exit_case_tag(){
+
+  writeFout("exit_case:;\n");
+
+}
 
 void write_init_while(){
 
@@ -199,6 +244,50 @@ void write_init_while(){
   // 2 TODO push cd
   writeFout("//generamos tags y los introducimos en TS\n");
 
+}
+
+void write_init_switch(){
+  writeFout("//generar tag salida\n");
+  writeFout("// Almacenar entrada en TS con el valor de expr (Entero o char)\n");
+}
+
+void write_init_case(){
+  writeFout("//generar exit_case_tag \n");
+  writeFout("//insertar exit_case_tag en TS \n");
+}
+
+void write_compare_case(atributos* option){
+  int value;
+  char tmp_str[20];
+  tmp_str[0]='\0';		     
+  char tmp_str_asig[256];
+  char ite_str[256];
+  tmp_str_asig[0]='\0';
+  ite_str[0]='\0';
+
+  /*  if(option->tipo == entero){
+    value = atoi(option->lexema);
+
+
+  }else if(option->tipo == caracter){
+    value = option->lexema[0];
+    printf("DEBUG: cadena: %s, entero %i, caracter: %c\n",option->lexema,value,option->lexema[0]);
+
+  }else printf("WARNING: Se ha pasado atributo con tipo no conocido para write_compare_case\n");
+  */
+  generateTmp(tmp_str);
+  sprintf(tmp_str_asig,"int %s;\n%s = %s == %s;\n",tmp_str,tmp_str,option->lexema,"expr_switch");
+  writeFout(tmp_str_asig);
+  
+  sprintf(ite_str,"if(!%s) goto %s;\n",tmp_str,"exit_case");// TODO OJO ANIDAMIENTO                          
+  writeFout(ite_str);
+
+
+}
+
+void write_close_case(){
+
+  writeFout("//Limpiamos TS hasta descriptor de bloque\n");
 
 }
 void write_entry_tag(){
@@ -232,10 +321,12 @@ void write_printf(atributos* att){
   char* format;
   char str[1024];
   str[0]='\0';
-  if(att->tipo == entero)
+  if(att->tipo == entero || att->tipo == booleano)
     format = "%i";
   else if(att->tipo == real)
     format = "%f";
+  else if(att->tipo == caracter)
+    format = "%c";
   else{
     printf("Tipo %i\n",att->tipo);
     getchar();
@@ -255,16 +346,20 @@ write_scanf(atributos* att){
   char str_scanf[1024];
   char* format;
   char str[1024];
+  //printf("Linea %i\n",yylineno);
   str[0]='\0';
-  if(att->tipo == entero)
+  if(att->tipo == entero )
     format = "\"%i\",&";
   else if(att->tipo == real)
     format = "\"%f\",&";
+  else if(att->tipo == caracter)
+    format = "\"%c\",&";
   else{
     printf("Tipo %i\n",att->tipo);
     getchar();
   }
-
+  
+  //printf("%i",att->lexema==NULL);getchar();
   strcat(str,"scanf(");
   strcat(str,format);
   strcat(str,att->lexema);

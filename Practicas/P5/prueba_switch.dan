@@ -1,0 +1,19 @@
+main{
+	begin_declare
+		int m,j,a,b,c,fd;
+		int h, d;
+	end_declare
+	a = 1; 
+	switch(a){
+		case 1:
+		write "Vale 1\n";
+		break;
+		case 2:
+		write "Vale 2\n";
+		break;
+		default:
+		write "Vale default\n";
+
+	}
+
+}
