@@ -35,6 +35,7 @@ typedef struct{
 char* entry_tag;
 char* exit_tag;
 char* else_tag;
+ char* exit_switch_tag;
 char* name_control_var;
 }control_descriptor_t;
 #define TSIC_SIZE 255
@@ -47,20 +48,29 @@ void initTSIC(){
     TSIC[i].entry_tag=0;
     TSIC[i].exit_tag=0;
     TSIC[i].else_tag=0;
+    TSIC[i].exit_switch_tag=0;
     TSIC[i].name_control_var=0;
   }
 }
 void pushTSIC(control_descriptor_t* cd){
-  
-  TSIC[TSIC_TOPE].entry_tag=cd->entry_tag;
-  TSIC[TSIC_TOPE].exit_tag=cd->exit_tag;
-  TSIC[TSIC_TOPE].else_tag=cd->else_tag;
-  TSIC[TSIC_TOPE].name_control_var=cd->name_control_var;
+
+  TSIC_TOPE++;
+  TSIC[TSIC_TOPE].entry_tag = cd->entry_tag;
+  TSIC[TSIC_TOPE].exit_tag = cd->exit_tag;
+  TSIC[TSIC_TOPE].else_tag = cd->else_tag;
+  TSIC[TSIC_TOPE].exit_switch_tag = cd->exit_switch_tag;
+  TSIC[TSIC_TOPE].name_control_var = cd->name_control_var;
 
 }
 void popTSIC(){
-  if(TSIC_TOPE >= 0)
+  if(TSIC_TOPE >= 0){
+  TSIC[TSIC_TOPE].entry_tag=0;
+  TSIC[TSIC_TOPE].exit_tag=0;
+  TSIC[TSIC_TOPE].else_tag=0;
+  TSIC[TSIC_TOPE].exit_switch_tag=0;
+  TSIC[TSIC_TOPE].name_control_var=0;
   TSIC_TOPE--;
+  }
   else printf("WARNING: No quedan más elementos en TSIC\n");
 }
 
@@ -112,6 +122,8 @@ void generateTag(char* tag_str){
   itostr(tag_index,tag_index_str);
   strcat(tag_str,"tag");
   strcat(tag_str,tag_index_str);
+  printf("%s",tag_str);
+  getchar();
   tag_index++;
   //return tag_str;
 }
@@ -152,8 +164,10 @@ void writeOpuExpr(atributos* dest,char* operador,atributos* op1){
 }
 
 void write_close_if(){
-  writeFout("exit_tag:;\n");
-    //Limpia TS;
+  char str[50];str[0]='\0';
+  sprintf(str,"%s:;\n",TSIC[TSIC_TOPE].exit_tag);
+  writeFout(str);
+  popTSIC(); //Limpia TS;
 
 }
 
@@ -168,17 +182,20 @@ void write_init_if(){
   generateTag(else_tag);
   control_descriptor_t cd;
 
-  cd.exit_tag = exit_tag;
-  cd.else_tag = else_tag;
+  cd.exit_tag = strdup(exit_tag);
+  cd.else_tag = strdup(else_tag);
+  printf("%s,%s\n",cd.exit_tag,cd.else_tag);getchar();
   // 2 TODO push cd
+  pushTSIC(&cd);
   writeFout("//generamos tags y los introducimos en TS\n");
 
 }
 
 void write_go_to_exit_tag(){
-
-  writeFout("goto exit_tag;\n");
-
+  char str[50];str[0]='\0';
+  sprintf(str,"goto %s;\n",TSIC[TSIC_TOPE].exit_tag);
+  printf("%s\n",str);getchar();
+  writeFout(str);
 
 }
 
@@ -187,7 +204,7 @@ void write_conditional_jump_to_else_tag(atributos* expr){
   char  ite_str[256];
   ite_str[0]='\0';
   // 4 Se emite la sentencia de salto condicional hacia el else
-  sprintf(ite_str,"if(!%s) goto %s;\n",expr->expr_tmp,"else_tag");// TODO OJO ANIDAMIENTO
+  sprintf(ite_str,"if(!%s) goto %s;\n",expr->expr_tmp,TSIC[TSIC_TOPE].else_tag);// TODO OJO ANIDAMIENTO
   writeFout(ite_str);
 
 }
@@ -196,35 +213,49 @@ void write_conditional_jump_to_exit(atributos* expr){
   char ite_str[256];
   ite_str[0]='\0';
   // 4 Se emite la sentencia de salto condicional hacia salida        
-  sprintf(ite_str,"if(!%s) goto %s;\n",expr->expr_tmp,"exit_tag");// TODO OJO ANIDAMIENTO
+  sprintf(ite_str,"if(!%s) goto %s;\n",expr->expr_tmp,TSIC[TSIC_TOPE].exit_tag);// TODO OJO ANIDAMIENTO
   writeFout(ite_str);
 
 }
 
 void write_else_tag(){
-  
-  writeFout("else_tag:;\n");
+  char str[50];str[0]='\0';
+  sprintf(str,"%s:;\n",TSIC[TSIC_TOPE].else_tag);
+  writeFout(str);
+  //writeFout("else_tag:;\n");
 
 }
 void write_exit_tag(){
-
-  writeFout("exit_tag:;\n");
+  char str[50];str[0]='\0';
+  sprintf(str,"%s:;\n",TSIC[TSIC_TOPE].exit_tag);
+  writeFout(str);
+  //writeFout("exit_tag:;\n");
 
 }
 void write_exit_switch(){
+  char str[50];str[0]='\0';
+  sprintf(str,"%s:;\n",TSIC[TSIC_TOPE].exit_switch_tag);
+  writeFout(str);
+  while(TSIC[TSIC_TOPE].exit_switch_tag!=0)
+    popTSIC();
 
-  writeFout("exit_switch_tag:;\n");
+  //writeFout("exit_switch_tag:;\n");
 }
 
 write_go_to_exit_switch(){
+  char str[50];str[0]='\0';
+  sprintf(str,"goto %s;\n",TSIC[TSIC_TOPE].exit_switch_tag);
+  writeFout(str);
 
-  writeFout("goto exit_switch_tag;\n");
+  //writeFout("goto exit_switch_tag;\n");
 
 }
 
 write_exit_case_tag(){
-
-  writeFout("exit_case:;\n");
+  char str[50];str[0]='\0';
+  sprintf(str,"%s:;\n",TSIC[TSIC_TOPE].exit_tag);
+  writeFout(str);
+  //writeFout("exit_case:;\n");
 
 }
 
@@ -239,19 +270,55 @@ void write_init_while(){
   generateTmp(entry_tag);
   control_descriptor_t cd;
 
-  cd.exit_tag = exit_tag;
-  cd.entry_tag = entry_tag;
+  cd.exit_tag = strdup(exit_tag);
+  cd.entry_tag = strdup(entry_tag);
   // 2 TODO push cd
+  pushTSIC(&cd);
+  
   writeFout("//generamos tags y los introducimos en TS\n");
 
 }
 
-void write_init_switch(){
+void write_init_switch(atributos* att){
+
+  char exit_switch_tag[20], ite_str[256];
+  exit_switch_tag[0]='\0';
+
+  ite_str[256]='\0';
+
+  generateTmp(exit_switch_tag);
+  control_descriptor_t cd;
+
+  cd.exit_switch_tag = strdup(exit_switch_tag);
+  
+
   writeFout("//generar tag salida\n");
+  cd.name_control_var = strdup(att->lexema);
+  //printf("id:%s\n",cd.name_control_var);getchar();
+  //printf("id:%s\n",cd.exit_switch_tag);getchar(); 
+
   writeFout("// Almacenar entrada en TS con el valor de expr (Entero o char)\n");
+  pushTSIC(&cd);
+  //getchar();
+  //printf("%s\n",TSIC[TSIC_TOPE].name_control_var);getchar();
+
 }
 
 void write_init_case(){
+  char exit_tag[20],ite_str[256];
+  exit_tag[0]='\0';
+  ite_str[256]='\0';
+  //1 generar etiqueta salida y else                                                                     
+  generateTmp(exit_tag);
+  control_descriptor_t cd;
+
+  cd.exit_tag = strdup(exit_tag);//exit case
+  cd.exit_switch_tag = strdup(TSIC[TSIC_TOPE].exit_switch_tag);
+  cd.name_control_var = strdup(TSIC[TSIC_TOPE].name_control_var);
+  
+  // 2 TODO push cd                                                                                      
+  pushTSIC(&cd);
+
   writeFout("//generar exit_case_tag \n");
   writeFout("//insertar exit_case_tag en TS \n");
 }
@@ -276,34 +343,44 @@ void write_compare_case(atributos* option){
   }else printf("WARNING: Se ha pasado atributo con tipo no conocido para write_compare_case\n");
   */
   generateTmp(tmp_str);
-  sprintf(tmp_str_asig,"int %s;\n%s = %s == %s;\n",tmp_str,tmp_str,option->lexema,"expr_switch");
+  sprintf(tmp_str_asig,"int %s;\n%s = %s == %s;\n",tmp_str,tmp_str,option->lexema,TSIC[TSIC_TOPE].name_control_var);
   writeFout(tmp_str_asig);
   
-  sprintf(ite_str,"if(!%s) goto %s;\n",tmp_str,"exit_case");// TODO OJO ANIDAMIENTO                          
+  sprintf(ite_str,"if(!%s) goto %s;\n",tmp_str,TSIC[TSIC_TOPE].exit_tag);// TODO OJO ANIDAMIENTO                          
   writeFout(ite_str);
 
 
 }
 
 void write_close_case(){
-
+  popTSIC();
   writeFout("//Limpiamos TS hasta descriptor de bloque\n");
 
 }
 void write_entry_tag(){
-
-  writeFout("entry_tag:;\n");
+  char str[50];str[0]='\0';
+  sprintf(str,"%s:;\n",TSIC[TSIC_TOPE].entry_tag);
+  //printf("%s",str);getchar();
+  writeFout(str);
+  //writeFout("entry_tag:;\n");
 
 }
 void write_go_to_entry_tag(){
+  char str[50];str[0]='\0';
+  sprintf(str,"goto %s;\n",TSIC[TSIC_TOPE].entry_tag);
+  writeFout(str);
 
-  writeFout("goto entry_tag;\n");
+  //  writeFout("goto entry_tag;\n");
 
 
 }
 void write_close_while(){
+  char str[50];str[0]='\0';
+  sprintf(str,"%s:;\n",TSIC[TSIC_TOPE].exit_tag);
+  writeFout(str);
+  //writeFout("exit_tag:;\n");
+  popTSIC();
 
-  writeFout("exit_tag:;\n");
 
 }
 
