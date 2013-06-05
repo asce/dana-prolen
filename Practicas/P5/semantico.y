@@ -442,7 +442,7 @@ BREAK PYC | ;
 
 opcion: CONSTANTE_E | CARACTER;
 
-caso_por_defecto: DEFAULT DOSP sentencias | ;
+caso_por_defecto: DEFAULT DOSP sentencias {/* popTSIC();*/} | ;
 
 
 %%

@@ -2222,10 +2222,17 @@ write_init_switch(&(yyvsp[(3) - (3)]));
 }
     break;
 
+  case 99:
+
+/* Line 1806 of yacc.c  */
+#line 445 "semantico.y"
+    {/* popTSIC();*/}
+    break;
+
 
 
 /* Line 1806 of yacc.c  */
-#line 2229 "y.tab.c"
+#line 2236 "y.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires

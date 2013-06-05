@@ -13,7 +13,7 @@ out: out.c
 	gcc -o out out.c
 
 clean:
-	rm -f semantico main.o y.tab.o y.tab.h y.tab.c y.output lex.yy.c
+	rm -f semantico main.o y.tab.o y.tab.h y.tab.c y.output lex.yy.c out out.c
 all:
 	make clean
 	make semantico

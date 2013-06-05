@@ -7,7 +7,18 @@ main{
 	switch(a){
 		case 1:
 		write "Vale 1\n";
+	switch(a){
+		case 1:
+		write "Vale 1\n";
 
+		break;
+		case 2:
+		write "Vale 2\n";
+		break;
+		default:
+		write "Vale default\n";
+
+	}
 		break;
 		case 2:
 		write "Vale 2\n";

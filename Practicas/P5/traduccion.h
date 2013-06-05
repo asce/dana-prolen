@@ -122,8 +122,8 @@ void generateTag(char* tag_str){
   itostr(tag_index,tag_index_str);
   strcat(tag_str,"tag");
   strcat(tag_str,tag_index_str);
-  printf("%s",tag_str);
-  getchar();
+  //printf("%s",tag_str);
+  //getchar();
   tag_index++;
   //return tag_str;
 }
@@ -184,7 +184,7 @@ void write_init_if(){
 
   cd.exit_tag = strdup(exit_tag);
   cd.else_tag = strdup(else_tag);
-  printf("%s,%s\n",cd.exit_tag,cd.else_tag);getchar();
+  //printf("%s,%s\n",cd.exit_tag,cd.else_tag);getchar();
   // 2 TODO push cd
   pushTSIC(&cd);
   writeFout("//generamos tags y los introducimos en TS\n");
@@ -194,7 +194,7 @@ void write_init_if(){
 void write_go_to_exit_tag(){
   char str[50];str[0]='\0';
   sprintf(str,"goto %s;\n",TSIC[TSIC_TOPE].exit_tag);
-  printf("%s\n",str);getchar();
+  //printf("%s\n",str);getchar();
   writeFout(str);
 
 }
@@ -236,7 +236,7 @@ void write_exit_switch(){
   char str[50];str[0]='\0';
   sprintf(str,"%s:;\n",TSIC[TSIC_TOPE].exit_switch_tag);
   writeFout(str);
-  while(TSIC[TSIC_TOPE].exit_switch_tag!=0)
+  //  while(TSIC[TSIC_TOPE].exit_switch_tag!=0)
     popTSIC();
 
   //writeFout("exit_switch_tag:;\n");
@@ -266,8 +266,8 @@ void write_init_while(){
   entry_tag[0]='\0';
   ite_str[256]='\0';
   //1 generar etiqueta salida y else
-  generateTmp(exit_tag);
-  generateTmp(entry_tag);
+  generateTag(exit_tag);
+  generateTag(entry_tag);
   control_descriptor_t cd;
 
   cd.exit_tag = strdup(exit_tag);
@@ -286,7 +286,7 @@ void write_init_switch(atributos* att){
 
   ite_str[256]='\0';
 
-  generateTmp(exit_switch_tag);
+  generateTag(exit_switch_tag);
   control_descriptor_t cd;
 
   cd.exit_switch_tag = strdup(exit_switch_tag);
@@ -309,7 +309,7 @@ void write_init_case(){
   exit_tag[0]='\0';
   ite_str[256]='\0';
   //1 generar etiqueta salida y else                                                                     
-  generateTmp(exit_tag);
+  generateTag(exit_tag);
   control_descriptor_t cd;
 
   cd.exit_tag = strdup(exit_tag);//exit case

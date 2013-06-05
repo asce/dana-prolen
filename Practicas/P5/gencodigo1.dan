@@ -11,7 +11,7 @@ main{
 		d = n/curr;
 		if(d*curr == n){
 			  
-			  write " ",n," ";
+			  write "* ",curr," ";
 			  n = n/curr;
 		
 		}else{
