@@ -25,6 +25,9 @@ void Division2DArrayEntero(const int *a1,int f1,int c1,const int *a2,int f2,int 
 void Division2DEntero(const int *a, int f,int c,int valor, int *res);
 void Asignacion1DEntero(const int a[], int size, int res[]);
 void Asignacion2DEntero(const int *a, int f,int c, int *res);
+void Imprimir1DEntero(const int v[], int size);
+void Imprimir2DEntero(const int *m, int f, int c);
+
 
 
 
@@ -50,6 +53,9 @@ void Division2DArrayReal(const double *a1,int f1,int c1,const double *a2,int f2,
 void Division2DReal(const double *a, int f,int c,double valor, double *res);
 void Asignacion1DReal(const double a[], int size, double res[]);
 void Asignacion2DReal(const double *a, int f,int c, double *res);
+void Imprimir1DReal(const double v[], int size);
+void Imprimir2DReal(const double *m, int f, int c);
+
 
 
 
@@ -276,6 +282,22 @@ void Asignacion2DEntero(const int *a, int f,int c, int *res){
     }
 }
 
+void Imprimir1DEntero(const int v[], int size){
+    int i=0;
+    for(i;i<size;i++){
+        printf("V[%i]=%i\n",i,v[i]);
+    }
+}
+
+void Imprimir2DEntero(const int *m, int f, int c){
+    int i=0;
+    for (i;i<f;i++){
+        int j=0;
+        for(j;j<c;j++){
+            printf("M[%i][%i]=%i\n",i,j,m[i*c+j]);
+        }
+    }
+}
 
 /* __________________________________________________________________________________  */
 
@@ -499,3 +521,23 @@ void Asignacion2DReal(const double *a, int f,int c, double *res){
         }
     }
 }
+
+void Imprimir1DReal(const double v[], int size){
+    int i=0;
+    for(i;i<size;i++){
+        printf("V[%i]=%f\n",i,v[i]);
+    }
+}
+void Imprimir2DReal(const double *m, int f, int c){
+    int i=0;
+    for (i;i<f;i++){
+        int j=0;
+        for(j;j<c;j++){
+            printf("M[%i][%i]=%f\n",i,j,m[i*c+j]);
+        }
+    }
+}
+
+
+
+

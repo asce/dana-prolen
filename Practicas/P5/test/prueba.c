@@ -12,7 +12,8 @@ struct matriz_entero {
 
 //void ReservaMemoriaEntero(struct matriz_entero *m);
 //void LiberaMemoriaEntero(struct matriz_entero *m);
-void Multiplicar(int *matriz1, int f1,int c1,int *matriz2, int f2, int c2, int *pro);
+//void Multiplicar(int *matriz1, int f1,int c1,int *matriz2, int f2, int c2, int *pro);
+void Multiplicar(int **matriz1, int f1,int c1);
 void suma(const int a[],const int b[], int tam, int c[]);
 void mul(struct matriz_entero m1,struct matriz_entero m2);
 
@@ -34,12 +35,17 @@ int main(){
     double v1d[5]={2.222,5.435,6.66,7.11,21.44};
     double v2d[7]={5.66,7.88,1.33,4.55,6.899,9.0000,98.000899};
     double totald[5];
+    double m1d[2][2]={{2.34,5.66},{7.8890,0.99007}};
+    
+   // Multiplicar(m1,filas, columnas);
+    
+    Imprimir2DReal(m1d,2,2);
     
     
     //Multiplicacion2DEntero((int *)(m1),filas,columnas,(int *)(m2),filas,columnas, (int *)(res));
     //Producto2DEntero(m1,filas,columnas,2,res);
     //Resta2DEntero((int *)(m2),filas,columnas,2,(int *)(res));
-    Asignacion2DEntero(m2,filas,columnas,res);
+/*    Asignacion2DEntero(m2,filas,columnas,res);
   
     int i=0;
     for (i;i<filas;i++){
@@ -48,7 +54,7 @@ int main(){
             printf("M[%i][%i]=%i\n",i,j,res[i][j]);
         }
     }
-    
+*/    
   
     //Division1DEntero(v1,NELEMS(v1),1,total);
 /*    Asignacion1DReal(v2d,tamv2d,totald);
@@ -77,14 +83,24 @@ void LiberaMemoriaEntero(struct matriz_entero *m){
     free(m->m);
 }
 */
-void Multiplicar(int *matriz1, int f1,int c1,int *matriz2, int f2, int c2,int *pro ){
+
+
+
+
+
+
+
+
+
+//void Multiplicar(int **matriz1, int f1,int c1,int **matriz2, int f2, int c2,int **pro ){
+void Multiplicar(int **matriz1, int f1,int c1){
     
-    if(c1==f2){
+    
         int i=0;
         for(i;i<f1;i++){
             int j=0;
-            for(j;j<c2;j++){
-                int k=0;
+            for(j;j<c1;j++){
+             /*   int k=0;
                 pro[i*c1 +j]=0;
                 for(k;k<c1;k++){
                     pro[i*c1 +j] += matriz1[i*c1 +k]*matriz2[k*c2 + j] ;
@@ -93,12 +109,20 @@ void Multiplicar(int *matriz1, int f1,int c1,int *matriz2, int f2, int c2,int *p
                     //matriz[i*c1 +j]
                     
                 }
+              */
+                printf("M[%i][%i]=%i\n",i,j,matriz1[i][j]);
+                
+                
+                
+                
+                
+                
             }
         }
-    }else{
+  /*  }else{
         printf("Las matrices no se pueden multpilicar.\n");
     }
-    
+    */
 
 }
 
