@@ -499,8 +499,8 @@ static const yytype_uint16 yyrline[] =
      390,   398,   410,   416,   420,   424,   425,   428,   433,   427,
      440,   439,   448,   450,   457,   465,   465,   467,   469,   472,
      474,   472,   487,   492,   486,   503,   503,   503,   505,   507,
-     507,   509,   509,   513,   512,   522,   527,   521,   533,   535,
-     535,   537,   537
+     507,   510,   517,   521,   520,   530,   535,   529,   541,   543,
+     543,   545,   545
 };
 #endif
 
@@ -2273,21 +2273,28 @@ checkBoolean(&(yyvsp[(4) - (4)]));
   case 91:
 
 /* Line 1806 of yacc.c  */
-#line 509 "semantico.y"
-    {checkScope(&(yyvsp[(1) - (1)]),&(yyvsp[(1) - (1)]));write_printf(&(yyvsp[(1) - (1)]));}
+#line 510 "semantico.y"
+    {
+  //checkScope(&$1,&$1);
+write_printf(&(yyvsp[(1) - (1)])); //write con iden
+//SOLO iden??
+  //nuevo OJO
+  
+
+}
     break;
 
   case 92:
 
 /* Line 1806 of yacc.c  */
-#line 509 "semantico.y"
+#line 517 "semantico.y"
     {write_printf_str(&(yyvsp[(1) - (1)]));}
     break;
 
   case 93:
 
 /* Line 1806 of yacc.c  */
-#line 513 "semantico.y"
+#line 521 "semantico.y"
     {
 checkScope(&(yyvsp[(3) - (3)]),&(yyvsp[(3) - (3)]));
 checkIntOrChar(&(yyvsp[(3) - (3)]));
@@ -2298,14 +2305,14 @@ write_init_switch(&(yyvsp[(3) - (3)]));
   case 94:
 
 /* Line 1806 of yacc.c  */
-#line 518 "semantico.y"
+#line 526 "semantico.y"
     {write_exit_switch();}
     break;
 
   case 95:
 
 /* Line 1806 of yacc.c  */
-#line 522 "semantico.y"
+#line 530 "semantico.y"
     {
   write_init_case();
   write_compare_case(&(yyvsp[(3) - (4)]));
@@ -2315,7 +2322,7 @@ write_init_switch(&(yyvsp[(3) - (3)]));
   case 96:
 
 /* Line 1806 of yacc.c  */
-#line 527 "semantico.y"
+#line 535 "semantico.y"
     {
   write_go_to_exit_switch();
   write_exit_case_tag();
@@ -2327,14 +2334,14 @@ write_init_switch(&(yyvsp[(3) - (3)]));
   case 101:
 
 /* Line 1806 of yacc.c  */
-#line 537 "semantico.y"
+#line 545 "semantico.y"
     {/* popTSIC();*/}
     break;
 
 
 
 /* Line 1806 of yacc.c  */
-#line 2338 "y.tab.c"
+#line 2345 "y.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2565,7 +2572,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 540 "semantico.y"
+#line 548 "semantico.y"
 
 
 #include "lex.yy.c"

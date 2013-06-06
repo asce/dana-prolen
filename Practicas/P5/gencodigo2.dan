@@ -7,7 +7,7 @@ main{
 	cuenta = 0;
 	primero = 1;
 	
-        write "Introduce número : ";
+        write "Introduce número :>>>> ";
         read n;
         write n," == ";
         curr = 2;

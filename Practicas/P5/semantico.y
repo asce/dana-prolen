@@ -506,7 +506,15 @@ sentencia_salida: WRITE lista_expresiones_o_cadena PYC;
 
 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA expresion_o_cadena | expresion_o_cadena;
 
-expresion_o_cadena: expresion {checkScope(&$1,&$1);write_printf(&$1);} | CADENA {write_printf_str(&$1);};
+expresion_o_cadena: 
+expresion {
+  //checkScope(&$1,&$1);
+write_printf(&$1); // TODO OJO, TESTEAR
+//SOLO iden??
+  //nuevo OJO
+  
+
+} | CADENA {write_printf_str(&$1);};
 
 sentencia_case: 
 SWITCH PARIZ iden 
