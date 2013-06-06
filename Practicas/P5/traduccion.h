@@ -7,6 +7,16 @@
 
 char fileOutName[256];
 FILE* fileOut;
+FILE* fileFun;
+FILE* fileGlobal;
+typedef enum {
+  MAIN_FILE,
+  FUN_FILE,
+} file_enum_t ;
+
+
+unsigned int actual_file = MAIN_FILE;
+unsigned int fun_level = 0;
 unsigned int tmp_index=0;
 unsigned int tag_index=0;
 
@@ -41,6 +51,21 @@ char* name_control_var;
 #define TSIC_SIZE 255
 unsigned int TSIC_TOPE = 0;
 control_descriptor_t TSIC[TSIC_SIZE];
+
+
+void switch_actual_file(){
+
+  
+  if(actual_file == MAIN_FILE){
+    actual_file = FUN_FILE;
+  }else{
+    actual_file = MAIN_FILE;    
+  }
+  FILE* tmp;
+  tmp = fileOut; 
+  fileOut = fileFun;
+  fileFun = tmp;
+}
 
 void initTSIC(){
   int i; 
@@ -81,12 +106,24 @@ void itostr(int i,char* str){
 void openFiles(char * fileOutName){
 
   fileOut = fopen(fileOutName,"w");
-  fprintf(fileOut,"%s","#include <stdio.h>\n#include <stdlib.h>\n\n");
+  fprintf(fileOut,"%s","#include <stdio.h>\n#include <stdlib.h>\n#include \"dec_fun\"\n#include \"dec_global\"\n\n");
+  fileFun = fopen("dec_fun","w");
+  fprintf(fileFun,"%s","#include \"dec_global\"\n\n");
+  fileGlobal = fopen("dec_global","w");
+
 }
 
 void closeFiles(){
 
   fclose(fileOut);
+  fclose(fileFun);
+  fclose(fileGlobal);
+
+}
+
+writeGlobal(char* str){
+
+  fprintf(fileGlobal,"%s ",str);
 
 }
 
@@ -137,7 +174,8 @@ void writeExpr(atributos* dest,atributos* op1,char* operador,atributos* op2){
   dest->expr_tmp = strdup(tmp);
   //  printf("%s %s",dtipo2ctipostr(dest->tipo), dest->expr_tmp);
   //getchar();
-  
+  //printf("%s %s %s;\n",dest->expr_tmp,  operador,op1->expr_tmp,);
+  //printf("%s\n",operador);getchar();
 sprintf(expresion_str,"%s %s;\n%s = %s %s %s;\n",
 	  dtipo2ctipostr(dest->tipo), dest->expr_tmp, dest->expr_tmp, op1->expr_tmp,
 	  operador, op2->expr_tmp);
@@ -405,8 +443,9 @@ void write_printf(atributos* att){
   else if(att->tipo == caracter)
     format = "%c";
   else{
-    printf("Tipo %i\n",att->tipo);
+    printf("WARNING Tipo %i en write_printf\n",att->tipo);
     getchar();
+    return;
   }
 
   strcat(str,"printf(\"");

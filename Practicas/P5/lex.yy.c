@@ -956,7 +956,7 @@ YY_RULE_SETUP
 case 6:
 YY_RULE_SETUP
 #line 24 "lexico.l"
-{yylval.expr_tmp = strdup(yytext); 
+{yylval.expr_tmp = strdup("1"); 
                         yylval.lexema = strdup(yytext);
                         yylval.atrib = 7;
                         yylval.tipo = booleano;
@@ -965,7 +965,7 @@ YY_RULE_SETUP
 case 7:
 YY_RULE_SETUP
 #line 29 "lexico.l"
-{yylval.expr_tmp = strdup(yytext);
+{yylval.expr_tmp = strdup("0");
                         yylval.lexema=strdup(yytext);
                         yylval.atrib = 8;
                         yylval.tipo = booleano;

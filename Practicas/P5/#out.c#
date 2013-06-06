@@ -1,64 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "dec_fun"
+#include "dec_global"
 
-int n , curr , d ;
- int main(){
- printf("%s","Introduce número : ");
- scanf("%i",&n);
- printf("%i",n);
- printf("%s"," == ");
+int main(){
  {//Inicio asignacion
- curr  =  2 ;
+ ve  =  100 ;
 }//Fin asignacion
- //generamos tags y los introducimos en TS
- tag1:;
- int tmp0;
-tmp0 = curr <= n;
- if(!tmp0) goto tag0;
- 
-{
  {//Inicio asignacion
- int tmp1;
-tmp1 = n / curr;
- d  =  tmp1 ;
+ x  =  2 ;
 }//Fin asignacion
- { //Sentencia IF
- int tmp2;
-tmp2 = d * curr;
- int tmp3;
-tmp3 = tmp2 == n;
- //generamos tags y los introducimos en TS
- if(!tmp3) goto tag3;
- 
-{
- printf("%s","* ");
- printf("%i",n);
- printf("%s"," ");
- {//Inicio asignacion
- int tmp4;
-tmp4 = n / curr;
- n  =  tmp4 ;
-}//Fin asignacion
- 
-}
- goto tag2;
- tag3:;
- 
-{
- {//Inicio asignacion
- int tmp5;
-tmp5 = curr + 1;
- curr  =  tmp5 ;
-}//Fin asignacion
- 
-}
- } //Fin Sentencia IF-ELSE
- tag2:;
- printf("%s","\n");
- 
-}
- goto tag1;
- tag0:;
  
 }
  

@@ -1,0 +1,165 @@
+#include "dec_global"
+
+void funcionA (  int v1 , double a2 , char a3 )
+ 
+{
+ int x1 , x2 , vv ;
+ void funcionB (  char b1 , int b2 )
+ 
+{
+ double xf , x2 , flot ;
+ void funcionC (  int c1 , int c2 )
+ 
+{
+ double x1 , xc ;
+ printf("%s","¡Hemos llegado a C!\n");
+ {//Inicio asignacion
+ x1  =  1.3 ;
+}//Fin asignacion
+ {//Inicio asignacion
+ ve  =  pep ;
+}//Fin asignacion
+ { //Sentencia IF
+ int tmp0;
+tmp0 = xc > x1;
+ //generamos tags y los introducimos en TS
+ if(!tmp0) goto tag1;
+ 
+{
+ {//Inicio asignacion
+ int tmp1;
+tmp1 = c2 - 1;
+ c2  =  tmp1 ;
+}//Fin asignacion
+ 
+}
+ goto tag0;
+ tag1:;
+ 
+{
+ {//Inicio asignacion
+ x1  =  3.1 ;
+}//Fin asignacion
+ 
+}
+ } //Fin Sentencia IF-ELSE
+ tag0:;
+ 
+}
+ funcionC ( 1 , 1 );
+ {//Inicio asignacion
+ xf  =  15.0 ;
+}//Fin asignacion
+ {//Inicio asignacion
+ double tmp2;
+tmp2 = 1.0 - 23.0;
+ double tmp3;
+tmp3 = xf * tmp2;
+ double tmp4;
+tmp4 = tmp3 / 10.0;
+ x2  =  tmp4 ;
+}//Fin asignacion
+ 
+}
+ void funcionD (  double d1 )
+ 
+{
+ char dato ;
+ int valor ;
+ void funcionE (  char e1 )
+ 
+{
+ char vc ;
+ scanf("%c",&e1);
+ //generar tag salida
+ // Almacenar entrada en TS con el valor de expr (Entero o char)
+ //generar exit_case_tag 
+ //insertar exit_case_tag en TS 
+ int tmp5;
+tmp5 = 'a' == e1;
+ if(!tmp5) goto tag3;
+ {//Inicio asignacion
+ vc  =  'a' ;
+}//Fin asignacion
+ goto tag2;
+ tag3:;
+ //Limpiamos TS hasta descriptor de bloque
+ //generar exit_case_tag 
+ //insertar exit_case_tag en TS 
+ int tmp6;
+tmp6 = 'b' == e1;
+ if(!tmp6) goto tag4;
+ {//Inicio asignacion
+ vc  =  'b' ;
+}//Fin asignacion
+ goto tag2;
+ tag4:;
+ //Limpiamos TS hasta descriptor de bloque
+ {//Inicio asignacion
+ vc  =  'z' ;
+}//Fin asignacion
+ tag2:;
+ 
+}
+ {//Inicio asignacion
+ dato  =  'a' ;
+}//Fin asignacion
+ scanf("%i",&valor);
+ printf("%s","Esto ");
+ printf("%i",valor);
+ printf("%s"," es ");
+ printf("%c",vc);
+ printf("%s"," una prueba");
+ { //Sentencia IF
+ int tmp7;
+tmp7 = ! 1;
+ double tmp8;
+tmp8 = 3.0 + 5.0;
+ int tmp9;
+tmp9 = 2.0 < tmp8;
+ int tmp10;
+tmp10 = tmp7 || tmp9;
+ //generamos tags y los introducimos en TS
+ if(!tmp10) goto tag6;
+ 
+{
+ int dato ;
+ {//Inicio asignacion
+ dato  =  2 ;
+}//Fin asignacion
+ {//Inicio asignacion
+ int tmp11;
+tmp11 = valor * 20;
+ int tmp12;
+tmp12 = tmp11 / dato;
+ dato  =  tmp12 ;
+}//Fin asignacion
+ 
+}
+ goto tag5;
+ tag6:;
+ 
+{
+ {//Inicio asignacion
+ int tmp13;
+tmp13 = valor * 100;
+ valor  =  tmp13 ;
+}//Fin asignacion
+ {//Inicio asignacion
+ double tmp14;
+tmp14 = d1 / 1000.0;
+ d1  =  tmp14 ;
+}//Fin asignacion
+ 
+}
+ } //Fin Sentencia IF-ELSE
+ tag5:;
+ 
+}
+ {//Inicio asignacion
+ ve  =  0 ;
+}//Fin asignacion
+ funcionB ( 'a' , 1 );
+ 
+}
+ 

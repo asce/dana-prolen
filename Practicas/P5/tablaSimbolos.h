@@ -71,6 +71,7 @@ unsigned int array_flag = 0; //TODO
 unsigned int call_procedure_flag = 0;
 unsigned int main_flag = 1;
 unsigned int read_flag = 0;
+unsigned int iden_fun_flag = 0;
 int yylineno;					/* Numero de linea */
 
 
@@ -188,6 +189,7 @@ char* dtipo2ctipostr(dtipo tipo){
     return("int");
   if(t == vacio)
     return("void");
+  return "desconocido";
 }
 char* tipoEntrada2str(tipoEntrada e){
   switch(e){

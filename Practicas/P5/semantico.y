@@ -78,8 +78,14 @@ declar_de_variables_locales
     main_flag=0;
   }
 
+  if(actual_file==MAIN_FILE)
+    switch_actual_file(); 
+}
+declar_de_subprogs
+{
+  if(actual_file==FUN_FILE && fun_level == 0)
+    switch_actual_file(); 
 } 
-declar_de_subprogs 
 sentencias 
 FINBLO {IntroFinBloq();writeFout("\n}\n");}
 ;
@@ -87,15 +93,53 @@ FINBLO {IntroFinBloq();writeFout("\n}\n");}
 
 declar_de_subprogs: declar_de_subprogs declar_subprog | ;
 
-declar_subprog: cabecera_subprograma { subProg = 1; } 
-bloque { /*subProg = 0;*/ }
-                ;
+declar_subprog:
+{iden_fun_flag=1;fun_level++;} 
+cabecera_subprograma 
+{ subProg = 1; } 
+bloque 
+{ /*subProg = 0;*/ fun_level--;}
+;
 
-cabecera_subprograma: PROCED IDENTIFICADOR PARIZ {TS_InsertaSUBPROG(&$2);} declar_parametros PARDER
-|PROCED IDENTIFICADOR PARIZ {TS_InsertaSUBPROG(&$2);} PARDER;
+cabecera_subprograma: PROCED IDENTIFICADOR PARIZ 
+{
+TS_InsertaSUBPROG(&$2);
+ char str_proce_dec[255];
+ sprintf(str_proce_dec,"void %s ( ",$2.lexema);
 
-declar_parametros: declar_parametros COMA TIPOSIMPLE {tipoTmp = $3.tipo;} iden {TS_InsertaPARAMF(&$5);} 
-| TIPOSIMPLE {tipoTmp = $1.tipo;} iden {TS_InsertaPARAMF(&$3);}
+ writeFout(str_proce_dec);
+
+} 
+declar_parametros PARDER
+{
+  writeFout(")\n");
+}
+|PROCED IDENTIFICADOR PARIZ {TS_InsertaSUBPROG(&$2);} PARDER
+{
+  char str_proce_dec[255];
+  sprintf(str_proce_dec,"void %s ()",$2.lexema);
+  writeFout(str_proce_dec);
+
+}
+;
+
+declar_parametros: 
+declar_parametros COMA TIPOSIMPLE 
+{
+  writeFout(",");
+  writeFout(dtipo2ctipostr($3.tipo));
+  //printf("%i : %s\n",$3.tipo,dtipo2ctipostr($3.tipo));
+  //getchar();
+tipoTmp = $3.tipo;
+
+} iden {writeFout($5.lexema);TS_InsertaPARAMF(&$5);} 
+| TIPOSIMPLE {tipoTmp = $1.tipo;} iden 
+{
+  writeFout(dtipo2ctipostr($1.tipo));
+  writeFout($3.lexema);
+TS_InsertaPARAMF(&$3);
+
+}
 | error;//error3
 
 
@@ -103,8 +147,13 @@ iden: IDENTIFICADOR
 { 
     atributocpy(&$$,&$1);
     $$.tipo = tipoTmp;
-    if(dec_flag==1)
-    writeFout($1.lexema);
+    if(dec_flag==1){
+      if(main_flag==0)
+      writeFout($1.lexema);
+      else writeGlobal($1.lexema);
+      
+    }
+
     //en principio es lo mismo dec_flag o no ya que en sentencia se sobreescribe
 }
 
@@ -118,7 +167,9 @@ iden: IDENTIFICADOR
     $$.TamDimen1 = atoi($3.lexema); /* revisar */
   char tmp[256];
   sprintf(tmp,"%s[%i]",$1.lexema,$$.TamDimen1);
-  writeFout(tmp);
+  if(main_flag==0)
+    writeFout(tmp);
+  else writeGlobal(tmp);
     //showAtt(&$$);
     //getchar();
   }else{
@@ -146,7 +197,10 @@ iden: IDENTIFICADOR
     //getchar();
     char tmp[256];
     sprintf(tmp,"%s[%i][%i]",$1.lexema,$$.TamDimen1,$$.TamDimen2);
+  if(main_flag==0)
     writeFout(tmp);
+  else writeGlobal(tmp);
+
   }else{
     atributocpy(&$$,&$1);
     $$.tipo = tipoEnArray(tipoTmp);
@@ -170,16 +224,35 @@ TIPOSIMPLE
 {
   tipoTmp = $1.tipo;
   dec_flag=1;
-  writeFout(dtipo2ctipostr($1.tipo));
+  if(main_flag==0)
+    writeFout(dtipo2ctipostr($1.tipo));
+  else
+    writeGlobal(dtipo2ctipostr($1.tipo)); 
+
 } 
 lista_variables 
 {
   dec_flag=0;
-  writeFout(";\n");
+  if(main_flag==0)
+    writeFout(";\n");
+  else
+    writeGlobal(";\n");
+
 } PYC;
 
 lista_variables: 
-lista_variables COMA{if(dec_flag)writeFout(",");} iden 
+lista_variables COMA
+{
+  if(dec_flag ){
+    if(main_flag==0)
+    writeFout(",");
+    else
+      writeGlobal(",");
+
+
+  }
+} 
+iden 
 {
   if(dec_flag){
     TS_InsertaVAR(&$4);
@@ -228,7 +301,11 @@ checkEqualTypeAsig(&$1,&$4);
 
 expresion: 
 PARIZ expresion PARDER 
-{atributocpy(&$$,&$2);}
+{
+
+atributocpy(&$$,&$2);
+//getchar
+}
 | OPB_ADD expresion %prec OPU{
   atributocpy(&$$,&$2);
   /*AnyCheck?*/
@@ -283,6 +360,7 @@ PARIZ expresion PARDER
   if(check_OPB_ADD(&$1,&$3)==0 ||checkEqualDimenArray(&$1,&$3)==0)
     $$.tipo=desconocido;
   $$.lexema = "_";
+  
   writeExpr(&$$,&$1,$2.lexema,&$3);
   //  printf("%s = %s OPB_ADD %s\n",$$.expr_tmp,$1.expr_tmp,$3.expr_tmp);
 }
@@ -325,12 +403,15 @@ PARIZ expresion PARDER
  }//else if($$.dimensiones == $1.dimensiones+1){
    //
  //}
- $$.expr_tmp = strdup($1.lexema);
+
+ // $$.expr_tmp = strdup($1.lexema); OJO ****
  
 }
 | CONSTANTE
 {
-atributocpy(&$$,&$1); $$.expr_tmp = strdup($1.lexema);
+atributocpy(&$$,&$1); 
+ if($$.tipo != booleano)
+   $$.expr_tmp = strdup($1.lexema);
 } 
 | CONSTANTE_E
 {
@@ -345,10 +426,12 @@ atributocpy(&$$,&$1); $$.expr_tmp = strdup($1.lexema);
 
 procedimiento: IDENTIFICADOR PARIZ 
 {call_procedure_flag=1;
-
+  writeFout($1.lexema);
+  writeFout("(");
 } 
 lista_expresiones PARDER 
 {
+  writeFout(");\n");
 call_procedure_flag=0;
  checkCallProc(&$1,&$$);
 
@@ -361,11 +444,14 @@ agregados: INICIO lista_expresiones FINBLO;
 lista_expresiones: lista_expresiones COMA expresion 
 {if(call_procedure_flag){
     linkAtt(&$3);
+    writeFout(",");
+    writeFout($3.expr_tmp);
   }
 } 
 | expresion
 {if(call_procedure_flag){
     linkAtt(&$1);
+    writeFout($1.expr_tmp);
   }
 }
 ;

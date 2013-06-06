@@ -21,12 +21,12 @@ suma_resta [+-]
 "}"			{return FINBLO;}
 "begin_declare"		{return INICIOV;}
 "end_declare"		{return FINV;}
-"true"		       {yylval.expr_tmp = strdup(yytext); 
+"true"		       {yylval.expr_tmp = strdup("1"); 
                         yylval.lexema = strdup(yytext);
                         yylval.atrib = 7;
                         yylval.tipo = booleano;
                         return CONSTANTE;}
-"false"		       {yylval.expr_tmp = strdup(yytext);
+"false"		       {yylval.expr_tmp = strdup("0");
                         yylval.lexema=strdup(yytext);
                         yylval.atrib = 8;
                         yylval.tipo = booleano;
