@@ -1,54 +1,196 @@
 #include "dec_global"
 
-void funcionA () 
-{
- int xA ;
- void funcionB () 
-{
- int xB ;
- void funcionC () 
-{
- int xC , numero ;
- printf("%i",xA);
- printf("%s"," ");
- printf("%i",xB);
- printf("%s"," ");
- int tmp0;
-tmp0 = 20 + 20;
- int tmp1;
-tmp1 = tmp0 / 2;
- int tmp2;
-tmp2 = 2 * tmp1;
- printf("%i",tmp2);
- printf("%s","\nIntroduce num: \n");
- scanf("%i",&numero);
- { //Sentencia IF
- int tmp3;
-tmp3 = numero < 20;
- //generamos tags y los introducimos en TS
- if(!tmp3) goto tag1;
+void funcionA (  int v1 , double a2 , char a3 )
  
 {
- funcionA (); 
+ int x1 , x2 , vv ;
+ void funcionB (  char b1 , int b2 )
+ 
+{
+ double xf , x2 ;
+ void funcionC (  int c1 , int c2 )
+ 
+{
+ double x1 , xc ;
+ {//Inicio asignacion
+ x1  =  1.3 ;
+}//Fin asignacion
+ {//Inicio asignacion
+ ve  =  pep ;
+}//Fin asignacion
+ double tmp0;
+tmp0 = 2.0 * vf;
+ funcionA ( Ae32,tmp0,'a' );
+ { //Sentencia IF
+ int tmp1;
+tmp1 = xc > x1;
+ //generamos tags y los introducimos en TS
+ if(!tmp1) goto tag1;
+ 
+{
+ {//Inicio asignacion
+ int tmp2;
+tmp2 = c2 - 1;
+ c2  =  tmp2 ;
+}//Fin asignacion
+ 
 }
  goto tag0;
  tag1:;
- } //Fin Sentencia IF
+ 
+{
+ {//Inicio asignacion
+ x1  =  3.1 ;
+}//Fin asignacion
+ 
+}
+ } //Fin Sentencia IF-ELSE
  tag0:;
  
 }
  {//Inicio asignacion
- xB  =  30 ;
+ xf  =  15.0 ;
 }//Fin asignacion
- printf("%i",xA);
- printf("%s"," ");
- printf("%i",xB);
- printf("%s","\n");
- funcionC (); 
+ {//Inicio asignacion
+ double tmp3;
+tmp3 = 1.0 - 23.0;
+ double tmp4;
+tmp4 = xf * tmp3;
+ double tmp5;
+tmp5 = tmp4 / 10.0;
+ x2  =  tmp5 ;
+}//Fin asignacion
+ //generamos tags y los introducimos en TS
+ tag3:;
+ double tmp6;
+tmp6 = x2 * 1.0;
+ double tmp7;
+tmp7 = tmp6 - xf;
+ int tmp8;
+tmp8 = tmp7 < 10.0;
+ if(!tmp8) goto tag2;
+ 
+{
+ {//Inicio asignacion
+ double tmp9;
+tmp9 = x2 * xf;
+ x2  =  tmp9 ;
+}//Fin asignacion
+ 
+}
+ goto tag3;
+ tag2:;
+ 
+}
+ void funcionD (  double d1 )
+ 
+{
+ char dato ;
+ int valor ;
+ void funcionE (  char e1 )
+ 
+{
+ char vc ;
+ scanf("%c",&e1);
+ //generar tag salida
+ // Almacenar entrada en TS con el valor de expr (Entero o char)
+ //generar exit_case_tag 
+ //insertar exit_case_tag en TS 
+ int tmp10;
+tmp10 = 'a' == e1;
+ if(!tmp10) goto tag5;
+ {//Inicio asignacion
+ vc  =  'a' ;
+}//Fin asignacion
+ goto tag4;
+ tag5:;
+ //Limpiamos TS hasta descriptor de bloque
+ //generar exit_case_tag 
+ //insertar exit_case_tag en TS 
+ int tmp11;
+tmp11 = 'b' == e1;
+ if(!tmp11) goto tag6;
+ {//Inicio asignacion
+ vc  =  'b' ;
+}//Fin asignacion
+ goto tag4;
+ tag6:;
+ //Limpiamos TS hasta descriptor de bloque
+ {//Inicio asignacion
+ vc  =  'z' ;
+}//Fin asignacion
+ tag4:;
+ 
 }
  {//Inicio asignacion
- xA  =  20 ;
+ dato  =  'a' ;
 }//Fin asignacion
- funcionB (); 
+ scanf("%i",&valor);
+ printf("%s","Esto ");
+ printf("%i",valor);
+ printf("%s"," es ");
+ printf("%c",vc);
+ printf("%s"," una prueba");
+ { //Sentencia IF
+ int tmp12;
+tmp12 = ! 1;
+ double tmp13;
+tmp13 = 3.0 + 5.0;
+ int tmp14;
+tmp14 = 2.0 < tmp13;
+ int tmp15;
+tmp15 = tmp12 || tmp14;
+ //generamos tags y los introducimos en TS
+ if(!tmp15) goto tag8;
+ 
+{
+ int dato ;
+ {//Inicio asignacion
+ dato  =  2 ;
+}//Fin asignacion
+ {//Inicio asignacion
+ int tmp16;
+tmp16 = valor * 20;
+ int tmp17;
+tmp17 = tmp16 / dato;
+ dato  =  tmp17 ;
+}//Fin asignacion
+ 
+}
+ goto tag7;
+ tag8:;
+ 
+{
+ {//Inicio asignacion
+ int tmp18;
+tmp18 = valor * 100;
+ valor  =  tmp18 ;
+}//Fin asignacion
+ {//Inicio asignacion
+ double tmp19;
+tmp19 = d1 / 1000.0;
+ d1  =  tmp19 ;
+}//Fin asignacion
+ 
+}
+ } //Fin Sentencia IF-ELSE
+ tag7:;
+ 
+}
+ {//Inicio asignacion
+ Asignacion1DEntero(iv,2,iv) ;
+}//Fin asignacion
+ {//Inicio asignacion
+ Asignacion1DReal(fv,2,fv) ;
+}//Fin asignacion
+ {//Inicio asignacion
+ int tmp20[2][2];
+Multiplicacion2DEntero(im,2,2,im,2,2,tmp20);
+ Asignacion2DEntero(tmp20,2,2,im) ;
+}//Fin asignacion
+ {//Inicio asignacion
+ ve  =  0 ;
+}//Fin asignacion
+ 
 }
  

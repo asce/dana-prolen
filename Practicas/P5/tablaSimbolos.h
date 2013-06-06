@@ -821,8 +821,10 @@ int checkIntOrChar(atributos* att){
     return 0;
   }
 
+}
 
+int att_is_array(atributos* att){
 
-
+  return es_array(att->tipo);
 
 }

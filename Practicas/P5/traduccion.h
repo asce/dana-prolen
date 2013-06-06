@@ -25,6 +25,8 @@ char* actual_tmp;
 char expresion_str[256];
 char* tmp;
 char* tag;
+char expr_params[1024];
+
 ///////char* last_tag;
 
 //FILE* fileProc;
@@ -183,6 +185,75 @@ sprintf(expresion_str,"%s %s;\n%s = %s %s %s;\n",
   //getchar();
   writeFout(expresion_str);
 
+}
+//op1 siempre es array
+void writeArrayExpr(atributos* dest,atributos* op1,char* operador,atributos* op2){
+  char tmp[20];
+  char expresion_str[256];
+  int tipo_destino = tipoArray(op1->tipo);
+  expresion_str[0]='\0';
+  tmp[0]='\0';
+  generateTmp(tmp);
+  dest->expr_tmp = strdup(tmp);
+  char call_proc_str[256];
+  sprintf(call_proc_str,"test_proc(%s)",tmp);
+  char size_str[50];
+  if(dest->dimensiones == 1){
+    sprintf(size_str,"[%i]",dest->TamDimen1);
+
+  }else if(dest->dimensiones == 2){
+
+    sprintf(size_str,"[%i][%i]",dest->TamDimen1,dest->TamDimen2);
+
+
+  }else{
+
+    printf("WARNING: Numero de dimensiones incorrecto en att dest pasado a WriteArrayExpr\n");
+
+  }
+
+  //  printf("%s %s",dtipo2ctipostr(dest->tipo), dest->expr_tmp);
+  //getchar();
+  //printf("%s %s %s;\n",dest->expr_tmp,  operador,op1->expr_tmp,);
+  //printf("%s\n",operador);getchar();
+sprintf(expresion_str,"%s %s%s;\n%s;\n",
+	dtipo2ctipostr(tipo_destino), dest->expr_tmp,size_str, call_proc_str);
+  //printf("%s",expresion_str);
+  //getchar();
+  writeFout(expresion_str);
+
+}
+
+void writeAsigArray(atributos* dest,atributos* src){
+  char* tipo_dest_str;
+  char asig_str[255];
+  char dimen_str[255];
+  if(tipoArray(dest->tipo)==entero){
+
+    tipo_dest_str = "Entero";
+
+  }else if(tipoArray(dest->tipo)==real){
+
+    tipo_dest_str = "Real";
+
+  }else{
+    printf("WARNING: Tipo de dest desc. en asigArray\n");
+    getchar();
+  }
+  if(dest->dimensiones==1){
+
+    sprintf(dimen_str,"%i",dest->TamDimen1);
+
+  }else{
+
+    sprintf(dimen_str,"%i,%i",dest->TamDimen1,dest->TamDimen2);
+
+  }
+
+  asig_str[0]='\0';
+  sprintf(asig_str,"Asignacion%iD%s(%s,%s,%s)",dest->dimensiones,tipo_dest_str,
+	  src->expr_tmp,dimen_str,dest->lexema);
+  writeFout(asig_str);
 }
 
 void writeOpuExpr(atributos* dest,char* operador,atributos* op1){
@@ -482,5 +553,56 @@ write_scanf(atributos* att){
   strcat(str,");\n");
  
   writeFout(str);
+
+}
+
+//op1 y op2 siempre es array
+void writeMul(atributos* dest,atributos* op1,char* operador,atributos* op2){
+
+  char tmp[20];
+  char expresion_str[256];
+  char* tipo_dest_str;
+  expresion_str[0]='\0';
+  tmp[0]='\0';
+  generateTmp(tmp);
+  dest->expr_tmp = strdup(tmp);
+
+  if(tipoArray(dest->tipo)==entero){
+
+    tipo_dest_str = "Entero";
+
+  }else if(tipoArray(dest->tipo)==real){
+
+    tipo_dest_str = "Real";
+
+  }else{
+    printf("WARNING: Tipo de dest desc. en asigArray\n");
+    getchar();
+  }
+  char tam_dest_str[50];
+  tam_dest_str[0]='\0';
+  sprintf(tam_dest_str,"[%i][%i]",dest->TamDimen1,dest->TamDimen2);
+  //*_array(op1,1,op2,dest)
+  sprintf(expresion_str,"%s %s%s;\nMultiplicacion2D%s(%s,%i,%i,%s,%i,%i,%s);\n",
+	  dtipo2ctipostr(tipoArray(op1->tipo)),dest->expr_tmp,tam_dest_str,
+	  tipo_dest_str,
+	  op1->expr_tmp,op1->TamDimen1,op1->TamDimen2,op2->expr_tmp,op2->TamDimen1,op2->TamDimen2,dest->expr_tmp);
+  writeFout(expresion_str);
+  //  void Multiplicacion2DEntero(int *m1,int f1,int c1,int *m2,int f2, int c2, int *producto);
+
+
+  //
+
+}
+//op1 siempre es array                                                                                 
+void writePro(atributos* dest,atributos* op1,char* operador,atributos* op2){
+
+
+
+}
+//op1 siempre es array                                                                                 
+void writeAdd(atributos* dest,atributos* op1,char* operador,atributos* op2){
+
+
 
 }

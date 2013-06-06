@@ -163,13 +163,13 @@ iden: IDENTIFICADOR
     atributocpy(&$$,&$1);
     $$.tipo = tipoEnArray(tipoTmp);
     $$.dimensiones = 1;
-  if(checkIndexEntero(&$3))
-    $$.TamDimen1 = atoi($3.lexema); /* revisar */
-  char tmp[256];
-  sprintf(tmp,"%s[%i]",$1.lexema,$$.TamDimen1);
-  if(main_flag==0)
-    writeFout(tmp);
-  else writeGlobal(tmp);
+    if(checkIndexEntero(&$3))
+      $$.TamDimen1 = atoi($3.lexema); /* revisar */
+    char tmp[256];
+    sprintf(tmp,"%s[%i]",$1.lexema,$$.TamDimen1);
+    if(main_flag==0)
+      writeFout(tmp);
+    else writeGlobal(tmp);
     //showAtt(&$$);
     //getchar();
   }else{
@@ -292,11 +292,16 @@ checkEqualTypeAsig(&$1,&$4);
    //showAtt(&$1);
    //showAtt(&$4);
  }
- writeFout($1.lexema); //TODO ARRAYS
- writeFout(" = ");
- writeFout($4.expr_tmp);
- writeFout(";\n}//Fin asignacion\n");
-
+ if(es_array($1.tipo)){//Asignacion array
+   writeAsigArray(&$1,&$4);
+   writeFout(";\n}//Fin asignacion\n");
+ 
+ }else{//Asignacion normal
+   writeFout($1.lexema); //TODO ARRAYS
+   writeFout(" = ");
+   writeFout($4.expr_tmp);
+   writeFout(";\n}//Fin asignacion\n");
+ }
 } PYC;
 
 expresion: 
@@ -360,8 +365,16 @@ atributocpy(&$$,&$2);
   if(check_OPB_ADD(&$1,&$3)==0 ||checkEqualDimenArray(&$1,&$3)==0)
     $$.tipo=desconocido;
   $$.lexema = "_";
-  
-  writeExpr(&$$,&$1,$2.lexema,&$3);
+  if(att_is_array(&$1)){
+    printf("Att1 es array, en linea %i\n",yylineno);
+    //    writeArrayExpr(&$$,&$1,$2.lexema,&$3);
+    getchar();
+  }else if(att_is_array(&$3)){
+    printf("Att2 es array, en linea %i\n",yylineno);
+    //writeArrayExpr(&$$,&$3,$2.lexema,&$1);
+    getchar();
+  }else
+    writeExpr(&$$,&$1,$2.lexema,&$3);
   //  printf("%s = %s OPB_ADD %s\n",$$.expr_tmp,$1.expr_tmp,$3.expr_tmp);
 }
 | expresion OPB_MUL expresion{
@@ -372,6 +385,7 @@ atributocpy(&$$,&$2);
       {$$.tipo=desconocido;}
     $$.TamDimen1 = $1.TamDimen1;
     $$.TamDimen2 = $3.TamDimen2;
+    writeMul(&$$,&$1,$2.lexema,&$3);
     //showAtt(&$$);
     //getchar();
   }else{
@@ -385,7 +399,16 @@ atributocpy(&$$,&$2);
     }
   }
   $$.lexema = "_";
-  writeExpr(&$$,&$1,$2.lexema,&$3);
+  if(att_is_array(&$1)){;
+    //printf("Att1 es array, en linea %i\n",yylineno);
+    //writeArrayExpr(&$$,&$1,$2.lexema,&$3);
+    //getchar();
+  }else if(att_is_array(&$3)){;
+    //printf("Att2 es array, en linea %i\n",yylineno);
+    //writeArrayExpr(&$$,&$3,$2.lexema,&$1);
+    //getchar();
+  }else
+    writeExpr(&$$,&$1,$2.lexema,&$3);
 }
 | OPU expresion 
 { if(checkBoolean(&$2)==0)
@@ -426,12 +449,15 @@ atributocpy(&$$,&$1); $$.expr_tmp = strdup($1.lexema);
 
 procedimiento: IDENTIFICADOR PARIZ 
 {call_procedure_flag=1;
-  writeFout($1.lexema);
-  writeFout("(");
+
 } 
 lista_expresiones PARDER 
 {
+  writeFout($1.lexema);
+  writeFout("(");
+  writeFout(expr_params);
   writeFout(");\n");
+  expr_params[0]='\0';
 call_procedure_flag=0;
  checkCallProc(&$1,&$$);
 
@@ -450,14 +476,18 @@ agregados: INICIO lista_expresiones FINBLO;
 lista_expresiones: lista_expresiones COMA expresion 
 {if(call_procedure_flag){
     linkAtt(&$3);
-    writeFout(",");
-    writeFout($3.expr_tmp);
+    strcat(expr_params,",");//
+    strcat(expr_params,$3.expr_tmp);//
+
+    //writeFout(",");
+    //writeFout($3.expr_tmp);
   }
 } 
 | expresion
 {if(call_procedure_flag){
     linkAtt(&$1);
-    writeFout($1.expr_tmp);
+    strcat(expr_params,$1.expr_tmp);//
+    //writeFout($1.expr_tmp);
   }
 }
 ;

@@ -495,12 +495,12 @@ static const yytype_uint16 yyrline[] =
      136,   136,   143,   146,   160,   186,   218,   218,   219,   220,
      220,   224,   234,   223,   245,   244,   265,   275,   277,   277,
      279,   280,   281,   282,   283,   284,   285,   286,   286,   288,
-     288,   288,   303,   309,   321,   327,   337,   346,   358,   367,
-     390,   398,   410,   416,   420,   424,   425,   428,   433,   427,
-     440,   439,   448,   450,   457,   465,   465,   467,   469,   472,
-     474,   472,   487,   492,   486,   503,   503,   503,   505,   507,
-     507,   510,   517,   521,   520,   530,   535,   529,   541,   543,
-     543,   545,   545
+     288,   288,   308,   314,   326,   332,   342,   351,   363,   380,
+     413,   421,   433,   439,   443,   447,   448,   451,   455,   450,
+     466,   465,   474,   476,   486,   495,   495,   497,   499,   502,
+     504,   502,   517,   522,   516,   533,   533,   533,   535,   537,
+     537,   540,   547,   551,   550,   560,   565,   559,   571,   573,
+     573,   575,   575
 };
 #endif
 
@@ -1905,18 +1905,23 @@ checkEqualTypeAsig(&(yyvsp[(1) - (4)]),&(yyvsp[(4) - (4)]));
    //showAtt(&$1);
    //showAtt(&$4);
  }
- writeFout((yyvsp[(1) - (4)]).lexema); //TODO ARRAYS
- writeFout(" = ");
- writeFout((yyvsp[(4) - (4)]).expr_tmp);
- writeFout(";\n}//Fin asignacion\n");
-
+ if(es_array((yyvsp[(1) - (4)]).tipo)){//Asignacion array
+   writeAsigArray(&(yyvsp[(1) - (4)]),&(yyvsp[(4) - (4)]));
+   writeFout(";\n}//Fin asignacion\n");
+ 
+ }else{//Asignacion normal
+   writeFout((yyvsp[(1) - (4)]).lexema); //TODO ARRAYS
+   writeFout(" = ");
+   writeFout((yyvsp[(4) - (4)]).expr_tmp);
+   writeFout(";\n}//Fin asignacion\n");
+ }
 }
     break;
 
   case 52:
 
 /* Line 1806 of yacc.c  */
-#line 304 "semantico.y"
+#line 309 "semantico.y"
     {
 
 atributocpy(&(yyval),&(yyvsp[(2) - (3)]));
@@ -1927,7 +1932,7 @@ atributocpy(&(yyval),&(yyvsp[(2) - (3)]));
   case 53:
 
 /* Line 1806 of yacc.c  */
-#line 309 "semantico.y"
+#line 314 "semantico.y"
     {
   atributocpy(&(yyval),&(yyvsp[(2) - (2)]));
   /*AnyCheck?*/
@@ -1945,7 +1950,7 @@ atributocpy(&(yyval),&(yyvsp[(2) - (3)]));
   case 54:
 
 /* Line 1806 of yacc.c  */
-#line 321 "semantico.y"
+#line 326 "semantico.y"
     {
   atributocpy(&(yyval),&(yyvsp[(1) - (3)]));
   if(check_OPB_OR(&(yyvsp[(1) - (3)]),&(yyvsp[(3) - (3)]))==0) (yyval).tipo=desconocido;
@@ -1957,7 +1962,7 @@ atributocpy(&(yyval),&(yyvsp[(2) - (3)]));
   case 55:
 
 /* Line 1806 of yacc.c  */
-#line 327 "semantico.y"
+#line 332 "semantico.y"
     {
  
 
@@ -1973,7 +1978,7 @@ atributocpy(&(yyval),&(yyvsp[(2) - (3)]));
   case 56:
 
 /* Line 1806 of yacc.c  */
-#line 337 "semantico.y"
+#line 342 "semantico.y"
     {
   atributocpy(&(yyval),&(yyvsp[(1) - (3)]));
   if(check_OPB_IG(&(yyvsp[(1) - (3)]),&(yyvsp[(3) - (3)]))==0)
@@ -1988,7 +1993,7 @@ atributocpy(&(yyval),&(yyvsp[(2) - (3)]));
   case 57:
 
 /* Line 1806 of yacc.c  */
-#line 346 "semantico.y"
+#line 351 "semantico.y"
     {
   atributocpy(&(yyval),&(yyvsp[(1) - (3)]));
   if(check_OPB_REL(&(yyvsp[(1) - (3)]),&(yyvsp[(3) - (3)]))==0)
@@ -2006,14 +2011,22 @@ atributocpy(&(yyval),&(yyvsp[(2) - (3)]));
   case 58:
 
 /* Line 1806 of yacc.c  */
-#line 358 "semantico.y"
+#line 363 "semantico.y"
     {
   atributocpy(&(yyval),&(yyvsp[(1) - (3)]));
   if(check_OPB_ADD(&(yyvsp[(1) - (3)]),&(yyvsp[(3) - (3)]))==0 ||checkEqualDimenArray(&(yyvsp[(1) - (3)]),&(yyvsp[(3) - (3)]))==0)
     (yyval).tipo=desconocido;
   (yyval).lexema = "_";
-  
-  writeExpr(&(yyval),&(yyvsp[(1) - (3)]),(yyvsp[(2) - (3)]).lexema,&(yyvsp[(3) - (3)]));
+  if(att_is_array(&(yyvsp[(1) - (3)]))){
+    printf("Att1 es array, en linea %i\n",yylineno);
+    //    writeArrayExpr(&$$,&$1,$2.lexema,&$3);
+    getchar();
+  }else if(att_is_array(&(yyvsp[(3) - (3)]))){
+    printf("Att2 es array, en linea %i\n",yylineno);
+    //writeArrayExpr(&$$,&$3,$2.lexema,&$1);
+    getchar();
+  }else
+    writeExpr(&(yyval),&(yyvsp[(1) - (3)]),(yyvsp[(2) - (3)]).lexema,&(yyvsp[(3) - (3)]));
   //  printf("%s = %s OPB_ADD %s\n",$$.expr_tmp,$1.expr_tmp,$3.expr_tmp);
 }
     break;
@@ -2021,7 +2034,7 @@ atributocpy(&(yyval),&(yyvsp[(2) - (3)]));
   case 59:
 
 /* Line 1806 of yacc.c  */
-#line 367 "semantico.y"
+#line 380 "semantico.y"
     {
   atributocpy(&(yyval),&(yyvsp[(1) - (3)]));
   if(check_OPB_MUL(&(yyvsp[(1) - (3)]),&(yyvsp[(3) - (3)]))==0) {(yyval).tipo=desconocido;}
@@ -2030,6 +2043,7 @@ atributocpy(&(yyval),&(yyvsp[(2) - (3)]));
       {(yyval).tipo=desconocido;}
     (yyval).TamDimen1 = (yyvsp[(1) - (3)]).TamDimen1;
     (yyval).TamDimen2 = (yyvsp[(3) - (3)]).TamDimen2;
+    writeMul(&(yyval),&(yyvsp[(1) - (3)]),(yyvsp[(2) - (3)]).lexema,&(yyvsp[(3) - (3)]));
     //showAtt(&$$);
     //getchar();
   }else{
@@ -2043,14 +2057,23 @@ atributocpy(&(yyval),&(yyvsp[(2) - (3)]));
     }
   }
   (yyval).lexema = "_";
-  writeExpr(&(yyval),&(yyvsp[(1) - (3)]),(yyvsp[(2) - (3)]).lexema,&(yyvsp[(3) - (3)]));
+  if(att_is_array(&(yyvsp[(1) - (3)]))){;
+    //printf("Att1 es array, en linea %i\n",yylineno);
+    //writeArrayExpr(&$$,&$1,$2.lexema,&$3);
+    //getchar();
+  }else if(att_is_array(&(yyvsp[(3) - (3)]))){;
+    //printf("Att2 es array, en linea %i\n",yylineno);
+    //writeArrayExpr(&$$,&$3,$2.lexema,&$1);
+    //getchar();
+  }else
+    writeExpr(&(yyval),&(yyvsp[(1) - (3)]),(yyvsp[(2) - (3)]).lexema,&(yyvsp[(3) - (3)]));
 }
     break;
 
   case 60:
 
 /* Line 1806 of yacc.c  */
-#line 391 "semantico.y"
+#line 414 "semantico.y"
     { if(checkBoolean(&(yyvsp[(2) - (2)]))==0)
     (yyval).tipo=desconocido; 
   else (yyval).tipo=(yyvsp[(2) - (2)]).tipo;
@@ -2063,7 +2086,7 @@ atributocpy(&(yyval),&(yyvsp[(2) - (3)]));
   case 61:
 
 /* Line 1806 of yacc.c  */
-#line 399 "semantico.y"
+#line 422 "semantico.y"
     {
  checkScope(&(yyvsp[(1) - (1)]),&(yyval));
  if((yyval).dimensiones == (yyvsp[(1) - (1)]).dimensiones){
@@ -2080,7 +2103,7 @@ atributocpy(&(yyval),&(yyvsp[(2) - (3)]));
   case 62:
 
 /* Line 1806 of yacc.c  */
-#line 411 "semantico.y"
+#line 434 "semantico.y"
     {
 atributocpy(&(yyval),&(yyvsp[(1) - (1)])); 
  if((yyval).tipo != booleano)
@@ -2091,7 +2114,7 @@ atributocpy(&(yyval),&(yyvsp[(1) - (1)]));
   case 63:
 
 /* Line 1806 of yacc.c  */
-#line 417 "semantico.y"
+#line 440 "semantico.y"
     {
 atributocpy(&(yyval),&(yyvsp[(1) - (1)])); (yyval).expr_tmp = strdup((yyvsp[(1) - (1)]).lexema);
 }
@@ -2100,7 +2123,7 @@ atributocpy(&(yyval),&(yyvsp[(1) - (1)])); (yyval).expr_tmp = strdup((yyvsp[(1) 
   case 64:
 
 /* Line 1806 of yacc.c  */
-#line 421 "semantico.y"
+#line 444 "semantico.y"
     {
 atributocpy(&(yyval),&(yyvsp[(1) - (1)])); (yyval).expr_tmp = strdup((yyvsp[(1) - (1)]).lexema);
 }
@@ -2109,26 +2132,29 @@ atributocpy(&(yyval),&(yyvsp[(1) - (1)])); (yyval).expr_tmp = strdup((yyvsp[(1) 
   case 65:
 
 /* Line 1806 of yacc.c  */
-#line 424 "semantico.y"
+#line 447 "semantico.y"
     { /*que no sea index de array o se pase a proc*/ }
     break;
 
   case 67:
 
 /* Line 1806 of yacc.c  */
-#line 428 "semantico.y"
+#line 451 "semantico.y"
     {call_procedure_flag=1;
-  writeFout((yyvsp[(1) - (2)]).lexema);
-  writeFout("(");
+
 }
     break;
 
   case 68:
 
 /* Line 1806 of yacc.c  */
-#line 433 "semantico.y"
+#line 455 "semantico.y"
     {
+  writeFout((yyvsp[(1) - (5)]).lexema);
+  writeFout("(");
+  writeFout(expr_params);
   writeFout(");\n");
+  expr_params[0]='\0';
 call_procedure_flag=0;
  checkCallProc(&(yyvsp[(1) - (5)]),&(yyval));
 
@@ -2138,7 +2164,7 @@ call_procedure_flag=0;
   case 70:
 
 /* Line 1806 of yacc.c  */
-#line 440 "semantico.y"
+#line 466 "semantico.y"
     {
   writeFout((yyvsp[(1) - (3)]).lexema);
   writeFout("();");
@@ -2150,11 +2176,14 @@ checkCallProcWithoutArgs(&(yyvsp[(1) - (3)]),&(yyval));
   case 73:
 
 /* Line 1806 of yacc.c  */
-#line 451 "semantico.y"
+#line 477 "semantico.y"
     {if(call_procedure_flag){
     linkAtt(&(yyvsp[(3) - (3)]));
-    writeFout(",");
-    writeFout((yyvsp[(3) - (3)]).expr_tmp);
+    strcat(expr_params,",");//
+    strcat(expr_params,(yyvsp[(3) - (3)]).expr_tmp);//
+
+    //writeFout(",");
+    //writeFout($3.expr_tmp);
   }
 }
     break;
@@ -2162,10 +2191,11 @@ checkCallProcWithoutArgs(&(yyvsp[(1) - (3)]),&(yyval));
   case 74:
 
 /* Line 1806 of yacc.c  */
-#line 458 "semantico.y"
+#line 487 "semantico.y"
     {if(call_procedure_flag){
     linkAtt(&(yyvsp[(1) - (1)]));
-    writeFout((yyvsp[(1) - (1)]).expr_tmp);
+    strcat(expr_params,(yyvsp[(1) - (1)]).expr_tmp);//
+    //writeFout($1.expr_tmp);
   }
 }
     break;
@@ -2173,42 +2203,42 @@ checkCallProcWithoutArgs(&(yyvsp[(1) - (3)]),&(yyval));
   case 75:
 
 /* Line 1806 of yacc.c  */
-#line 465 "semantico.y"
+#line 495 "semantico.y"
     {write_close_if();}
     break;
 
   case 76:
 
 /* Line 1806 of yacc.c  */
-#line 465 "semantico.y"
+#line 495 "semantico.y"
     {write_close_if();}
     break;
 
   case 77:
 
 /* Line 1806 of yacc.c  */
-#line 467 "semantico.y"
+#line 497 "semantico.y"
     {writeFout("} //Fin Sentencia IF\n");}
     break;
 
   case 78:
 
 /* Line 1806 of yacc.c  */
-#line 469 "semantico.y"
+#line 499 "semantico.y"
     {writeFout("} //Fin Sentencia IF-ELSE\n");}
     break;
 
   case 79:
 
 /* Line 1806 of yacc.c  */
-#line 472 "semantico.y"
+#line 502 "semantico.y"
     {writeFout("{ //Sentencia IF\n");}
     break;
 
   case 80:
 
 /* Line 1806 of yacc.c  */
-#line 474 "semantico.y"
+#line 504 "semantico.y"
     {
   write_init_if();
   write_conditional_jump_to_else_tag(&(yyvsp[(3) - (3)]));
@@ -2219,7 +2249,7 @@ checkBoolean(&(yyvsp[(3) - (3)]));
   case 81:
 
 /* Line 1806 of yacc.c  */
-#line 480 "semantico.y"
+#line 510 "semantico.y"
     {
 write_go_to_exit_tag();
 write_else_tag();
@@ -2229,7 +2259,7 @@ write_else_tag();
   case 82:
 
 /* Line 1806 of yacc.c  */
-#line 487 "semantico.y"
+#line 517 "semantico.y"
     { 
 write_init_while();
  write_entry_tag();
@@ -2239,7 +2269,7 @@ write_init_while();
   case 83:
 
 /* Line 1806 of yacc.c  */
-#line 492 "semantico.y"
+#line 522 "semantico.y"
     {
   write_conditional_jump_to_exit(&(yyvsp[(4) - (4)]));
 checkBoolean(&(yyvsp[(4) - (4)]));
@@ -2249,7 +2279,7 @@ checkBoolean(&(yyvsp[(4) - (4)]));
   case 84:
 
 /* Line 1806 of yacc.c  */
-#line 497 "semantico.y"
+#line 527 "semantico.y"
     {
   write_go_to_entry_tag();
   write_close_while();
@@ -2259,24 +2289,24 @@ checkBoolean(&(yyvsp[(4) - (4)]));
   case 85:
 
 /* Line 1806 of yacc.c  */
-#line 503 "semantico.y"
+#line 533 "semantico.y"
     {read_flag = 1;}
     break;
 
   case 86:
 
 /* Line 1806 of yacc.c  */
-#line 503 "semantico.y"
+#line 533 "semantico.y"
     {read_flag = 0;}
     break;
 
   case 91:
 
 /* Line 1806 of yacc.c  */
-#line 510 "semantico.y"
+#line 540 "semantico.y"
     {
   //checkScope(&$1,&$1);
-write_printf(&(yyvsp[(1) - (1)])); //write con iden
+write_printf(&(yyvsp[(1) - (1)])); // TODO OJO, TESTEAR
 //SOLO iden??
   //nuevo OJO
   
@@ -2287,14 +2317,14 @@ write_printf(&(yyvsp[(1) - (1)])); //write con iden
   case 92:
 
 /* Line 1806 of yacc.c  */
-#line 517 "semantico.y"
+#line 547 "semantico.y"
     {write_printf_str(&(yyvsp[(1) - (1)]));}
     break;
 
   case 93:
 
 /* Line 1806 of yacc.c  */
-#line 521 "semantico.y"
+#line 551 "semantico.y"
     {
 checkScope(&(yyvsp[(3) - (3)]),&(yyvsp[(3) - (3)]));
 checkIntOrChar(&(yyvsp[(3) - (3)]));
@@ -2305,14 +2335,14 @@ write_init_switch(&(yyvsp[(3) - (3)]));
   case 94:
 
 /* Line 1806 of yacc.c  */
-#line 526 "semantico.y"
+#line 556 "semantico.y"
     {write_exit_switch();}
     break;
 
   case 95:
 
 /* Line 1806 of yacc.c  */
-#line 530 "semantico.y"
+#line 560 "semantico.y"
     {
   write_init_case();
   write_compare_case(&(yyvsp[(3) - (4)]));
@@ -2322,7 +2352,7 @@ write_init_switch(&(yyvsp[(3) - (3)]));
   case 96:
 
 /* Line 1806 of yacc.c  */
-#line 535 "semantico.y"
+#line 565 "semantico.y"
     {
   write_go_to_exit_switch();
   write_exit_case_tag();
@@ -2334,14 +2364,14 @@ write_init_switch(&(yyvsp[(3) - (3)]));
   case 101:
 
 /* Line 1806 of yacc.c  */
-#line 545 "semantico.y"
+#line 575 "semantico.y"
     {/* popTSIC();*/}
     break;
 
 
 
 /* Line 1806 of yacc.c  */
-#line 2345 "y.tab.c"
+#line 2375 "y.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2572,7 +2602,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 548 "semantico.y"
+#line 578 "semantico.y"
 
 
 #include "lex.yy.c"
