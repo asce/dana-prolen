@@ -436,7 +436,13 @@ call_procedure_flag=0;
  checkCallProc(&$1,&$$);
 
 } PYC
-|IDENTIFICADOR PARIZ PARDER {checkCallProcWithoutArgs(&$1,&$$);}PYC
+|IDENTIFICADOR PARIZ PARDER 
+{
+  writeFout($1.lexema);
+  writeFout("();");
+checkCallProcWithoutArgs(&$1,&$$);
+
+}PYC
 ;
 
 agregados: INICIO lista_expresiones FINBLO;

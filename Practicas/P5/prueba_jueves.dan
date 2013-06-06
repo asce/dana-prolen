@@ -1,0 +1,37 @@
+main{
+
+
+  	void funcionA(){
+      		begin_declare
+			int xA;
+      		end_declare
+      
+            	void funcionB(){
+      		    	begin_declare
+	    			int xB;
+          		end_declare
+	  		void funcionC(){
+	      			begin_declare
+					int xC,numero;
+              			end_declare
+				xC = 40;
+				write xA," ",xB," ",xC,"\nIntroduce num: \n";
+				read numero;
+				if(numero < 20){
+					  funcionA();
+				}
+
+	  		}
+			xB = 30;
+			write xA," ",xB,"\n";
+			funcionC();				
+	    
+		}
+		xA = 20;
+		funcionB();			
+			      
+	}
+	funcionA();
+	write "FIN\n";	
+
+}
