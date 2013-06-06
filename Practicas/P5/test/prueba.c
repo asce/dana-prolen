@@ -29,10 +29,18 @@ int main(){
     int v1[5]={1,2,3,4,5};
     int v2[5]={5,4,3,2,1};
     int total[5];
-    //Multiplicacion2DEntero((int *)(m1),filas,columnas,(int *)(m2),filas,columnas, (int *)(res));
-    //Resta2DEntero((int *)(m2),filas,columnas,2,(int *)(res));
+    int tamv2d=7;
+    int tamv1d=5;
+    double v1d[5]={2.222,5.435,6.66,7.11,21.44};
+    double v2d[7]={5.66,7.88,1.33,4.55,6.899,9.0000,98.000899};
+    double totald[5];
     
-  /*
+    
+    //Multiplicacion2DEntero((int *)(m1),filas,columnas,(int *)(m2),filas,columnas, (int *)(res));
+    //Producto2DEntero(m1,filas,columnas,2,res);
+    //Resta2DEntero((int *)(m2),filas,columnas,2,(int *)(res));
+    Asignacion2DEntero(m2,filas,columnas,res);
+  
     int i=0;
     for (i;i<filas;i++){
         int j=0;
@@ -40,17 +48,16 @@ int main(){
             printf("M[%i][%i]=%i\n",i,j,res[i][j]);
         }
     }
-    */
     
-    Division1DEntero(v1,NELEMS(v1),1,total);
-    //suma(v1,v2,NELEMS(v1),total);
- 
+  
+    //Division1DEntero(v1,NELEMS(v1),1,total);
+/*    Asignacion1DReal(v2d,tamv2d,totald);
     int i=0;
-    for(i;i<NELEMS(v1);i++){
-        printf("V[%i]=%i\n",i,total[i]);
+    for(i;i<NELEMS(v2d);i++){
+        printf("V[%i]=%f\n",i,totald[i]);
     }
    
-    
+  */  
     
 }
 /*

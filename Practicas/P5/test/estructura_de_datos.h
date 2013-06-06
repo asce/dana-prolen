@@ -23,6 +23,10 @@ void Producto2DArrayEntero(const int *a1,int f1,int c1,const int *a2,int f2,int 
 void Producto2DEntero(const int *a, int f,int c,int valor, int *res);
 void Division2DArrayEntero(const int *a1,int f1,int c1,const int *a2,int f2,int c2,int *res);
 void Division2DEntero(const int *a, int f,int c,int valor, int *res);
+void Asignacion1DEntero(const int a[], int size, int res[]);
+void Asignacion2DEntero(const int *a, int f,int c, int *res);
+
+
 
 
 
@@ -44,6 +48,10 @@ void Producto2DArrayReal(const double *a1,int f1,int c1,const double *a2,int f2,
 void Producto2DReal(const double *a, int f,int c,double valor, double *res);
 void Division2DArrayReal(const double *a1,int f1,int c1,const double *a2,int f2,int c2,double *res);
 void Division2DReal(const double *a, int f,int c,double valor, double *res);
+void Asignacion1DReal(const double a[], int size, double res[]);
+void Asignacion2DReal(const double *a, int f,int c, double *res);
+
+
 
 
 /* __________________________________________________________________________________  */
@@ -250,6 +258,24 @@ void Division2DEntero(const int *a, int f,int c,int valor, int *res){
         }
     }
 }
+
+void Asignacion1DEntero(const int a[], int size, int res[]){
+    int i=0;
+    for(i;i<size;i++){
+        res[i]=a[i];
+    }
+}
+
+void Asignacion2DEntero(const int *a, int f,int c, int *res){
+    int i=0;
+    for(i;i<f;i++){
+        int j=0;
+        for(j;j<c;j++){
+            res[i*c + j] = a[i*c + j];
+        }
+    }
+}
+
 
 /* __________________________________________________________________________________  */
 
@@ -458,3 +484,18 @@ void Division2DReal(const double *a, int f,int c,double valor, double *res){
     }
 }
 
+void Asignacion1DReal(const double a[], int size, double res[]){
+    int i=0;
+    for(i;i<size;i++){
+        res[i]=a[i];
+    }
+}
+void Asignacion2DReal(const double *a, int f,int c, double *res){
+    int i=0;
+    for(i;i<f;i++){
+        int j=0;
+        for(j;j<c;j++){
+            res[i*c + j] = a[i*c + j];
+        }
+    }
+}
