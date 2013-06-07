@@ -41,6 +41,8 @@ void writePro(atributos* dest,atributos* op1,char* operador,atributos* op2){
             if((op1->dimensiones==op2->dimensiones) && (op1->dimensiones==2)){//Si los 2 son matrices
                 if((op1->TamDimen1==op2->TamDimen1) && (op1->TamDimen2==op2->TamDimen2)&& (dest->TamDimen1==op1->TamDimen1) && (dest->TamDimen2==op1->TamDimen2)){
                     sprintf(tam_dest_str,"[%i][%i]",dest->TamDimen1,dest->TamDimen2);
+                    sprintf(expresion_str,"%s %s%s;\nProducto2DArray%s(%s,%i,%i,%s,%i,%i,%s);\n",dtipo2ctipostr(tipoArray(op1->tipo)),dest->expr_tmp,tam_dest_str,
+                            op1->expr_tmp,op1->TamDimen1,op1->TamDimen2,op2->expr_tmp,op2->TamDimen1,op2->TamDimen2,dest->expr_tmp);
                 }else{
                     printf("WARNING: Distintos tamaños para realizar el produto de matrices\n");
                 }
@@ -51,63 +53,29 @@ void writePro(atributos* dest,atributos* op1,char* operador,atributos* op2){
     }else{
     //El segundo operando no es array
         //Debemos comprobar que tanto el destino como el fuente tengan el mismo tamaño y dimensiones
-        if((op1->dimensiones==des->dimensiones) && (op1->dimensiones==1)){//si son de dimension 1 (vector)
+        if((op1->dimensiones==des->dimensiones) && (op1->dimensiones==1)){//si es de dimension 1 (vector)
             if(op1->TamDimen1==dest->TamDimen1){
                 sprintf(tam_dest_str,"[%i]",dest->TamDimen1);
+                /* Falta el valor, no estoy segura si es op2->expr_tmp  */
                 sprintf(expresion_str, "%s %s%s;\nProducto1D%s(%s,%i,%i,%s);\n",dtipo2ctipostr(tipoArray(op1->tipo)),dest->expr_tmp,tam_dest_str,tipo_des_str,
-                        op1->expr_tmp,op1->TamDimen1,op2->/* Falta el valor  */,dest->expr_tmp);
+                        op1->expr_tmp,op1->TamDimen1,op2->expr_tmp,dest->expr_tmp);
             }else{
                 printf("WARNING:Vector fuente y destino incompatibles. No se pueden multiplicar.\n");
             }
         }else{
-        //Si son de dimension 2 (matriz)
+        //Si es de dimension 2 (matriz)
             if((op1->dimensiones==des->dimensiones) && (oop1->TamDimen2==dest->TamDimen2)){
                     sprintf(tam_dest_str,"[%i][%i]",dest->TamDimen1,des->TamDimen2);
+                    /* Falta el valor, no estoy segura si es op2->expr_tmp  */
+                    sprintf(expresion_str,"%s %s%s;\nProducto2D%s(,,,,);\n",dtipo2ctipostr(tipoArray(op1->tipo)),dest->expr_tmp,tam_dest_str,tipo_des_str,
+                        op1->expr_tmp,op1->TamDimen1,op1->TamDimen2,op2->expr_tmp,dest->expr_tmp);
                 }else{
                     printf("WARNING:Matriz fuente y destino incompatibles. No se pueden multiplicar.\n");
                 }
             }
         
         }
-    
-    
-    
     }
-
-//Falta añadir
-sprintf(expresion_str,"%s %s%s;\nProducto2DArray%s(%s,%i,%i,%s,%i,%i,%s);\n",dtipo2ctipostr(tipoArray(op1->tipo)),dest->expr_tmp,tam_dest_str,,,,,,,);
-
-
-/*
- //____
- void Producto1DArrayEntero(const int a1[],int sizea1,const int a2[], int sizea2,int res[]);
- sprintf(expresion_str,"%s %s%s;\nProducto1DArray%s(%s,%i,%s,%i,%s);\n",dtipo2ctipostr(tipoArray(op1->tipo)),dest->expr_tmp,tam_dest_str,tipo_des_str,
- op1->exp_tmp,op1->TamDimen1,op2->exp_tmp,op2->TamDimen1,dest->exp_tmp);
- //____
- void Producto1DEntero(const int a[],int size,int valor, int res[]);
- sprintf(expresion_str, "%s %s%s;\nProducto1D%s(%s,%i,%i,%s);\n",dtipo2ctipostr(tipoArray(op1->tipo)),dest->expr_tmp,tam_dest_str,tipo_des_str,
- op1->expr_tmp,op1->TamDimen1,op2->// Falta el valor  ,dest->expr_tmp);
- //____
- void Producto2DArrayEntero(const int *a1,int f1,int c1,const int *a2,int f2,int c2,int *res );
-
- //____
- 
- sprintf(expresion_str,"%s %s%s;\nMultiplicacion2D%s(%s,%i,%i,%s,%i,%i,%s);\n",
- dtipo2ctipostr(tipoArray(op1->tipo)),dest->expr_tmp,tam_dest_str,
- tipo_dest_str,
- op1->expr_tmp,op1->TamDimen1,op1->TamDimen2,op2->expr_tmp,op2->TamDimen1,op2->TamDimen2,dest->expr_tmp);
- 
- 
- 
- writeFout(expresion_str);
- 
- 
- //  void Multiplicacion2DEntero(int *m1,int f1,int c1,int *m2,int f2, int c2, int *producto);
- 
-
-
- void Producto2DArrayEntero(const int *a1,int f1,int c1,const int *a2,int f2,int c2,int *res );
- void Producto2DEntero(const int *a, int f,int c,int valor, int *res);
- 
- */
+    //Añadimos la cadena de la expresión
+    writeFout(expresion_str);
 }
