@@ -25,12 +25,11 @@ int main(){
     int ae32[3][2]={{0,0},{0,0},{0,0}};
     int ae23[2][3]= {{0,0,0},{0,0,0}};
     int ae33[3][3]={{1,0,0},{0,1,0},{0,0,1}};
-    int res2[3][3];
+
     
     
     struct matriz_entero prueba;
     int filas = 3, columnas = 3;
-    int res[filas][columnas];
     int tamv1=5;
     int tamv2=5;
     int v1[5]={1,2,3,4,5};
@@ -50,9 +49,12 @@ int main(){
     
  //   Producto1DArrayEntero(v1,5,v2,5,total);
   //  Imprimir1DEntero(total,5);
+
+    int res[filas][columnas];
+    int res2[3][3];
     Multiplicacion2DEntero((int *)ae32,3,2,(int *)ae23,2,3, (int *)res);
     Multiplicacion2DEntero((int *)res,3,3,(int *)ae33,3,3, (int *)res2);
-    Imprimir2DEntero((int *)res2,filas, columnas);
+    Imprimir2DEntero((int *)res2,filas, columnas);getchar();
     //Producto2DEntero(m1,filas,columnas,2,res);
     //Resta2DEntero((int *)(m2),filas,columnas,2,(int *)(res));
 /*    Asignacion2DEntero(m2,filas,columnas,res);

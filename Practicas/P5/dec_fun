@@ -1,9 +1,10 @@
 #include "dec_global"
+#include "estructura_de_datos.h"
 
-void funcionA (  int v1 , double a2 , char a3 )
+void funcionA (  int v1[3][3] , double a2 , char a3 )
  
 {
- int x1 , x2 , vv ;
+ int x1 , x2 , vv , a3 ;
  void funcionB (  char b1 , int b2 )
  
 {
@@ -16,22 +17,25 @@ void funcionA (  int v1 , double a2 , char a3 )
  x1  =  1.3 ;
 }//Fin asignacion
  {//Inicio asignacion
- ve  =  pep ;
+ ve  =  (null) ;
 }//Fin asignacion
  double tmp0;
 tmp0 = 2.0 * vf;
  funcionA ( Ae32,tmp0,'a' );
+ funcionC ( 2,2,22,4 );
  { //Sentencia IF
  int tmp1;
 tmp1 = xc > x1;
+ desconocido tmp2;
+tmp2 = tmp1 + 2;
  //generamos tags y los introducimos en TS
- if(!tmp1) goto tag1;
+ if(!tmp2) goto tag1;
  
 {
  {//Inicio asignacion
- int tmp2;
-tmp2 = c2 - 1;
- c2  =  tmp2 ;
+ int tmp3;
+tmp3 = c2 - 1;
+ c2  =  tmp3 ;
 }//Fin asignacion
  
 }
@@ -52,29 +56,29 @@ tmp2 = c2 - 1;
  xf  =  15.0 ;
 }//Fin asignacion
  {//Inicio asignacion
- double tmp3;
-tmp3 = 1.0 - 23.0;
  double tmp4;
-tmp4 = xf * tmp3;
+tmp4 = 1.0 - 23.0;
  double tmp5;
-tmp5 = tmp4 / 10.0;
- x2  =  tmp5 ;
+tmp5 = xf * tmp4;
+ double tmp6;
+tmp6 = tmp5 / 10.0;
+ x2  =  tmp6 ;
 }//Fin asignacion
  //generamos tags y los introducimos en TS
  tag3:;
- double tmp6;
-tmp6 = x2 * 1.0;
  double tmp7;
-tmp7 = tmp6 - xf;
- int tmp8;
-tmp8 = tmp7 < 10.0;
- if(!tmp8) goto tag2;
+tmp7 = x2 * 1.0;
+ double tmp8;
+tmp8 = tmp7 - xf;
+ int tmp9;
+tmp9 = tmp8 < 10.0;
+ if(!tmp9) goto tag2;
  
 {
  {//Inicio asignacion
- double tmp9;
-tmp9 = x2 * xf;
- x2  =  tmp9 ;
+ double tmp10;
+tmp10 = x2 * xf;
+ x2  =  tmp10 ;
 }//Fin asignacion
  
 }
@@ -92,13 +96,14 @@ tmp9 = x2 * xf;
 {
  char vc ;
  scanf("%c",&e1);
+ funcionC ( 2 );
  //generar tag salida
  // Almacenar entrada en TS con el valor de expr (Entero o char)
  //generar exit_case_tag 
  //insertar exit_case_tag en TS 
- int tmp10;
-tmp10 = 'a' == e1;
- if(!tmp10) goto tag5;
+ int tmp11;
+tmp11 = 'a' == e1;
+ if(!tmp11) goto tag5;
  {//Inicio asignacion
  vc  =  'a' ;
 }//Fin asignacion
@@ -107,9 +112,9 @@ tmp10 = 'a' == e1;
  //Limpiamos TS hasta descriptor de bloque
  //generar exit_case_tag 
  //insertar exit_case_tag en TS 
- int tmp11;
-tmp11 = 'b' == e1;
- if(!tmp11) goto tag6;
+ int tmp12;
+tmp12 = 'b' == e1;
+ if(!tmp12) goto tag6;
  {//Inicio asignacion
  vc  =  'b' ;
 }//Fin asignacion
@@ -132,16 +137,16 @@ tmp11 = 'b' == e1;
  printf("%c",vc);
  printf("%s"," una prueba");
  { //Sentencia IF
- int tmp12;
-tmp12 = ! 1;
- double tmp13;
-tmp13 = 3.0 + 5.0;
- int tmp14;
-tmp14 = 2.0 < tmp13;
+ int tmp13;
+tmp13 = ! 1;
+ double tmp14;
+tmp14 = 3.0 + 5.0;
  int tmp15;
-tmp15 = tmp12 || tmp14;
+tmp15 = 2.0 < tmp14;
+ int tmp16;
+tmp16 = tmp13 || tmp15;
  //generamos tags y los introducimos en TS
- if(!tmp15) goto tag8;
+ if(!tmp16) goto tag8;
  
 {
  int dato ;
@@ -149,11 +154,11 @@ tmp15 = tmp12 || tmp14;
  dato  =  2 ;
 }//Fin asignacion
  {//Inicio asignacion
- int tmp16;
-tmp16 = valor * 20;
  int tmp17;
-tmp17 = tmp16 / dato;
- dato  =  tmp17 ;
+tmp17 = valor * 20;
+ int tmp18;
+tmp18 = tmp17 / dato;
+ dato  =  tmp18 ;
 }//Fin asignacion
  
 }
@@ -162,14 +167,14 @@ tmp17 = tmp16 / dato;
  
 {
  {//Inicio asignacion
- int tmp18;
-tmp18 = valor * 100;
- valor  =  tmp18 ;
+ int tmp19;
+tmp19 = valor * 100;
+ valor  =  tmp19 ;
 }//Fin asignacion
  {//Inicio asignacion
- double tmp19;
-tmp19 = d1 / 1000.0;
- d1  =  tmp19 ;
+ double tmp20;
+tmp20 = d1 / 1000.0;
+ d1  =  tmp20 ;
 }//Fin asignacion
  
 }
@@ -178,15 +183,19 @@ tmp19 = d1 / 1000.0;
  
 }
  {//Inicio asignacion
- Asignacion1DEntero(iv,2,iv) ;
+ iv[0] = 1
+ ;
 }//Fin asignacion
  {//Inicio asignacion
- Asignacion1DReal(fv,2,fv) ;
+ Asignacion1DEntero((int *)iv,2,(int *)iv) ;
 }//Fin asignacion
  {//Inicio asignacion
- int tmp20[2][2];
-Multiplicacion2DEntero(im,2,2,im,2,2,tmp20);
- Asignacion2DEntero(tmp20,2,2,im) ;
+ Asignacion1DReal((double *)fv,2,(double *)fv) ;
+}//Fin asignacion
+ {//Inicio asignacion
+ int tmp21[2][2];
+Multiplicacion2DEntero((int *)im,2,2,(int *)im,2,2,(int *)tmp21);
+ Asignacion2DEntero((int *)tmp21,2,2,(int *)im) ;
 }//Fin asignacion
  {//Inicio asignacion
  ve  =  0 ;

@@ -1,0 +1,17 @@
+#include <stdlib.h>
+#include "estructura_de_datos.h"
+int main(){
+
+  int Ae33[3][3]={{1,0,0},{0,1,0},{0,0,1}};
+  int Ae23[2][3]={{1,1,1},{1,1,1}};
+  int Ae32[3][2]={{1,1},{1,1},{1,1}};
+
+  Imprimir2DEntero((int*)Ae33,3,3);
+
+  return 0;
+
+
+
+
+
+}

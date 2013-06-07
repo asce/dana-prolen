@@ -52,6 +52,7 @@ typedef struct {
 //int numArgumentos;
 } atributos ;
 
+atributos att_tmp;
 
 /****************************   DECLARACIONES GLOBALES *****************************/
 /***********************************************************************************/

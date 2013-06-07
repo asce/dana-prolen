@@ -13,7 +13,7 @@ main{
 		bool bv[2],bm[2,2];
 	end_declare
 
-  	void funcionA(int v1[3,3], double a2, char a3){
+  	void funcionA(int v1[3,2], double a2, char a3){
       		begin_declare
 			int x1,x2,vv;
       		end_declare
@@ -95,5 +95,21 @@ main{
 	funcionA(im,1.0,'a');
 	ve=100;
  	x=2;
+
+Ae23[0,0]=1;Ae23[0,1]=1;Ae23[0,2]=1;
+Ae23[1,0]=1;Ae23[1,1]=1;Ae23[1,2]=1;
+
+
+Ae32[0,0]=1;Ae32[0,1]=1;
+Ae32[1,0]=1;Ae32[1,1]=1;
+Ae32[2,0]=1;Ae32[2,1]=1;
+
+Ae33[0,0]=1;Ae33[0,1]=0;Ae33[0,2]=0;
+Ae33[1,0]=0;Ae33[1,1]=1;Ae33[1,2]=0;
+Ae33[2,0]=0;Ae33[2,1]=0;Ae33[2,2]=1;
+
+
+
 	Ae33 = Ae32**Ae23 **Ae33;	
 }
+	

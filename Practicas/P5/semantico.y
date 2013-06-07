@@ -108,10 +108,11 @@ TS_InsertaSUBPROG(&$2);
  sprintf(str_proce_dec,"void %s ( ",$2.lexema);
 
  writeFout(str_proce_dec);
-
+ dec_flag=1;
 } 
 declar_parametros PARDER
 {
+  dec_flag=0;
   writeFout(")\n");
 }
 |PROCED IDENTIFICADOR PARIZ {TS_InsertaSUBPROG(&$2);} PARDER
@@ -132,11 +133,11 @@ declar_parametros COMA TIPOSIMPLE
   //getchar();
 tipoTmp = $3.tipo;
 
-} iden {writeFout($5.lexema);TS_InsertaPARAMF(&$5);} 
-| TIPOSIMPLE {tipoTmp = $1.tipo;} iden 
+} iden {/*writeFout($5.lexema);*/TS_InsertaPARAMF(&$5);} 
+| TIPOSIMPLE 
+{tipoTmp = $1.tipo;writeFout(dtipo2ctipostr($1.tipo));} iden 
 {
-  writeFout(dtipo2ctipostr($1.tipo));
-  writeFout($3.lexema);
+   
 TS_InsertaPARAMF(&$3);
 
 }
@@ -285,18 +286,21 @@ sentencia: bloque
 | procedimiento {checkProced(&$1,&$$);}
            | sentencia_case | error;
 
-sentencia_asignacion: iden {checkScope(&$1,&$1);writeFout("{//Inicio asignacion\n"); } ASIG expresion {
+sentencia_asignacion: iden {atributocpy(&att_tmp,&$1);checkScope(&$1,&$1);writeFout("{//Inicio asignacion\n"); } ASIG expresion {
 checkEqualTypeAsig(&$1,&$4);
  if(es_array($1.tipo) && es_array($4.tipo)){
    checkEqualDimenArray(&$1,&$4);
+   writeAsigArray(&$1,&$4);
+   writeFout(";\n}//Fin asignacion\n");
    //showAtt(&$1);
    //showAtt(&$4);
  }
- if(es_array($1.tipo)){//Asignacion array
-   writeAsigArray(&$1,&$4);
-   writeFout(";\n}//Fin asignacion\n");
+ if(es_array($1.tipo) && es_array($4.tipo)==0){//Asignacion array
+   writeAsigArrayPosition(&att_tmp,&$4);
+      writeFout(";\n}//Fin asignacion\n");
+
  
- }else{//Asignacion normal
+ }else if(es_array($1.tipo)==0){//Asignacion normal
    writeFout($1.lexema); //TODO ARRAYS
    writeFout(" = ");
    writeFout($4.expr_tmp);

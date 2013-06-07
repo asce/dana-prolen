@@ -1,5 +1,4 @@
 int x , v1 , ve , vv , bb , vvv ;
- int pep ;
  double vf , dd , ff ;
  char vc ;
  int Ae32[3][2] , Ae23[2][3] , Ae33[3][3] , Ae22[2][2] ;

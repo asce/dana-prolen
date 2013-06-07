@@ -110,7 +110,7 @@ void openFiles(char * fileOutName){
   fileOut = fopen(fileOutName,"w");
   fprintf(fileOut,"%s","#include <stdio.h>\n#include <stdlib.h>\n#include \"dec_fun\"\n#include \"dec_global\"\n\n");
   fileFun = fopen("dec_fun","w");
-  fprintf(fileFun,"%s","#include \"dec_global\"\n\n");
+  fprintf(fileFun,"%s","#include \"dec_global\"\n#include \"estructura_de_datos.h\"\n\n");
   fileGlobal = fopen("dec_global","w");
 
 }
@@ -228,13 +228,16 @@ void writeAsigArray(atributos* dest,atributos* src){
   char* tipo_dest_str;
   char asig_str[255];
   char dimen_str[255];
+  char* casting_str;
   if(tipoArray(dest->tipo)==entero){
 
     tipo_dest_str = "Entero";
+    casting_str = "(int *)";
 
   }else if(tipoArray(dest->tipo)==real){
 
     tipo_dest_str = "Real";
+    casting_str = "(double *)";
 
   }else{
     printf("WARNING: Tipo de dest desc. en asigArray\n");
@@ -251,8 +254,35 @@ void writeAsigArray(atributos* dest,atributos* src){
   }
 
   asig_str[0]='\0';
-  sprintf(asig_str,"Asignacion%iD%s(%s,%s,%s)",dest->dimensiones,tipo_dest_str,
-	  src->expr_tmp,dimen_str,dest->lexema);
+  sprintf(asig_str,"Asignacion%iD%s(%s%s,%s,%s%s)",
+	  dest->dimensiones,tipo_dest_str,
+	  casting_str,src->expr_tmp,
+	  dimen_str,
+	  casting_str,dest->lexema);
+  writeFout(asig_str);
+}
+
+void writeAsigArrayPosition(atributos* dest,atributos* src){
+  char* tipo_dest_str;
+  char asig_str[255];
+  char dimen_str[255];
+  char* casting_str;
+
+  if(dest->dimensiones==1){
+
+    sprintf(dimen_str,"[%i]",dest->TamDimen1);
+
+  }else{
+
+    sprintf(dimen_str,"[%i][%i]",dest->TamDimen1,dest->TamDimen2);
+
+  }
+
+  asig_str[0]='\0';
+  sprintf(asig_str,"%s%s = %s\n",
+	  dest->lexema,dimen_str,
+	  src->expr_tmp);
+
   writeFout(asig_str);
 }
 
@@ -562,6 +592,7 @@ void writeMul(atributos* dest,atributos* op1,char* operador,atributos* op2){
   char tmp[20];
   char expresion_str[256];
   char* tipo_dest_str;
+  char* casting_str;
   expresion_str[0]='\0';
   tmp[0]='\0';
   generateTmp(tmp);
@@ -570,10 +601,12 @@ void writeMul(atributos* dest,atributos* op1,char* operador,atributos* op2){
   if(tipoArray(dest->tipo)==entero){
 
     tipo_dest_str = "Entero";
+    casting_str = "(int *)";
 
   }else if(tipoArray(dest->tipo)==real){
 
     tipo_dest_str = "Real";
+    casting_str = "(double *)";
 
   }else{
     printf("WARNING: Tipo de dest desc. en asigArray\n");
@@ -583,10 +616,14 @@ void writeMul(atributos* dest,atributos* op1,char* operador,atributos* op2){
   tam_dest_str[0]='\0';
   sprintf(tam_dest_str,"[%i][%i]",dest->TamDimen1,dest->TamDimen2);
   //*_array(op1,1,op2,dest)
-  sprintf(expresion_str,"%s %s%s;\nMultiplicacion2D%s(%s,%i,%i,%s,%i,%i,%s);\n",
+  sprintf(expresion_str,"%s %s%s;\nMultiplicacion2D%s(%s%s,%i,%i,%s%s,%i,%i,%s%s);\n",
 	  dtipo2ctipostr(tipoArray(op1->tipo)),dest->expr_tmp,tam_dest_str,
 	  tipo_dest_str,
-	  op1->expr_tmp,op1->TamDimen1,op1->TamDimen2,op2->expr_tmp,op2->TamDimen1,op2->TamDimen2,dest->expr_tmp);
+	  casting_str,op1->expr_tmp,
+	  op1->TamDimen1,op1->TamDimen2,
+	  casting_str,op2->expr_tmp,
+	  op2->TamDimen1,op2->TamDimen2,
+	  casting_str,dest->expr_tmp);
   writeFout(expresion_str);
   //  void Multiplicacion2DEntero(int *m1,int f1,int c1,int *m2,int f2, int c2, int *producto);
 
